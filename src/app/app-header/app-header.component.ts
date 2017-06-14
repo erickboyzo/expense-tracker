@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppHeaderComponent implements OnInit {
 
+  title = "Expenses Logger";
   constructor() { }
 
   ngOnInit() {

@@ -1,23 +1,42 @@
- <div class="header"> 
- <md-toolbar color="primary">
+<!--<div class="header">-->
+    <!--<md-toolbar color="primary" class="md-medium-tall">-->
 
-    <button md-button routerLink="/">
-    <md-icon>home</md-icon> 
-        {{title}}</button>
+        <!--<button md-button routerLink="/">-->
+            <!--<md-icon>home</md-icon>-->
+            <!--{{title}}-->
+        <!--</button>-->
 
-    <!-- This fills the remaining space of the current row -->
-    <span class="fill-remaining-space"></span>
-    <div fxLayout="row" fxShow="false" fxShow.gt-sm>
-        <button md-button routerLink="/view-expenses">View</button>
-        <button md-button routerLink="/enter-expenses">Enter</button>
-    </div>
-    <button md-button [md-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
-     <md-icon>menu</md-icon>
+        <!--&lt;!&ndash; This fills the remaining space of the current row &ndash;&gt;-->
+        <!--<span class="fill-remaining-space"></span>-->
+        <!--<div fxLayout="row" fxShow="false" fxShow.gt-sm>-->
+            <!--<button md-button routerLink="/view-expenses">View</button>-->
+            <!--<button md-button routerLink="/enter-expenses">Enter</button>-->
+        <!--</div>-->
+        <!--<button md-button [md-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>-->
+            <!--<md-icon>menu</md-icon>-->
+        <!--</button>-->
+
+    <!--</md-toolbar>-->
+    <!--<md-menu x-position="before" #menu="mdMenu">-->
+        <!--<button md-menu-item routerLink="/view-expenses">View</button>-->
+        <!--<button md-menu-item routerLink="/enter-expenses">Enter</button>-->
+    <!--</md-menu>-->
+<!--</div>-->
+
+<div class="header">
+<nav class="navbar fixed-top navbar-light bg-faded">
+    <div class="row">
+        <button md-button routerLink="/">
+        <md-icon>home</md-icon>
+        {{title}}
     </button>
 
-</md-toolbar>
-<md-menu x-position="before" #menu="mdMenu">
-    <button md-menu-item routerLink="/view-expenses">View</button>
-    <button md-menu-item routerLink="/enter-expenses">Enter</button>
-</md-menu>
+        <!-- This fills the remaining space of the current row -->
+        <span class="fill-remaining-space"></span>
+        <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+            <button md-button routerLink="/view-expenses">View</button>
+            <button md-button routerLink="/enter-expenses">Enter</button>
+        </div></div>
+</nav>
 </div>
+
