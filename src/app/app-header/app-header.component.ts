@@ -7,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppHeaderComponent implements OnInit {
 
-  title = "Expenses Logger";
+  title = "Expenses Tracker";
   constructor() { }
 
   ngOnInit() {
   }
+
+
 
 }

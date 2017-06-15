@@ -12,9 +12,29 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { LoginComponent } from './login/login.component';
 
+import { AngularFireModule } from 'angularfire2';
+
+// New imports to update based on AngularFire2 version 4
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import {HttpModule} from "@angular/http";
+import {FormsModule} from "@angular/forms";
+import { SignUpComponent } from './sign-up/sign-up.component';
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyAdENYvQg1gI_1pONInILcbQNX_Ji4Bss8",
+  authDomain: "expense-tracker-e0028.firebaseapp.com",
+  databaseURL: "https://expense-tracker-e0028.firebaseio.com",
+  projectId: "expense-tracker-e0028",
+  storageBucket: "expense-tracker-e0028.appspot.com",
+  messagingSenderId: "927113629451"
+};
+
 const appRoutes: Routes = [
   { path: 'view-expenses', component: ViewLoggedExpensesComponent },
   { path: 'enter-expenses', component: LogExpenseComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signUp', component: SignUpComponent },
 ];
 
 @NgModule({
@@ -24,13 +44,19 @@ const appRoutes: Routes = [
     LogExpenseComponent,
     AppHeaderComponent,
     AppFooterComponent,
-    LoginComponent
+    LoginComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
     MaterialModule,
     BrowserAnimationsModule,
-     RouterModule.forRoot(appRoutes)
+     RouterModule.forRoot(appRoutes),
+    FormsModule,
+    HttpModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]
