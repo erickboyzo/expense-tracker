@@ -37,6 +37,7 @@ const appRoutes: Routes = [
   { path: 'enter-expenses', component: LogExpenseComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signUp', component: SignUpComponent },
+  { path: 'home', component: HomeComponent },
 ];
 
 @NgModule({
