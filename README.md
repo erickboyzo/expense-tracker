@@ -29,6 +29,18 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 
 
-## Find app deployed here
+## Find app live here
 
 https://expense-tracker-e0028.firebaseapp.com/
+
+# Steps to build to firebase hosting 
+`ng build --prod`
+
+Make sure you have firebase tools installed 
+`npm install -g firebase-tools`
+
+If firebase is not initialized 
+`firebase init`
+
+Last but not least deploy it to firebase 
+`firebase deploy`
