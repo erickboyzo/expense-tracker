@@ -1,5 +1,54 @@
-<div class="jumbotron bg-faded">
-    <p>
-        sign-up works!
-    </p>
+<div class="container-fluid">
+    <div class="row" *ngIf="isLoading" >
+        <div class="col-sm-6 offset-sm-3">
+            <md-progress-bar mode="indeterminate" color="primary"></md-progress-bar>
+        </div>
+
+    </div>
+    <div class="row" id="signUp">
+        <div class="col-sm-6 offset-sm-3">
+            <md-card>
+                <md-card-title>Sign up</md-card-title>
+                <md-card-content>
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <md-input-container class="example-full-width">
+                                <input mdInput placeholder="First Name" [(ngModel)]="currentUser.firstName">
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <md-input-container class="example-full-width">
+                                <input mdInput placeholder="Last Name" [(ngModel)]="currentUser.lastName">
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <md-input-container class="example-full-width">
+                                <input mdInput placeholder="email" [(ngModel)]="currentUser.email">
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <md-input-container class="example-full-width">
+                                <input mdInput placeholder="password" [(ngModel)]="currentUser.password">
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                </md-card-content>
+                <md-card-actions>
+                    <div class="col-sm-12">
+                        <button md-raised-button color="primary" (click)="signUp()">Register</button>
+                    </div>
+                </md-card-actions>
+            </md-card>
+        </div>
+    </div>
 </div>
