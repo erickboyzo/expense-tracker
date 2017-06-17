@@ -1,12 +1,14 @@
 import {Injectable} from '@angular/core';
 import {AngularFireAuth} from 'angularfire2/auth';
+import {Router} from "@angular/router";
+
 
 @Injectable()
 export class AuthService {
 
-    user: any;
+    user: any = null;
 
-    constructor(public af: AngularFireAuth) {
+    constructor(public af: AngularFireAuth, private router:Router) {
     }
 
     signUp(email: string, pw: string) {
@@ -19,6 +21,12 @@ export class AuthService {
         return this.af.auth.signInWithEmailAndPassword(email, pw);
     }
 
+    updateUserProfile(user:any,displayName:string){
+        //var currentUser:any=firebase.auth().currentUser;
+        return this.af.auth[user].updateUserProfile({displayName: displayName, photoURL:'' })
+    }
+
+
     setLoggedInUser(data: any) {
         this.user = data;
     }
@@ -26,5 +34,23 @@ export class AuthService {
     getLoggedInUser() {
         return this.user;
     }
+
+    getUser() {
+         this.af.auth.onAuthStateChanged(function (user) {
+            if (user) {
+                console.log(user);
+                return user;
+                // ...
+            } else {
+                console.log('no user or logged out!!!!');
+                return null;
+            }
+        });
+    }
+
+    signOut() {
+        return this.af.auth.signOut();
+    }
+
 
 }

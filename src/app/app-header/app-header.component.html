@@ -1,19 +1,49 @@
 <div class="header">
-    <nav class="navbar fixed-top navbar-light bg-faded">
-        <div class="row">
-            <div class="navbar-brand">
-                <button md-button routerLink="/login">
-                    <md-icon>receipt</md-icon>
-                    {{title}}
-                </button>
-            </div>
+  <nav class="navbar fixed-top navbar-toggleable-md navbar-light bg-faded">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-brand">
+      <button *ngIf="!shouldDisplay(); else elseBlock" md-button routerLink="/login">
+        <md-icon>account_circle</md-icon>
+        <small>Log in to</small>
+        {{title}}
+      </button>
 
-            <span class="fill-remaining-space"></span>
-            <div fxLayout="row" class="group-options" fxShow="false" fxShow.gt-sm>
-                <button md-button routerLink="/view-expenses">View expenses</button>
-                <button md-button routerLink="/enter-expenses">Enter new expenses</button>
-            </div>
+      <ng-template #elseBlock>
+        <button md-button routerLink="/home">
+          <md-icon>receipt</md-icon>
+          {{title}}
+        </button>
+      </ng-template>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <button *ngIf="shouldDisplay()" md-button routerLink="/view-expenses">View expenses</button>
+        </li>
+        <li class="nav-item">
+          <button *ngIf="shouldDisplay()" md-button routerLink="/enter-expenses">Enter new expenses</button>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <div *ngIf="shouldDisplay(); else notLogged">
+          <!--<span><md-icon>account_circle</md-icon></span>-->
+          <button md-button (click)="logOut()">Log out</button>
         </div>
-    </nav>
-</div>
+        <ng-template #notLogged>
+          <button md-button *ngIf="router.url === '/login'" routerLink="/signUp">
+            Sign up
+          </button>
+          <button md-button *ngIf="router.url === '/signUp'" routerLink="/login">
+            Log in
+          </button>
+        </ng-template>
 
+      </form>
+    </div>
+  </nav>
+</div>

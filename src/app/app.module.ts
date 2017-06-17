@@ -20,7 +20,10 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 
+
+
 import { AuthService } from './providers/auth.service';
+import { LoginService } from './providers/login.service';
 import { HomeComponent } from './home/home.component';
 
 export const firebaseConfig = {
@@ -62,7 +65,7 @@ const appRoutes: Routes = [
     AngularFireDatabaseModule,
     AngularFireAuthModule
   ],
-  providers: [AuthService],
+  providers: [AuthService,LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

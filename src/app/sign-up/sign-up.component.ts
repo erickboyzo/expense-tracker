@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {User} from '../models/user-model'
 import { AuthService } from '../providers/auth.service';
 import {MdSnackBar} from "@angular/material";
-import {LoginComponent} from "../login/login.component";
 import {Routes, Router} from "@angular/router";
+
 
 @Component({
   selector: 'app-sign-up',
@@ -26,12 +26,24 @@ export class SignUpComponent implements OnInit {
       this.isLoading = false;
       this.openSnackBarSuccess();
       this.onSuccessfulSignUp();
-   console.log(data);
   }).catch(e => {
      this.isLoading = false;
      this.openSnackBarError(e.message);
     console.log('Catched object set:' + e.message);
   })
+  }
+
+  updateUserInfo(user:any){
+    var displayName:string = this.currentUser.firstName + ' '+ this.currentUser.lastName;
+    this.authService.updateUserProfile(user,displayName).then((data) => {
+      this.isLoading = false;
+      this.openSnackBarSuccess();
+      this.onSuccessfulSignUp();
+      console.log(data);
+    }).catch(e => {
+      this.isLoading = false;
+      console.log('Catched object set:' + e.message);
+    })
   }
 
   openSnackBarSuccess(){
