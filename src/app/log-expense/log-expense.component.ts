@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {AngularFireDatabase} from "angularfire2/database/database";
+import {LoginService} from "../providers/login.service";
 
 @Component({
   selector: 'app-log-expense',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LogExpenseComponent implements OnInit {
 
-  constructor() { }
+  constructor(public db: AngularFireDatabase,private loginService:LoginService) { }
 
   ngOnInit() {
+    this.pushData();
+  }
+
+  pushData(){
+    //email
+    var userid = this.loginService.getUser().email;
+    console.log(userid);
+   this.db.database.ref('users/testUser').set({
+      username: 'Test User',
+      email: userid,
+    });
   }
 
 }
