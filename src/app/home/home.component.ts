@@ -4,6 +4,7 @@ import {AuthService} from "../providers/auth.service";
 import {AngularFireAuth} from "angularfire2/auth/auth";
 import {LoginService} from "../providers/login.service";
 import {AngularFireDatabase} from "angularfire2/database/database";
+import {User} from "../models/user-model";
 
 @Component({
   selector: 'app-home',
@@ -11,16 +12,16 @@ import {AngularFireDatabase} from "angularfire2/database/database";
   styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit {
-  private DATABASE_REF: any;
+  private user: User = {firstName: '', lastName: '', email: '', password: ''};
 
   constructor(private router: Router, private authService: AuthService, public af: AngularFireAuth, private loginService: LoginService, public db: AngularFireDatabase) {
-    this.DATABASE_REF = this.db.database.ref('users/');
+
+
   }
 
+
   ngOnInit() {
-    console.log('here in home component');
-    console.log(this.loginService.getUser().email);
-    //this.getAllUserDetails();
+    this.getAllUserDetails();
   }
 
   logOut() {
@@ -29,18 +30,18 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  getAllUserDetails(){
-    let current:string = this.loginService.getUser().email;
-    // this.DATABASE_REF.orderByChild("email").equalTo(current).then((snapshot) => {
-    //   console.log(snap);
-    // }).catch(e => {
-    //   console.log(e);
-    // })
+  getAllUserDetails() {
+    let current: string = this.loginService.getUser().email;
+    this.db.database.ref('users/').orderByChild('email').equalTo(current).once('value')
+      .then(jsonData => {
+        let obj = jsonData.toJSON();
+        let key = Object.keys(obj)[0];
+        this.loginService.setUserId(key);
+        this.user.firstName= obj[key].firstName;
+        this.user.lastName= obj[key].lastName;
 
-
-    this.db.database.ref('users/').orderByChild("email").equalTo(current).once("value").then((snapshot) => {
-      console.log(snapshot);
-    }).catch(e => {
+      }).catch(e => {
+      console.log('failed');
       console.log(e);
     })
 
