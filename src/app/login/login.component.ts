@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     }
 
     announceLogin(user:any){
-        this.loginService.logIn(user);
+        //this.loginService.logIn(user);
     }
 
     startLoading() {
