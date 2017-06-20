@@ -5,7 +5,23 @@
     </div>
     <div class="card-block">
       <h4 class="card-title">enter expenses</h4>
-      <p class="card-text">More content coming soon...</p>
+      <form>
+
+        <div class="row">
+          <div class="col-sm-8">
+            <md-input-container class="example-full-width">
+              <input mdInput placeholder="Expense name" type="number">
+            </md-input-container>
+          </div>
+        </div>
+        <md-select placeholder="Expense category" [(ngModel)]="selectedValue" name="Expense category">
+          <md-option *ngFor="let cat of categories " [value]="cat">
+            {{cat}}
+          </md-option>
+        </md-select>
+
+        <p> Selected value: {{selectedValue}} </p>
+      </form>
     </div>
   </div>
 </div>

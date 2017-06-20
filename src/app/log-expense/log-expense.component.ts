@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AngularFireDatabase} from "angularfire2/database/database";
 import {LoginService} from "../providers/login.service";
 
@@ -9,20 +9,19 @@ import {LoginService} from "../providers/login.service";
 })
 export class LogExpenseComponent implements OnInit {
 
-  constructor(public db: AngularFireDatabase,private loginService:LoginService) { }
+  private selectedValue:string='';
+  private categories:string[]= ['Travel','Food','Other'];
 
-  ngOnInit() {
-    this.pushData();
+
+  constructor(public db: AngularFireDatabase, private loginService: LoginService) {
   }
 
-  pushData(){
-    //email
-    var userid = this.loginService.getUser().email;
-    console.log(userid);
-   this.db.database.ref('users/testUser').set({
-      username: 'Test User',
-      email: userid,
-    });
+  ngOnInit() {
+
+  }
+
+  pushData() {
+
   }
 
 }
