@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
+import {MdNativeDateModule} from '@angular/material';
 
 
 
@@ -63,9 +64,10 @@ const appRoutes: Routes = [
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    MdNativeDateModule
   ],
-  providers: [AuthService,LoginService],
+  providers: [AuthService, LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
