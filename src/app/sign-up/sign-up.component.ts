@@ -14,7 +14,7 @@ import {LoginService} from "../providers/login.service";
 })
 export class SignUpComponent implements OnInit {
 
-  currentUser: User = {firstName: '', lastName: '', email: '', password: ''};
+  currentUser: User = {firstName: '', lastName: '', email: '', password: '', enterExpenses: null};
   isLoading = false;
   user:any;
 
