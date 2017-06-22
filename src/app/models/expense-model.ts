@@ -5,4 +5,5 @@ export class Expense {
      category: string;
      type: string;
      amount: number;
+     comments:string;
 }

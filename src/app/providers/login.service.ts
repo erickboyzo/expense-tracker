@@ -22,7 +22,7 @@ export class LoginService {
   }
 
   getUserId(): string {
-    return this.getUserId();
+    return this.userId;
   }
 
 

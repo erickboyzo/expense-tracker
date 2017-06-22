@@ -12,7 +12,7 @@ import {User} from "../models/user-model";
   styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit {
-  private user: User = {firstName: '', lastName: '', email: '', password: ''};
+  private user: User = {firstName: '', lastName: '', email: '', password: '', enterExpenses:''};
 
   constructor(private router: Router, private authService: AuthService, public af: AngularFireAuth, private loginService: LoginService, public db: AngularFireDatabase) {
 

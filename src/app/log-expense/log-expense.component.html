@@ -11,15 +11,22 @@
       </div>
       <div class="container">
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <md-input-container class="example-full-width">
               <input mdInput placeholder="Expense name" type="text" [(ngModel)]="expenseObj.name">
             </md-input-container>
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-3">
             <md-input-container class="example-full-width">
               <input mdInput placeholder="Amount" type="number" [(ngModel)]="expenseObj.amount">
             </md-input-container>
+          </div>
+          <div class="col-sm-3">
+            <md-input-container>
+              <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="expenseObj.date">
+              <button mdSuffix [mdDatepickerToggle]="picker"></button>
+            </md-input-container>
+            <md-datepicker #picker></md-datepicker>
           </div>
         </div>
         <div class="row">
@@ -31,7 +38,7 @@
             </md-select>
           </div>
           <div class="col-sm-5">
-            <md-select placeholder="paymentType" [(ngModel)]="expenseObj.type" name="Payment type">
+            <md-select placeholder="Payment type" [(ngModel)]="expenseObj.type" name="Payment type">
               <md-option *ngFor="let type of types " [value]="type">
                 {{type}}
               </md-option>
@@ -39,16 +46,14 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-5">
-            <md-input-container>
-              <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="expenseObj.date">
-              <button mdSuffix [mdDatepickerToggle]="picker"></button>
+          <div class="col-sm-6">
+            <md-input-container class="example-full-width">
+              <textarea mdInput placeholder="Comments" [(ngModel)]="expenseObj.comments"></textarea>
             </md-input-container>
-            <md-datepicker #picker></md-datepicker>
           </div>
 
-          <div class="col-sm-1 offset-4">
-            <button (click)="saveExpenseEntry()"  md-fab>
+          <div class="col-sm-1 offset-3">
+            <button (click)="saveExpenseEntry()" md-fab>
               <md-icon>save</md-icon>
             </button>
           </div>
