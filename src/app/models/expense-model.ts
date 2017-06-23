@@ -1,9 +1,9 @@
 
 export class Expense {
      name: string;
-     date: Date;
+     date: any;
      category: string;
      type: string;
      amount: number;
-     comments:string;
+     comments: string;
 }

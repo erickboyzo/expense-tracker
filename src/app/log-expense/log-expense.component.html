@@ -31,11 +31,15 @@
         </div>
         <div class="row">
           <div class="col-sm-5">
-            <md-select placeholder="Expense category" [(ngModel)]="expenseObj.category" name="Expense category">
+            <!--<md-select placeholder="Expense category" [(ngModel)]="expenseObj.category" name="Expense category">
               <md-option *ngFor="let cat of categories " [value]="cat">
                 {{cat}}
               </md-option>
-            </md-select>
+            </md-select>-->
+
+            <md2-select [(ngModel)]="expenseObj.category">
+              <md2-option *ngFor="let cat of categories " [value]="cat">{{cat}}</md2-option>
+            </md2-select>
           </div>
           <div class="col-sm-5">
             <md-select placeholder="Payment type" [(ngModel)]="expenseObj.type" name="Payment type">
@@ -64,4 +68,3 @@
     </div>
   </div>
 </div>
-

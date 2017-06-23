@@ -19,13 +19,19 @@ import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
-import {MdNativeDateModule} from '@angular/material';
+import { MdNativeDateModule } from '@angular/material';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { Md2Module } from 'md2';
+
 
 
 
 import { AuthService } from './providers/auth.service';
 import { LoginService } from './providers/login.service';
+import { DatabaseService } from './providers/database.service';
 import { HomeComponent } from './home/home.component';
+import { ChartSummaryComponent } from './chart-summary/chart-summary.component';
+import { TableSummaryComponent } from './table-summary/table-summary.component';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyAdENYvQg1gI_1pONInILcbQNX_Ji4Bss8',
@@ -53,7 +59,9 @@ const appRoutes: Routes = [
     AppFooterComponent,
     LoginComponent,
     SignUpComponent,
-    HomeComponent
+    HomeComponent,
+    ChartSummaryComponent,
+    TableSummaryComponent
   ],
   imports: [
     BrowserModule,
@@ -65,9 +73,11 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    MdNativeDateModule
+    MdNativeDateModule,
+    ChartsModule,
+    Md2Module
   ],
-  providers: [AuthService, LoginService],
+  providers: [AuthService, LoginService, DatabaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

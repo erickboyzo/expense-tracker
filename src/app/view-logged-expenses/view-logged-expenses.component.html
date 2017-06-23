@@ -6,6 +6,10 @@
     <div class="card-block">
       <h4 class="card-title">view expenses</h4>
       <p class="card-text">More content coming soon...</p>
+      <div style="display: block">
+        <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+      </div>
     </div>
   </div>
 </div>

@@ -22,7 +22,7 @@ export class AuthService {
     }
 
     updateUserProfile(user:any,displayName:string){
-        //var currentUser:any=firebase.auth().currentUser;
+        // var currentUser:any=firebase.auth().currentUser;
       console.log(user);
         return user.updateUserProfile({displayName: displayName, photoURL:'' });
     }

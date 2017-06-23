@@ -25,10 +25,12 @@
     "@uirouter/angular": "^1.0.0-beta.6",
     "angularfire2": "^4.0.0-rc.1",
     "bootstrap": "^4.0.0-alpha.6",
+    "chart.js": "^2.6.0",
     "core-js": "^2.4.1",
     "firebase": "^4.1.2",
+    "md2": "0.0.25",
+    "ng2-charts": "^1.6.0",
     "rxjs": "^5.1.0",
-    "ui-router-ng2": "^1.0.0-beta.5",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

@@ -25,7 +25,9 @@
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/tether/dist/js/tether.min.js",
-        "../node_modules/bootstrap/dist/js/bootstrap.min.js"
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js",
+        "../node_modules/ng2-charts/ng2-charts.js",
+        "../node_modules/md2/bundles/md2.umd.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

@@ -4,9 +4,9 @@ export class User {
      lastName: string;
      email: string;
      password: string;
-     enterExpenses:any;
+     enterExpenses: any;
 
 }
 
-export const expense_categories:string[]=['Groceries', 'Transportation', 'Entertainment','Dining out'];
-export const expense_types:string[]=['Credit','Debit','Cash'];
+export const expense_categories: string[] = ['Groceries', 'Transportation', 'Entertainment', 'Dining out'];
+export const expense_types: string[] = ['Credit', 'Debit', 'Cash'];
