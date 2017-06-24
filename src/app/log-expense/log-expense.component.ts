@@ -20,30 +20,32 @@ export class LogExpenseComponent implements OnInit {
   private expenseObj: Expense = new Expense;
   isLoading = false;
   private userId: string;
+  dateError = false;
 
 
   constructor(public db: AngularFireDatabase, private loginService: LoginService, public snackBar: MdSnackBar,
-  private database: DatabaseService ) {
+              private database: DatabaseService) {
   }
 
   ngOnInit() {
 
   }
 
-  saveExpenseEntry() {
+  saveExpenseEntry(expenseForm: any) {
     this.isLoading = true;
     this.expenseObj.date = this.expenseObj.date.toDateString();
-    let currentUserKey = this.loginService.getUserId();
+    let currentUserKey = this.loginService.getUserId()
 
     this.database.saveNewExpense(this.expenseObj, currentUserKey).then((data) => {
       console.log('Data Saved!');
       console.log(data);
       this.isLoading = false;
+      expenseForm.resetForm();
       this.resetExpenseObj();
       this.showSnackBar();
     }).catch(e => {
-       this.isLoading = false;
-       console.log('Failed');
+      this.isLoading = false;
+      console.log('Failed');
     })
 
   }
@@ -53,7 +55,23 @@ export class LogExpenseComponent implements OnInit {
   }
 
   showSnackBar() {
-    this.snackBar.open('Expense Created!', '', {duration: 2000});
+    this.snackBar.open('Expense saved!', '', {duration: 2000});
+  }
+
+  save(value: any, valid: any, form: any) {
+    if (valid) {
+      this.saveExpenseEntry(form);
+    }
+  }
+
+  checkDate(e: any) {
+    this.dateError = (this.expenseObj.date == null);
+  }
+
+  clearForm(expenseForm: any) {
+    this.dateError = false;
+    expenseForm.resetForm();
+    this.resetExpenseObj();
   }
 
 

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {expense_types, expense_categories} from "../models/user-model";
+import {DatabaseService} from "../providers/database.service";
+import {LoginService} from "../providers/login.service";
 
 @Component({
   selector: 'app-view-logged-expenses',
@@ -8,22 +10,39 @@ import {expense_types, expense_categories} from "../models/user-model";
 })
 export class ViewLoggedExpensesComponent implements OnInit {
 
-  public doughnutChartLabels: string[] = expense_categories;
-  public doughnutChartData: number[] = [350, 450, 100, 400];
-  public doughnutChartType: string = 'doughnut';
 
-  // events
-  public chartClicked(e: any): void {
-    console.log(e);
-  }
+  public expenseDataChart:any= {pieChartLabels:[],pieChartData:[],pieChartType:'pie'};
+  public expenseDataTable: any = [];
 
-  public chartHovered(e: any): void {
-    console.log(e);
-  }
-
-  constructor() { }
+  constructor(private database: DatabaseService, private loginService: LoginService) { }
 
   ngOnInit() {
+    this.getUserExpenses();
+  }
+
+  getUserExpenses(){
+
+    let userId = this.loginService.getUserId();
+    this.database.getUserExpenses(userId).do(snapshots => {
+      snapshots.forEach(snapshot =>
+      this.storeExpenses(snapshot))
+      })
+      .subscribe(snapshots => this.filterData());
+  }
+
+  storeExpenses(obj:any){
+    console.log(obj.toJSON());
+    this.expenseDataTable.push(obj.toJSON());
+  }
+
+  filterData(){
+    console.log('data is done');
+    console.log(this.expenseDataTable);
+    const categories = this.expenseDataTable.map(item => item.category)
+      .filter((value, index, self) => self.indexOf(value) === index);
+
+    console.log(categories);
+
   }
 
 }

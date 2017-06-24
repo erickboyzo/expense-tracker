@@ -1,7 +1,7 @@
 <div class="container-fluid" id="enter-expense">
   <div class="card">
     <div class="card-header">
-      Enter Expenses
+      Enter Expense
     </div>
     <div class="card-block">
       <div class="row" *ngIf="isLoading">
@@ -10,61 +10,95 @@
         </div>
       </div>
       <div class="container">
-        <div class="row">
-          <div class="col-sm-4">
-            <md-input-container class="example-full-width">
-              <input mdInput placeholder="Expense name" type="text" [(ngModel)]="expenseObj.name">
-            </md-input-container>
-          </div>
-          <div class="col-sm-3">
-            <md-input-container class="example-full-width">
-              <input mdInput placeholder="Amount" type="number" [(ngModel)]="expenseObj.amount">
-            </md-input-container>
-          </div>
-          <div class="col-sm-3">
-            <md-input-container>
-              <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="expenseObj.date">
-              <button mdSuffix [mdDatepickerToggle]="picker"></button>
-            </md-input-container>
-            <md-datepicker #picker></md-datepicker>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-5">
-            <!--<md-select placeholder="Expense category" [(ngModel)]="expenseObj.category" name="Expense category">
-              <md-option *ngFor="let cat of categories " [value]="cat">
-                {{cat}}
-              </md-option>
-            </md-select>-->
 
-            <md2-select [(ngModel)]="expenseObj.category">
-              <md2-option *ngFor="let cat of categories " [value]="cat">{{cat}}</md2-option>
-            </md2-select>
+        <form #f="ngForm" novalidate (ngSubmit)="save(f.value, f.valid, f)">
+
+          <div class="row">
+            <div class="col-sm-4">
+              <md-input-container class="example-full-width">
+                <input mdInput placeholder="Expense name" name="name" type="text" [(ngModel)]="expenseObj.name"
+                       #name="ngModel" required minlength="4">
+              </md-input-container>
+
+              <div *ngIf="name.errors && (name.dirty || name.touched)"
+                   class="alert alert-danger">
+                <small>Name is required (minimum 4 characters).</small>
+              </div>
+
+            </div>
+            <div class="col-sm-3">
+              <md-input-container class="example-full-width">
+                <input mdInput placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expenseObj.amount"
+                       #amount="ngModel" required>
+              </md-input-container>
+              <div *ngIf="amount.errors && (amount.dirty || amount.touched)"
+                   class="alert alert-danger">
+                <small>Amount is required (positive amount, max 2 decimal places).</small>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div>
+                <md2-datepicker #expenseDate openOnFocus="true" format="MM-dd-y"
+                                placeholder="Expense date"
+                                [(ngModel)]="expenseObj.date" name="date" #date="ngModel" touchUi="true" (onClose)="checkDate($event)"
+                                required></md2-datepicker>
+              </div>
+              <div *ngIf="dateError"
+                   class="alert alert-danger">
+                <small>
+                  Date is required.
+                </small>
+              </div>
+
+            </div>
           </div>
-          <div class="col-sm-5">
-            <md-select placeholder="Payment type" [(ngModel)]="expenseObj.type" name="Payment type">
-              <md-option *ngFor="let type of types " [value]="type">
-                {{type}}
-              </md-option>
-            </md-select>
+          <div class="row">
+            <div class="col-sm-5">
+              <md2-select placeholder="Expense category" [(ngModel)]="expenseObj.category" name="category"
+                          #category="ngModel" required>
+                <md2-option *ngFor="let cat of categories " [value]="cat">{{cat}}</md2-option>
+              </md2-select>
+              <div *ngIf="category.errors && (category.dirty || category.touched)"
+                   class="alert alert-danger">
+                <small>Category is required.</small>
+              </div>
+            </div>
+            <div class="col-sm-5">
+              <md-select placeholder="Payment type" [(ngModel)]="expenseObj.type" name="payment" #payment="ngModel"
+                         required>
+                <md-option *ngFor="let type of types " [value]="type">
+                  {{type}}
+                </md-option>
+              </md-select>
+              <div *ngIf="payment.errors && (payment.dirty || payment.touched)"
+                   class="alert alert-danger">
+                <small>Payment is required.</small>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <md-input-container class="example-full-width">
-              <textarea mdInput placeholder="Comments" [(ngModel)]="expenseObj.comments"></textarea>
-            </md-input-container>
+          <div class="row">
+            <div class="col-sm-6">
+              <md-input-container class="example-full-width">
+                <textarea mdInput placeholder="Comments" [(ngModel)]="expenseObj.comments" name="comments"></textarea>
+              </md-input-container>
+            </div>
+
+            <div class="col-sm-1 offset-2 reset-button">
+              <span class="btn btn-secondary" (click)="clearForm(f)">
+                Reset
+              </span>
+            </div>
+
+            <div class="col-sm-1">
+              <button type="submit" md-raised-button color="primary" [disabled]="!f.form.valid">
+                <md-icon>save</md-icon>
+              </button>
+            </div>
           </div>
 
-          <div class="col-sm-1 offset-3">
-            <button (click)="saveExpenseEntry()" md-fab>
-              <md-icon>save</md-icon>
-            </button>
-          </div>
-        </div>
+        </form>
+
+
       </div>
-
-
     </div>
   </div>
-</div>

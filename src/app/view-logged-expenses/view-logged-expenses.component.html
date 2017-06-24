@@ -4,12 +4,18 @@
       View Expenses
     </div>
     <div class="card-block">
-      <h4 class="card-title">view expenses</h4>
-      <p class="card-text">More content coming soon...</p>
-      <div style="display: block">
-        <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
-      </div>
+      <h4 class="card-title">Graph summary</h4>
+      <app-chart-summary [data]="expenseDataChart"></app-chart-summary>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      View Expenses
+    </div>
+    <div class="card-block">
+      <h4 class="card-title">Table summary</h4>
+      <app-table-summary [data]="expenseDataTable"></app-table-summary>
     </div>
   </div>
 </div>

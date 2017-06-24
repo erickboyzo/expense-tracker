@@ -15,5 +15,10 @@ export class DatabaseService {
     );
   }
 
+  getUserExpenses(userId:string){
+    //return this.db.database.ref('users/' + userId + '/expenses').once("value");
+    return this.db.list('users/' + userId + '/expenses',{ preserveSnapshot: true });
+  }
+
 
 }

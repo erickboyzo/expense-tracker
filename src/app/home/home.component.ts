@@ -22,6 +22,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getAllUserDetails();
+
+
   }
 
   logOut() {

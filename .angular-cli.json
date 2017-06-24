@@ -20,7 +20,8 @@
       "prefix": "app",
       "styles": [
         "styles.less",
-        "../node_modules/bootstrap/dist/css/bootstrap.min.css"
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "../node_modules/roboto-fontface/css/roboto/roboto-fontface.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",

@@ -1,3 +1,8 @@
-<p>
-  chart-summary works!
-</p>
+<div class="chart-container">
+  <canvas baseChart
+          [data]="pieChartData"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+</div>
