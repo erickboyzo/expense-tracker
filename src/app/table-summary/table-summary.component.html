@@ -1,33 +1,40 @@
-<table class="table table-striped" [md2Data]="expensesData"
-       #md2="md2DataTable"
-       [rowsPerPage]="10"
-       [(activePage)]="activePage">
-  <thead>
-  <tr>
-    <th md2SortBy="name">Name</th>
-    <th md2SortBy="amount">Amount</th>
-    <th md2SortBy="date">Date</th>
-    <th md2SortBy="category">Category</th>
-    <th md2SortBy="type">type</th>
-    <th md2SortBy="comments">Comments</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let i of md2.data">
-    <td>{{i.name}}</td>
-    <td>{{i.amount}}</td>
-    <td>{{i.date}}</td>
-    <td>{{i.category}}</td>
-    <td>{{i.type}}</td>
-    <td>{{i.comments}}</td>
-  </tr>
-  </tbody>
-  <tfoot>
-  <tr>
-    <td colspan="4">
-      <md2-pagination [rowsPerPageSet]="[5,10,15]"></md2-pagination>
-    </td>
-  </tr>
-  </tfoot>
-</table>
+<div class="table-responsive">
+
+  <table class="table table-striped" [md2Data]="expensesData"
+         #md2="md2DataTable"
+         [rowsPerPage]="10"
+         [(activePage)]="activePage">
+    <thead>
+    <tr>
+      <th md2SortBy="name">Name</th>
+      <th md2SortBy="amount">Amount</th>
+      <th md2SortBy="date">Date</th>
+      <th md2SortBy="category">Category</th>
+      <th md2SortBy="type">type</th>
+      <th md2SortBy="comments">Comments</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let i of md2.data">
+      <td>{{i.name}}</td>
+      <td>{{i.amount}}</td>
+      <td>{{i.date}}</td>
+      <td>{{i.category}}</td>
+      <td>{{i.type}}</td>
+      <td>{{i.comments}}</td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td colspan="4">
+        <md2-pagination [rowsPerPageSet]="[5,10,15]"></md2-pagination>
+      </td>
+    </tr>
+    </tfoot>
+  </table>
+
+</div>
+
+
+
 
