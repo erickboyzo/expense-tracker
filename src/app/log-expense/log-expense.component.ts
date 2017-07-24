@@ -5,6 +5,7 @@ import {DatabaseService} from '../providers/database.service';
 import {Expense} from '../models/expense-model'
 import {expense_types, expense_categories} from "../models/user-model";
 import {MdSnackBar} from "@angular/material";
+import {CurrencyPipe} from "@angular/common";
 
 
 @Component({
@@ -14,40 +15,50 @@ import {MdSnackBar} from "@angular/material";
 })
 export class LogExpenseComponent implements OnInit {
 
-  private selectedValue: string = '';
-  private categories: string[] = expense_categories;
-  private types: string[] = expense_types;
-  private expenseObj: Expense = new Expense;
+  categories: string[] = this.loginService.getCurrentCategories();
+  types: string[] = expense_types;
+  expenseObj: Expense = new Expense;
   isLoading = false;
-  private userId: string;
   dateError = false;
 
 
-  constructor(public db: AngularFireDatabase, private loginService: LoginService, public snackBar: MdSnackBar,
+  constructor(private loginService: LoginService,
+              public snackBar: MdSnackBar,
               private database: DatabaseService) {
+
+    database.categoriesAddedAnnounced$.subscribe(
+      category => {
+        this.updateExpenseCategories(category);
+
+      });
   }
 
-  ngOnInit() {
+  ngOnInit() {}
 
+  updateExpenseCategories(category:string){
+    console.log('new categories');
+    this.categories = this.loginService.getCurrentCategories();
+    console.log(this.categories);
   }
 
   saveExpenseEntry(expenseForm: any) {
     this.isLoading = true;
     this.expenseObj.date = this.expenseObj.date.toDateString();
-    let currentUserKey = this.loginService.getUserId()
-
+    let currentUserKey = this.loginService.getUserId();
     this.database.saveNewExpense(this.expenseObj, currentUserKey).then((data) => {
-      console.log('Data Saved!');
-      console.log(data);
       this.isLoading = false;
       expenseForm.resetForm();
       this.resetExpenseObj();
       this.showSnackBar();
+      this.announceChange();
     }).catch(e => {
       this.isLoading = false;
       console.log('Failed');
     })
+  }
 
+  announceChange(){
+    this.database.announceExpenseCreated('new expense');
   }
 
   resetExpenseObj() {
@@ -72,6 +83,13 @@ export class LogExpenseComponent implements OnInit {
     this.dateError = false;
     expenseForm.resetForm();
     this.resetExpenseObj();
+  }
+
+  formatAmount() {
+    if (this.expenseObj.amount !== null) {
+      let rounded = this.expenseObj.amount.toFixed(2);
+      this.expenseObj.amount = parseFloat(rounded);
+    }
   }
 
 
