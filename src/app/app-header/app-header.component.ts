@@ -15,8 +15,6 @@ export class AppHeaderComponent implements OnInit {
   constructor(private router: Router,
               public authService: AuthService,
               public snackBar: MdSnackBar) {
-
-
   }
 
   ngOnInit() {

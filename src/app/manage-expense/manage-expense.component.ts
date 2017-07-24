@@ -44,7 +44,6 @@ export class ManageExpenseComponent implements OnInit {
 
   successfulDelete() {
     this.dialogRef.close('Successful');
-    console.log('success');
     this.openSnackBar('Expense Deleted!');
   }
 
