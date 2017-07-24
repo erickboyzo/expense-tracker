@@ -1,49 +1,46 @@
-<div class="header">
-  <nav class="navbar fixed-top navbar-toggleable-md navbar-light bg-faded">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="navbar-brand">
-      <button *ngIf="!shouldDisplay(); else elseBlock" md-button routerLink="/login">
-        <md-icon>account_circle</md-icon>
-        <small>Log in to</small>
-        {{title}}
-      </button>
-
-      <ng-template #elseBlock>
-        <button md-button routerLink="/home">
-          <md-icon>receipt</md-icon>
-          {{title}}
-        </button>
-      </ng-template>
-    </div>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <button *ngIf="shouldDisplay()" md-button routerLink="/view-expenses">View expenses</button>
-        </li>
-        <li class="nav-item">
-          <button *ngIf="shouldDisplay()" md-button routerLink="/enter-expenses">Enter new expenses</button>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <div *ngIf="shouldDisplay(); else notLogged">
-          <!--<span><md-icon>account_circle</md-icon></span>-->
-          <button md-button (click)="logOut()">Log out</button>
-        </div>
+<div mdl-shadow="2">
+  <mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed #mdlLayout1="mdlLayout">
+    <mdl-layout-header>
+      <mdl-layout-header-row>
+        <mdl-layout-title>{{title}}</mdl-layout-title>
+        <mdl-layout-spacer></mdl-layout-spacer>
+        <!-- Navigation. We hide it in small screens. -->
+        <nav class="mdl-navigation mdl-layout--large-screen-only" *ngIf="shouldDisplay(); else notLogged">
+          <a class="mdl-navigation__link" routerLink="/home">Home</a>
+          <a class="mdl-navigation__link" routerLink="/view-expenses">View expenses</a>
+          <a class="mdl-navigation__link" routerLink="/login" (click)="logOut()">Logout</a>
+        </nav>
         <ng-template #notLogged>
-          <button md-button *ngIf="router.url === '/login'" routerLink="/signUp">
-            Sign up
-          </button>
-          <button md-button *ngIf="router.url === '/signUp'" routerLink="/login">
-            Log in
-          </button>
+          <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a class="mdl-navigation__link" *ngIf="router.url === '/login'" routerLink="/signUp">Signup</a>
+            <a class="mdl-navigation__link" *ngIf="router.url === '/signUp'" routerLink="/login">Login</a>
+          </nav>
         </ng-template>
-
-      </form>
-    </div>
-  </nav>
+      </mdl-layout-header-row>
+    </mdl-layout-header>
+    <mdl-layout-drawer>
+      <mdl-layout-title>{{title}}</mdl-layout-title>
+      <nav class="mdl-navigation" *ngIf="shouldDisplay(); else elseBlock">
+        <a class="mdl-navigation__link" routerLink="/home" (click)="mdlLayout1.closeDrawer()">Home</a>
+        <a class="mdl-navigation__link" routerLink="/view-expenses" (click)="mdlLayout1.closeDrawer()">View expenses</a>
+        <a class="mdl-navigation__link" routerLink="/login" (click)="logOut()"
+           (click)="mdlLayout1.closeDrawer()">Logout</a>
+      </nav>
+      <ng-template #elseBlock>
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" *ngIf="router.url === '/login'" routerLink="/signUp"
+             (click)="mdlLayout1.closeDrawer()">Signup</a>
+          <a class="mdl-navigation__link" *ngIf="router.url === '/signUp'" routerLink="/login"
+             (click)="mdlLayout1.closeDrawer()">Login</a>
+        </nav>
+      </ng-template>
+    </mdl-layout-drawer>
+    <mdl-layout-content>
+      <div class="container-fluid" id="content">
+        <router-outlet></router-outlet>
+      </div>
+      <app-footer></app-footer>
+    </mdl-layout-content>
+  </mdl-layout>
 </div>
+
