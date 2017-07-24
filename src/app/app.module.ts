@@ -1,54 +1,47 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
-import { MaterialModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule, Routes } from '@angular/router';
+import {AppComponent} from './app.component';
+import {MaterialModule} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterModule, Routes} from '@angular/router';
 
-import { ViewLoggedExpensesComponent } from './view-logged-expenses/view-logged-expenses.component';
-import { LogExpenseComponent } from './log-expense/log-expense.component';
-import { AppHeaderComponent } from './app-header/app-header.component';
-import { AppFooterComponent } from './app-footer/app-footer.component';
-import { LoginComponent } from './login/login.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
-
-import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
-
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
-import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
-import { MdNativeDateModule } from '@angular/material';
-import { ChartsModule } from 'ng2-charts/ng2-charts';
-import { Md2Module } from 'md2';
+import {ChartModule} from 'angular2-highcharts';
+import {HighchartsStatic} from 'angular2-highcharts/dist/HighchartsService';
+import {HighchartsDrilldown} from 'highcharts/modules/drilldown';
 
 
+import {ViewLoggedExpensesComponent} from './view-logged-expenses/view-logged-expenses.component';
+import {LogExpenseComponent} from './log-expense/log-expense.component';
+import {AppHeaderComponent} from './app-header/app-header.component';
+import {AppFooterComponent} from './app-footer/app-footer.component';
+import {LoginComponent} from './login/login.component';
+import {SignUpComponent} from './sign-up/sign-up.component';
+
+import {HttpModule} from '@angular/http';
+import {FormsModule} from '@angular/forms';
+
+import {AngularFireModule} from 'angularfire2';
+import {AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable} from 'angularfire2/database';
+import {AngularFireAuthModule, AngularFireAuth} from 'angularfire2/auth';
+import {MdNativeDateModule} from '@angular/material';
+import {ChartsModule} from 'ng2-charts/ng2-charts';
 
 
-import { AuthService } from './providers/auth.service';
-import { LoginService } from './providers/login.service';
-import { DatabaseService } from './providers/database.service';
-import { HomeComponent } from './home/home.component';
-import { ChartSummaryComponent } from './chart-summary/chart-summary.component';
-import { TableSummaryComponent } from './table-summary/table-summary.component';
+import {AuthService} from './providers/auth.service';
+import {LoginService} from './providers/login.service';
+import {DatabaseService} from './providers/database.service';
+import {HomeComponent} from './home/home.component';
+import {ChartSummaryComponent} from './view-logged-expenses/chart-summary/chart-summary.component';
+import {TableSummaryComponent} from './view-logged-expenses/table-summary/table-summary.component';
+import {ManageExpenseComponent} from './manage-expense/manage-expense.component';
+import {Md2Module} from "md2";
+import {MdlModule} from "@angular-mdl/core";
+import {MonthlySummaryChartComponent} from './view-logged-expenses/monthly-summary-chart/monthly-summary-chart.component';
+import {appRoutes} from "./app.routes";
+import {firebaseConfig} from "./app.firebase.config";
+import {highchartsFactory} from "./app.highcharts";
 
-export const firebaseConfig = {
-  apiKey: 'AIzaSyAdENYvQg1gI_1pONInILcbQNX_Ji4Bss8',
-  authDomain: 'expense-tracker-e0028.firebaseapp.com',
-  databaseURL: 'https://expense-tracker-e0028.firebaseio.com',
-  projectId: 'expense-tracker-e0028',
-  storageBucket: 'expense-tracker-e0028.appspot.com',
-  messagingSenderId: '927113629451'
-};
-
-const appRoutes: Routes = [
-  { path: 'view-expenses', component: ViewLoggedExpensesComponent },
-  { path: 'enter-expenses', component: LogExpenseComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'signUp', component: SignUpComponent },
-  { path: 'home', component: HomeComponent },
-];
 
 @NgModule({
   declarations: [
@@ -61,7 +54,12 @@ const appRoutes: Routes = [
     SignUpComponent,
     HomeComponent,
     ChartSummaryComponent,
-    TableSummaryComponent
+    TableSummaryComponent,
+    ManageExpenseComponent,
+    MonthlySummaryChartComponent
+  ],
+  entryComponents: [
+    ManageExpenseComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,10 +73,19 @@ const appRoutes: Routes = [
     AngularFireAuthModule,
     MdNativeDateModule,
     ChartsModule,
-    Md2Module
+    Md2Module,
+    ChartModule,
+    MdlModule
   ],
-  providers: [AuthService, LoginService, DatabaseService],
+  providers: [AuthService,
+    LoginService,
+    DatabaseService,
+    {
+      provide: HighchartsStatic,
+      useFactory: highchartsFactory
+    }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
 

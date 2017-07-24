@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "expenses-tracker"
+    "name": "expense-tracker"
   },
   "apps": [
     {
@@ -21,13 +21,13 @@
       "styles": [
         "styles.less",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-        "../node_modules/roboto-fontface/css/roboto/roboto-fontface.css"
+        "../node_modules/roboto-fontface/css/roboto/roboto-fontface.css",
+        "../node_modules/font-awesome/css/font-awesome.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/tether/dist/js/tether.min.js",
         "../node_modules/bootstrap/dist/js/bootstrap.min.js",
-        "../node_modules/ng2-charts/ng2-charts.js",
         "../node_modules/md2/bundles/md2.umd.js"
       ],
       "environmentSource": "environments/environment.ts",

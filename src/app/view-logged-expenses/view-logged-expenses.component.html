@@ -1,21 +1,62 @@
 <div class="container-fluid" id="view-expense">
-  <div class="card">
-    <div class="card-header">
-      View Expenses
-    </div>
-    <div class="card-block">
-      <h4 class="card-title">Graph summary</h4>
-      <app-chart-summary [data]="expenseDataChart"></app-chart-summary>
-    </div>
-  </div>
 
-  <div class="card">
-    <div class="card-header">
-      View Expenses
-    </div>
-    <div class="card-block">
-      <h4 class="card-title">Table summary</h4>
-      <app-table-summary [data]="expenseDataTable"></app-table-summary>
+  <div class="row" *ngIf="isLoadingExpenses">
+    <div class="col-sm-8 offset-sm-2 loading-progress-bar">
+      <mdl-progress [indeterminate]="true"></mdl-progress>
     </div>
   </div>
+  <md-card class="example-card col-sm-8 offset-sm-2">
+    <md-card-title>Chart summary</md-card-title>
+    <md-card-header>
+      <md-card-subtitle *ngIf="expenseDataChart.length !==0"> Click on category to view details</md-card-subtitle>
+    </md-card-header>
+    <md-card-content>
+      <app-chart-summary *ngIf="!isLoadingExpenses && isDataReady" [data]="expenseDataChart"></app-chart-summary>
+    </md-card-content>
+    <md-card-actions>
+    </md-card-actions>
+  </md-card>
+
+  <div class="row" *ngIf="isLoadingExpenses">
+    <div class="col-sm-8 offset-sm-2 loading-progress-bar">
+      <mdl-progress [indeterminate]="true"></mdl-progress>
+    </div>
+  </div>
+  <md-card class="example-card col-sm-8 offset-sm-2">
+    <md-card-title>Monthly summary</md-card-title>
+    <md-card-header>
+      <md-card-subtitle *ngIf="expenseDataChart.length !==0">Select month to view details for 5 month range proceeding
+        selection
+      </md-card-subtitle>
+    </md-card-header>
+    <md-card-content>
+      <app-monthly-summary-chart *ngIf="!isLoadingExpenses && isDataReady"
+                                 [data]="expenseDataTable"></app-monthly-summary-chart>
+    </md-card-content>
+    <md-card-actions>
+    </md-card-actions>
+  </md-card>
+
+  <div class="row" *ngIf="isLoadingExpenses">
+    <div class="col-sm-8 offset-sm-2 loading-progress-bar">
+      <mdl-progress [indeterminate]="true"></mdl-progress>
+    </div>
+  </div>
+  <md-card class="example-card col-sm-8 offset-sm-2">
+    <md-card-title>Table summary</md-card-title>
+    <md-card-header>
+      <md-card-subtitle *ngIf="expenseDataTable.length !==0">Click on row to edit expense</md-card-subtitle>
+    </md-card-header>
+    <md-card-content>
+      <app-table-summary *ngIf="!isLoadingExpenses && isDataReady" [data]="expenseDataTable"></app-table-summary>
+    </md-card-content>
+    <md-card-actions>
+    </md-card-actions>
+  </md-card>
+
+  <button md-fab class="fab" routerLink="/home">
+    <md-icon>note_add</md-icon>
+  </button>
+
+
 </div>

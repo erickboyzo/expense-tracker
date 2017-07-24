@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../models/user-model'
+import {User, expense_categories} from '../models/user-model'
 import {AuthService} from '../providers/auth.service';
 import {MdSnackBar} from "@angular/material";
 import {Routes, Router} from "@angular/router";
@@ -14,12 +14,12 @@ import {LoginService} from "../providers/login.service";
 })
 export class SignUpComponent implements OnInit {
 
-  currentUser: User = {firstName: '', lastName: '', email: '', password: '', enterExpenses: null};
+  currentUser: User = new User;
   isLoading = false;
-  user:any;
+  user: any;
+  defaultExpenses: string[] = expense_categories;
 
   constructor(public authService: AuthService, public snackBar: MdSnackBar, private router: Router, public db: AngularFireDatabase, private loginService: LoginService) {
-
     this.user = this.db.database.ref('users/');
   }
 
@@ -30,23 +30,13 @@ export class SignUpComponent implements OnInit {
     this.isLoading = true;
     this.authService.signUp(this.currentUser.email, this.currentUser.password).then((data) => {
       this.isLoading = false;
+      this.loginService.setUser(data);
       this.setUserInformation();
       this.openSnackBarSuccess();
       this.onSuccessfulSignUp();
-      //this.updateUserInfo(data);
     }).catch(e => {
       this.isLoading = false;
       this.openSnackBarError(e.message);
-      console.log('Catched object set:' + e.message);
-    })
-  }
-
-  updateUserInfo(user: any) {
-    var displayName: string = this.currentUser.firstName + ' ' + this.currentUser.lastName;
-    this.authService.updateUserProfile(user, displayName).then((data) => {
-      console.log('update sucessful--update user info');
-      console.log(data);
-    }).catch(e => {
       console.log('Catched object set:' + e.message);
     })
   }
@@ -64,15 +54,20 @@ export class SignUpComponent implements OnInit {
   }
 
   setUserInformation() {
-    //var userid = this.loginService.getUser().email;
-    //console.log(userid);
     this.user.push({
       firstName: this.currentUser.firstName,
       lastName: this.currentUser.lastName,
       email: this.currentUser.email,
+      categories: this.defaultExpenses
     }).then((snap) => {
       console.log(snap);
     });
+  }
+
+  checkForm(value: any, valid: any, form: any) {
+    if (valid) {
+      this.signUp();
+    }
   }
 
 

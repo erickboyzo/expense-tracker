@@ -1,9 +1,9 @@
-
 export class Expense {
-     name: string;
-     date: any;
-     category: string;
-     type: string;
-     amount: number;
-     comments: string;
+  id: string;
+  name: string;
+  date: any;
+  category: string;
+  type: string;
+  amount: number;
+  comments: string;
 }

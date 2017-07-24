@@ -1,51 +1,49 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {Router, NavigationEnd} from "@angular/router";
 import {AuthService} from "./providers/auth.service";
-import {Observable} from "rxjs";
-import {AngularFireAuth} from "angularfire2/auth/auth";
+import {Observable, Subscription} from 'rxjs/Rx';
 import * as firebase from 'firebase';
+import {AngularFireAuth} from "angularfire2/auth/auth";
+import {LoginService} from "./providers/login.service";
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent implements OnInit{
-  loggedInUser:any;
+export class AppComponent implements OnInit {
+  loggedInUser = false;
   user: Observable<firebase.User>;
+  email: any;
+  loggedInSubscription: Subscription;
 
 
-  constructor(private router:Router, private authService:AuthService, public af: AngularFireAuth) {
 
-    this.af.auth.onAuthStateChanged(this.onStateChange);
-    if(!firebase.auth().currentUser == null){
-      console.log("User found going home");
-      this.routeHome();
-    }else{
-      console.log("User not found going to login");
-      this.routeLogin();
-    }
+  constructor(private router: Router,
+              public authService: AuthService,
+              public afAuth: AngularFireAuth,
+              public loginService: LoginService) {
+
+    this.loggedInSubscription=afAuth.authState.subscribe(authData => {
+      console.log(authData);
+      if (authData.email) {
+        console.log(authData);
+        let uid = authData.email;
+        this.email = uid;
+        console.log(this.email);
+        this.loginService.setUser(authData);
+        this.loginService.announceUserIdCreated("user created!");
+        this.router.navigate(['/home']);
+      } else {
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
-  ngOnInit() {
-    console.log("in the ngonInit--- app root");
-    console.log(firebase.auth().currentUser);
-    console.log(this.user);
+  ngOnInit() {}
 
-    this.loggedInUser = firebase.auth().currentUser;
+  ngOnDestroy() {
 
-
-  }
-
-  onStateChange(user:any){
-    console.log('state changed!');
-    console.log(user);
-  }
-
-  public routeLogin(){
-    this.router.navigate(['/login']);
-  }
-  public routeHome(){
-    this.router.navigate(['/home']);
   }
 }

@@ -1,10 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
+@material-blue: #2196f3;
+
 html {
   height: 100%;
   body {
-    font-family: 'Roboto';
+    font-family: Roboto;
+    font-weight: 300;
     background-color: #EEEEEE;
     .container-fluid {
       padding-top: 60px;
@@ -44,10 +47,72 @@ html {
     .mat-select {
       width: 100%;
     }
-    button:focus{
+    button:focus {
       outline: none;
     }
 
+    .mat-card:not([class*=mat-elevation-z]) {
+      box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3);
+
+    }
+
+    .mdl-progress {
+      width: 100%;
+    }
+
+    .mat-focused .mat-input-underline .mat-input-ripple {
+      background-color: @material-blue;
+    }
+
+    .mat-focused .mat-input-placeholder.mat-empty {
+      color: @material-blue;
+    }
+
+    .mat-focused .mat-input-placeholder {
+      color: @material-blue;
+    }
+
+    .mat-input-underline .mat-input-ripple {
+      color: @material-blue;
+    }
+
+    .no-data {
+      .icon {
+        text-align: center;
+        margin-right: 40px;
+      }
+      .icon-alert {
+        font-size: 80px;
+      }
+      h2, h6 {
+        text-align: center;
+        font-weight: 300;
+      }
+      .alert-action {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+    }
+
+    md-card {
+      margin-bottom: 40px;
+    }
+
+    .button-row{
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    chart {
+      display: block;
+    }
+
+    .no-data{
+      h2{
+        text-align: center;
+      }
+    }
   }
 
 }

@@ -1,33 +1,83 @@
 <div class="container-fluid" id="login">
-    <div class="row" *ngIf="isLoading">
-        <div class="col-sm-8 offset-sm-2">
-            <md-progress-bar mode="indeterminate" color="primary"></md-progress-bar>
-        </div>
+
+  <div class="jumbotron container col-sm-8 z-depth-5 ">
+    <h1 class="display-3">Expense Tracker</h1>
+    <p class="lead">Expense tracker is a simple application to help you keep track of your daily expenses.
+      Charts and tables help you better track spending behaviors.</p>
+    <hr class="my-4">
+
+    <div class="col-sm-5 offset-sm-4">
+      <small></small>
+      <p class="lead"></p>
+      <div>
+
+        <button mdl-button mdl-colored="primary" mdl-ripple (click)="toggleLogin()">
+          Login
+        </button>
+        <button mdl-button mdl-colored="primary" mdl-ripple (click)="signUp()">Get Started</button>
+      </div>
     </div>
-    <div class="row">
+
+
+  </div>
+
+
+  <div id="target" class="login-card" [hidden]="!isVisible">
+    <form #f="ngForm" novalidate (ngSubmit)="checkLogin(f.value, f.valid, f)">
+      <div class="row" *ngIf="isLoading">
         <div class="col-sm-8 offset-sm-2">
-            <md-card>
-                <md-card-title>Login</md-card-title>
-                <md-card-content>
-                    <div class="col-sm-12">
-                        <md-input-container class="example-full-width">
-                            <input mdInput placeholder="Email" type="text" [(ngModel)]="currentUser.email">
-                        </md-input-container>
-                    </div>
-                    <div class="col-sm-12">
-                        <md-input-container class="example-full-width">
-                            <input mdInput placeholder="Password" type="password"
-                                   [(ngModel)]="currentUser.password">
-                        </md-input-container>
-                    </div>
-                </md-card-content>
-                <md-card-actions>
-                    <div class="col-sm-12">
-                        <button md-raised-button color="secondary" (click)="signUp()">Sign up</button>
-                        <button md-raised-button color="primary" (click)="login()">Log in</button>
-                    </div>
-                </md-card-actions>
-            </md-card>
+          <mdl-progress [indeterminate]="true"></mdl-progress>
         </div>
-    </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+          <md-card class="z-depth-5">
+            <md-card-title>Login</md-card-title>
+            <hr class="my-4">
+            <md-card-content>
+              <div class="col-sm-12">
+                <md-input-container class="example-full-width">
+                  <input mdInput
+                         placeholder="Email"
+                         name="email"
+                         #email="ngModel"
+                         type="text"
+                         [(ngModel)]="currentUser.email"
+                         [email]="true">
+                </md-input-container>
+                <div *ngIf="email.errors && (email.dirty || email.touched)"
+                     class="alert alert-danger">
+                  <small>Please enter valid email.</small>
+                </div>
+
+              </div>
+              <div class="col-sm-12">
+                <md-input-container class="example-full-width">
+                  <input mdInput
+                         placeholder="Password"
+                         name="pswd"
+                         type="password"
+                         #pswd="ngModel"
+                         [(ngModel)]="currentUser.password"
+                         required minlength="6">
+                </md-input-container>
+                <div *ngIf="pswd.errors && (pswd.dirty || pswd.touched)"
+                     class="alert alert-danger">
+                  <small>Please enter valid password.</small>
+                </div>
+              </div>
+            </md-card-content>
+            <md-card-actions>
+              <div class="col-sm-12">
+                <button type="submit" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple
+                        [disabled]="!f.form.valid">Login
+                </button>
+              </div>
+            </md-card-actions>
+          </md-card>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
+

@@ -1,25 +1,44 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, EventEmitter} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../providers/auth.service";
 import {User} from "../models/user-model";
 import {MdSnackBar} from "@angular/material";
 import {LoginService} from "../providers/login.service";
+import {state, trigger, transition, style, animate} from "@angular/animations";
+import {AngularFireAuth} from "angularfire2/auth/auth";
+import {MaterializeAction} from "angular2-materialize"
+
+declare var Materialize: any;
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.less']
+  styleUrls: ['./login.component.less'],
+  animations: [
+    trigger('visibilityChanged', [
+      state('true', style({opacity: 1, transform: 'scale(1.0)'})),
+      state('false', style({opacity: 0, transform: 'scale(0.0)'})),
+      transition('1 => 0', animate('300ms')),
+      transition('0 => 1', animate('900ms'))
+    ])
+  ]
 })
 export class LoginComponent implements OnInit {
 
-  currentUser: User = {firstName: '', lastName: '', email: '', password: '', enterExpenses: ''};
+  currentUser: User = new User;
   isLoading = false;
+  isVisible: true;
 
-  constructor(private router: Router, public authService: AuthService, public snackBar: MdSnackBar, public loginService: LoginService) {
+  constructor(private router: Router,
+              public authService: AuthService,
+              public snackBar: MdSnackBar,
+              public loginService: LoginService) {
   }
 
   ngOnInit() {
   }
+
 
   public signUp() {
     this.router.navigate(['/signUp']);
@@ -30,7 +49,6 @@ export class LoginComponent implements OnInit {
     this.authService.logIn(this.currentUser.email, this.currentUser.password).then((data) => {
       this.loginService.setUser(data);
       this.stopLoading();
-      console.log(data);
       this.announceLogin(data);
       this.snackBar.open('Login Successful!', '', {duration: 2000});
       this.onSuccessfulLogIn()
@@ -56,6 +74,22 @@ export class LoginComponent implements OnInit {
 
   stopLoading() {
     this.isLoading = false;
+  }
+
+  toggleLogin() {
+    this.isVisible = true;
+    setTimeout(() => this.scrollToLogin(),);
+  }
+
+  scrollToLogin() {
+    var element = document.getElementById('target');
+    element.scrollIntoView();
+  }
+
+  checkLogin(value: any, valid: any, form: any) {
+    if (valid) {
+      this.login();
+    }
   }
 
 }

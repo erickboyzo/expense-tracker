@@ -394,7 +394,6 @@ export class MonthlySummaryChartComponent implements OnInit {
           drillDownData.push(expense);
         }
       }
-      console.log(this.getDrillDownData(drillDown));
       let parsedSum;
       if (monthSum !== 0) {
         parsedSum = monthSum.toFixed(2);
@@ -410,10 +409,7 @@ export class MonthlySummaryChartComponent implements OnInit {
         data: this.getDrillDownData(drillDownData)
       });
 
-      console.log(drillDown);
     }
-    //console.log(monthSummary);
-    //console.log(drillDown);
 
     this.chart.series[0].setData(monthSummary);
     this.chart.options.drilldown.series = drillDown;
@@ -435,11 +431,7 @@ export class MonthlySummaryChartComponent implements OnInit {
       }
       summaryData.push([category, categorySum]);
     }
-
-    //console.log(summaryData);
-
     return summaryData;
-
   }
 
   getDateRange() {
