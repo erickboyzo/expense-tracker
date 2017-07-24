@@ -18,7 +18,7 @@ export class TableSummaryComponent implements OnInit, OnChanges {
   @Input() data: any;
 
   expensesData: any;
-  activePage: number = 10;
+  activePage: number = 1;
 
   constructor(private router: Router,
               public dialog: MdDialog) {
