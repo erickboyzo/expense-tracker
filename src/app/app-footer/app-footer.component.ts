@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-footer',
@@ -7,9 +8,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppFooterComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) {
+  }
 
   ngOnInit() {
+  }
+
+  shouldDisplay() {
+    return (this.router.url === '/home' || this.router.url === '/view-expenses' || this.router.url === '/enter-expenses');
+  }
+
+  navigateToCorrectLink(link: string) {
+    let url = '';
+    switch (link) {
+      case 'linkedin':
+        url = 'https://www.linkedin.com/in/erick-boyzo-258023a1/';
+        break;
+
+      case 'github':
+        url = 'https://github.com/erickboyzo';
+        break;
+
+      case 'bitbucket':
+        url = 'https://bitbucket.org/erickby/expenses_log';
+        break;
+
+      default:
+        url = 'https://www.linkedin.com/in/erick-boyzo-258023a1/';
+    }
+
+    window.open(url);
   }
 
 }
