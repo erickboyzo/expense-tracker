@@ -25,7 +25,6 @@ import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable} from 'angularfire2/database';
 import {AngularFireAuthModule, AngularFireAuth} from 'angularfire2/auth';
 import {MdNativeDateModule} from '@angular/material';
-import {ChartsModule} from 'ng2-charts/ng2-charts';
 
 
 import {AuthService} from './providers/auth.service';
@@ -72,7 +71,6 @@ import {highchartsFactory} from "./app.highcharts";
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     MdNativeDateModule,
-    ChartsModule,
     Md2Module,
     ChartModule,
     MdlModule

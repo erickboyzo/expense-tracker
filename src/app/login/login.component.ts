@@ -6,7 +6,6 @@ import {MdSnackBar} from "@angular/material";
 import {LoginService} from "../providers/login.service";
 import {state, trigger, transition, style, animate} from "@angular/animations";
 import {AngularFireAuth} from "angularfire2/auth/auth";
-import {MaterializeAction} from "angular2-materialize"
 
 declare var Materialize: any;
 
