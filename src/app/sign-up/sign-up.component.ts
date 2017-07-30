@@ -19,7 +19,11 @@ export class SignUpComponent implements OnInit {
   user: any;
   defaultExpenses: string[] = expense_categories;
 
-  constructor(public authService: AuthService, public snackBar: MdSnackBar, private router: Router, public db: AngularFireDatabase, private loginService: LoginService) {
+  constructor(public authService: AuthService,
+              public snackBar: MdSnackBar,
+              private router: Router,
+              public db: AngularFireDatabase,
+              private loginService: LoginService) {
     this.user = this.db.database.ref('users/');
   }
 
@@ -58,7 +62,8 @@ export class SignUpComponent implements OnInit {
       firstName: this.currentUser.firstName,
       lastName: this.currentUser.lastName,
       email: this.currentUser.email,
-      categories: this.defaultExpenses
+      categories: this.defaultExpenses,
+      expenses:[]
     }).then((snap) => {
       console.log(snap);
     });
