@@ -1,28 +1,61 @@
-<footer class="mdl-mini-footer">
-  <div class="mdl-mini-footer__left-section">
-    <div class="mdl-logo">
-      Expense Tracker
-      <small>by Erick Boyzo</small>
+<footer class="mt-3">
+  <div class="container-fluid bg-primary py-3">
+    <div class="">
+      <div class="row py-3">
+        <div class="col-md-3">
+          <p class="text-white app-title">Expense Tacker <br> <span class="by-title">by Erick Boyzo</span></p>
+        </div>
+        <div class="col-md-6">
+          <div class="d-inline-block" *ngIf="isLoggedIn()">
+            <a  class="text-white" *ngIf="router.url === '/view-expenses'" routerLink="/home" mdl-button mdl-ripple>
+              <i class="fa fa-1x fa-fw fa-home"></i>
+              Home
+            </a>
+          </div>
+          <div class="d-inline-block" *ngIf="isLoggedIn()" >
+            <a  class="text-white" *ngIf="router.url === '/home'" routerLink="/view-expenses" mdl-button mdl-ripple >
+              <i class="fa fa-1x fa-fw fa-bar-chart"></i>
+              View Expenses
+            </a>
+          </div>
+          <!--uncomment if login should be in footer as well-->
+          <!--<div class="d-inline-block" *ngIf="isLoggedIn()">-->
+            <!--<a  class="text-white" mdl-button mdl-ripple>-->
+              <!--<i class="fa fa-1x fa-fw fa-sign-out"></i>-->
+              <!--Logout-->
+            <!--</a>-->
+          <!--</div>-->
+          <div class="d-inline-block" *ngIf="!isLoggedIn()">
+            <a *ngIf="router.url === '/login'" routerLink="/signUp"  class="text-white" mdl-button mdl-ripple>
+              <i class="fa fa-1x fa-fw fa-user-plus"></i>
+              Signup
+            </a>
+            <a *ngIf="router.url === '/signUp'" routerLink="/login" class="text-white" mdl-button mdl-ripple>
+              <i class="fa fa-1x fa-fw fa-user-plus"></i>
+              Login
+            </a>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="d-inline-block">
+            <div class="bg-circle-outline d-inline-block">
+              <a  class="text-white" (click)="navigateToCorrectLink('linkedin')">
+                <i class="fa fa-2x fa-fw fa-linkedin"></i>
+              </a>
+            </div>
+
+            <div class="bg-circle-outline d-inline-block" >
+              <a  class="text-white" (click)="navigateToCorrectLink('github')">
+                <i class="fa fa-2x fa-fw fa-github"></i></a>
+            </div>
+
+            <div class="bg-circle-outline d-inline-block" >
+              <a class="text-white" (click)="navigateToCorrectLink('bitbucket')">
+                <i class="fa fa-2x fa-fw fa-bitbucket \"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <ul class="mdl-mini-footer__link-list" *ngIf="shouldDisplay()">
-      <li *ngIf="router.url === '/view-expenses'"><a routerLink="/home">Home</a></li>
-      <li *ngIf="router.url === '/home'"><a routerLink="/view-expenses">View Expenses</a></li>
-    </ul>
-
-    <ul class="mdl-mini-footer__link-list" *ngIf="!shouldDisplay()">
-      <li *ngIf="router.url === '/login'"><a routerLink="/signUp">Register</a></li>
-      <li *ngIf="router.url === '/signUp'"><a routerLink="/login">Login</a></li>
-    </ul>
-
-  </div>
-  <div class="mdl-mini-footer__right-section">
-    <button class="mdl-mini-footer__social-btn" (click)="navigateToCorrectLink('linkedin')"><i
-      class="fa fa-linkedin-square" aria-hidden="true"></i></button>
-    <button class="mdl-mini-footer__social-btn" (click)="navigateToCorrectLink('github')"><i class="fa fa-github"
-                                                                                             aria-hidden="true"></i>
-    </button>
-    <button class="mdl-mini-footer__social-btn" (click)="navigateToCorrectLink('bitbucket')"><i class="fa fa-code"
-                                                                                                aria-hidden="true"></i>
-    </button>
   </div>
 </footer>

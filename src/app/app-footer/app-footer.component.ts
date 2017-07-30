@@ -14,7 +14,7 @@ export class AppFooterComponent implements OnInit {
   ngOnInit() {
   }
 
-  shouldDisplay() {
+  isLoggedIn() {
     return (this.router.url === '/home' || this.router.url === '/view-expenses' || this.router.url === '/enter-expenses');
   }
 
