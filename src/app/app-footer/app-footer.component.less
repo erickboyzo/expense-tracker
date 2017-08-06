@@ -1,22 +1,6 @@
-//.footer {
-//  .fixed-bottom {
-//    height: 50px;
-//  }
-//  .bg-faded {
-//    background-color: #212121;
-//    color: #EEEEEE;
-//
-//    a {
-//      color: #EEEEEE;
-//      text-decoration: none;
-//    }
-//  }
-//
-//  md-icon {
-//    font-size: 12px;
-//  }
-//
-//}
+@hover-background: #FFFFFF;
+@big-circle-color: #ececec;
+@footer-link-hover: #424242;
 
 footer.mdl-mini-footer {
   padding: 4px 16px;
@@ -25,7 +9,7 @@ footer.mdl-mini-footer {
 
   }
   a:hover, a:focus {
-    color: #FFFFFF;
+    color: @hover-background;
     text-decoration: none;
   }
 
@@ -41,15 +25,14 @@ footer.mdl-mini-footer {
     cursor: pointer;
 
     &:hover {
-      color: #FFFFFF;
+      color: @hover-background;
     }
   }
 
 }
 
 .bg-primary {
-  // background-color: #2196f3 !important;
-  //background-color: #424242 !important;
+
 }
 
 .bg-circle {
@@ -57,7 +40,7 @@ footer.mdl-mini-footer {
   width: 60px;
   height: 60px;
   padding: 14px 4px;
-  color: #ececec;
+  color: @big-circle-color;
   text-align: center;
   border-radius: 50%;
 }
@@ -67,7 +50,6 @@ footer.mdl-mini-footer {
   height: 50px;
   color: smoke;
   padding: 8px 2px;
-  //border: 2px solid;
   border-color: smoke;
   border-radius: 50%;
 }
@@ -75,32 +57,31 @@ footer.mdl-mini-footer {
 .bg-circle a, a:hover, .media a:focus {
   text-decoration: none !important;
   outline: none;
-  color: #ececec;
+  color: @big-circle-color;
   cursor: pointer;
 }
 
 .bg-circle-outline a, a:hover, .media a:focus {
   text-decoration: none !important;
   outline: none;
-  color: #ececec;
+  color: @big-circle-color;
   cursor: pointer;
 }
 
 .mdl-button:hover {
-  background-color: #424242;
+  background-color: @footer-link-hover;
 }
 
 .bg-circle-outline[_ngcontent-c2] {
   width: 50px;
   height: 50px;
-  color: smoke;
   padding: 11px 7px;
   border-color: smoke;
   border-radius: 50%;
   cursor: pointer !important;
 
   &:hover {
-    background-color: #424242;
+    background-color: @footer-link-hover;
   }
 }
 
@@ -113,17 +94,30 @@ footer.mdl-mini-footer {
 }
 
 .mdl-button {
-  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 14px;
   font-weight: 300;
   text-transform: none;
 
 }
-.app-title{
+
+.app-title {
   font-size: 20px;
+  color: white;
+  padding-top: 12px;
 }
 
-.by-title{
+.by-title {
   font-size: 14px;
+  color: white;;
+}
+
+.button-alignment {
+  padding-top: 8px;
+
+}
+
+.link-alignment {
+  float: right;
 }
 

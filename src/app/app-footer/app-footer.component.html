@@ -1,23 +1,25 @@
 <footer class="mt-3">
-  <div class="container-fluid bg-primary py-3">
+  <div class="container-fluid bg-primary py-1">
     <div class="">
-      <div class="row py-3">
+      <div class="row py-1">
         <div class="col-sm-3">
-          <p class="text-white app-title">Expense Tacker <span class="by-title">by Erick Boyzo</span></p>
+          <p class="app-title">Expense Tacker <span class="by-title">by Erick Boyzo</span></p>
         </div>
         <div class="col-sm-6">
-          <div class="d-inline-block" *ngIf="isLoggedIn()">
+          <div class="d-inline-block button-alignment" *ngIf="isLoggedIn()">
+
             <a  class="text-white" *ngIf="router.url === '/view-expenses'" routerLink="/home" mdl-button mdl-ripple>
               <i class="fa fa-1x fa-fw fa-home"></i>
               Home
             </a>
-          </div>
-          <div class="d-inline-block" *ngIf="isLoggedIn()" >
+
             <a  class="text-white" *ngIf="router.url === '/home'" routerLink="/view-expenses" mdl-button mdl-ripple >
               <i class="fa fa-1x fa-fw fa-bar-chart"></i>
               View Expenses
             </a>
           </div>
+
+
           <!--uncomment if login should be in footer as well-->
           <!--<div class="d-inline-block" *ngIf="isLoggedIn()">-->
             <!--<a  class="text-white" mdl-button mdl-ripple>-->
@@ -25,7 +27,8 @@
               <!--Logout-->
             <!--</a>-->
           <!--</div>-->
-          <div class="d-inline-block" *ngIf="!isLoggedIn()">
+
+          <div class="d-inline-block button-alignment" *ngIf="!isLoggedIn()">
             <a *ngIf="router.url === '/login'" routerLink="/signUp"  class="text-white" mdl-button mdl-ripple>
               <i class="fa fa-1x fa-fw fa-user-plus"></i>
               Signup
@@ -37,20 +40,20 @@
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="d-inline-block">
+          <div class="d-inline-block link-alignment">
             <div class="bg-circle-outline d-inline-block">
-              <a  class="text-white" (click)="navigateToCorrectLink('linkedin')">
+              <a  class="link-text" (click)="navigateToCorrectLink('linkedin')">
                 <i class="fa fa-2x fa-fw fa-linkedin"></i>
               </a>
             </div>
 
             <div class="bg-circle-outline d-inline-block" >
-              <a  class="text-white" (click)="navigateToCorrectLink('github')">
+              <a  class="link-text" (click)="navigateToCorrectLink('github')">
                 <i class="fa fa-2x fa-fw fa-github"></i></a>
             </div>
 
             <div class="bg-circle-outline d-inline-block" >
-              <a class="text-white" (click)="navigateToCorrectLink('bitbucket')">
+              <a class="link-text" (click)="navigateToCorrectLink('bitbucket')">
                 <i class="fa fa-2x fa-fw fa-bitbucket \"></i></a>
             </div>
           </div>

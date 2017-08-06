@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    setTimeout(() => this.scrollTop(),);
   }
 
 
@@ -89,6 +90,11 @@ export class LoginComponent implements OnInit {
     if (valid) {
       this.login();
     }
+  }
+
+  scrollTop() {
+    let element = document.getElementById('content');
+    element.scrollIntoView();
   }
 
 }

@@ -28,6 +28,7 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit() {
+    setTimeout(() => this.scrollTop(),);
   }
 
   signUp() {
@@ -75,5 +76,9 @@ export class SignUpComponent implements OnInit {
     }
   }
 
+  scrollTop() {
+    let element = document.getElementById('content');
+    element.scrollIntoView();
+  }
 
 }
