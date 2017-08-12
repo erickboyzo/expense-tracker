@@ -1,15 +1,16 @@
-import {Component, OnInit, Inject} from '@angular/core';
-import {Expense} from "../models/expense-model";
-import {MD_DIALOG_DATA, MdDialogRef, MdSnackBar} from "@angular/material";
-import {DatabaseService} from "../providers/database.service";
-import {LoginService} from "../providers/login.service";
-import {expense_types} from "../models/user-model";
+import { Component, OnInit, Inject } from '@angular/core';
+import { Expense } from '../models/expense-model';
+import { MD_DIALOG_DATA, MdDialogRef, MdSnackBar } from '@angular/material';
+import { DatabaseService } from '../providers/database.service';
+import { LoginService } from '../providers/login.service';
+import { expense_types } from '../models/user-model';
 
 @Component({
   selector: 'app-manage-expense',
   templateUrl: './manage-expense.component.html',
   styleUrls: ['./manage-expense.component.less']
 })
+
 export class ManageExpenseComponent implements OnInit {
 
   expense = new Expense;
@@ -18,14 +19,14 @@ export class ManageExpenseComponent implements OnInit {
   categories: string[] = this.loginService.getCurrentCategories();
   types: string[] = expense_types;
 
-  constructor(@Inject(MD_DIALOG_DATA) public data: any,
-              public dialogRef: MdDialogRef<ManageExpenseComponent>,
-              private database: DatabaseService,
-              private loginService: LoginService,
-              private snackBar: MdSnackBar) {
+  constructor( @Inject(MD_DIALOG_DATA) public data: any,
+    public dialogRef: MdDialogRef<ManageExpenseComponent>,
+    private database: DatabaseService,
+    private loginService: LoginService,
+    private snackBar: MdSnackBar) {
 
-    this.expense = {...this.data};
-    this.original = {...this.data};
+    this.expense = { ...this.data };
+    this.original = { ...this.data };
   }
 
   ngOnInit() {
@@ -39,7 +40,7 @@ export class ManageExpenseComponent implements OnInit {
   }
 
   openSnackBar(message) {
-    this.snackBar.open(message, '', {duration: 3000});
+    this.snackBar.open(message, '', { duration: 3000 });
   }
 
   successfulDelete() {
@@ -55,7 +56,7 @@ export class ManageExpenseComponent implements OnInit {
   pushUpdate() {
     let userId = this.loginService.getUserId();
     let key = this.expense.id;
-    let expenseObj = {...this.expense};
+    let expenseObj = { ...this.expense };
     delete expenseObj.id;
     this.database.updateExpense(userId, key, expenseObj)
       .then(_ => this.successfulUpdate())
@@ -86,7 +87,7 @@ export class ManageExpenseComponent implements OnInit {
   }
 
   reset() {
-    this.expense = {...this.original};
+    this.expense = { ...this.original };
   }
 
   isExpenseUntouched() {

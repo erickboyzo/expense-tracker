@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {AngularFireDatabase} from 'angularfire2/database/database';
-import {LoginService} from '../providers/login.service';
-import {DatabaseService} from '../providers/database.service';
-import {Expense} from '../models/expense-model'
-import {expense_types, expense_categories} from "../models/user-model";
-import {MdSnackBar} from "@angular/material";
-import {CurrencyPipe} from "@angular/common";
+import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database/database';
+import { LoginService } from '../providers/login.service';
+import { DatabaseService } from '../providers/database.service';
+import { Expense } from '../models/expense-model'
+import { expense_types, expense_categories } from '../models/user-model';
+import { MdSnackBar } from '@angular/material';
+import { CurrencyPipe } from '@angular/common';
 
 
 @Component({
@@ -21,21 +21,18 @@ export class LogExpenseComponent implements OnInit {
   isLoading = false;
   dateError = false;
 
-
   constructor(private loginService: LoginService,
-              public snackBar: MdSnackBar,
-              private database: DatabaseService) {
-
+    public snackBar: MdSnackBar,
+    private database: DatabaseService) {
     database.categoriesAddedAnnounced$.subscribe(
       category => {
         this.updateExpenseCategories(category);
-
       });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  updateExpenseCategories(category:string){
+  updateExpenseCategories(category: string) {
     console.log('new categories');
     this.categories = this.loginService.getCurrentCategories();
     console.log(this.categories);
@@ -57,7 +54,7 @@ export class LogExpenseComponent implements OnInit {
     })
   }
 
-  announceChange(){
+  announceChange() {
     this.database.announceExpenseCreated('new expense');
   }
 
@@ -66,7 +63,7 @@ export class LogExpenseComponent implements OnInit {
   }
 
   showSnackBar() {
-    this.snackBar.open('Expense saved!', '', {duration: 2000});
+    this.snackBar.open('Expense saved!', '', { duration: 2000 });
   }
 
   save(value: any, valid: any, form: any) {

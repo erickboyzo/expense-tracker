@@ -1,64 +1,60 @@
 <footer class="mt-3">
-  <div class="container-fluid bg-primary py-1">
-    <div class="">
-      <div class="row py-1">
-        <div class="col-sm-3">
-          <p class="app-title">Expense Tacker <span class="by-title">by Erick Boyzo</span></p>
-        </div>
-        <div class="col-sm-6">
-          <div class="d-inline-block button-alignment" *ngIf="isLoggedIn()">
+    <div class="container-fluid bg-primary py-1">
+        <div class="">
+            <div class="row py-1">
+                <div class="col-sm-3">
+                    <p class="app-title">Expense Tacker <span class="by-title">by Erick Boyzo</span></p>
+                </div>
+                <div class="col-sm-6">
+                    <div class="d-inline-block button-alignment" *ngIf="isLoggedIn()">
 
-            <a  class="text-white" *ngIf="router.url === '/view-expenses'" routerLink="/home" mdl-button mdl-ripple>
-              <i class="fa fa-1x fa-fw fa-home"></i>
-              Home
-            </a>
+                        <a class="text-white" *ngIf="router.url === '/view-expenses'" routerLink="/home" mdl-button mdl-ripple>
+                            <i class="fa fa-1x fa-fw fa-home"></i> Home
+                        </a>
 
-            <a  class="text-white" *ngIf="router.url === '/home'" routerLink="/view-expenses" mdl-button mdl-ripple >
-              <i class="fa fa-1x fa-fw fa-bar-chart"></i>
-              View Expenses
-            </a>
-          </div>
+                        <a class="text-white" *ngIf="router.url === '/home'" routerLink="/view-expenses" mdl-button mdl-ripple>
+                            <i class="fa fa-1x fa-fw fa-bar-chart"></i> View Expenses
+                        </a>
+                    </div>
 
 
-          <!--uncomment if login should be in footer as well-->
-          <!--<div class="d-inline-block" *ngIf="isLoggedIn()">-->
-            <!--<a  class="text-white" mdl-button mdl-ripple>-->
-              <!--<i class="fa fa-1x fa-fw fa-sign-out"></i>-->
-              <!--Logout-->
-            <!--</a>-->
-          <!--</div>-->
+                    <!--uncomment if login should be in footer as well-->
+                    <!--<div class="d-inline-block" *ngIf="isLoggedIn()">-->
+                    <!--<a  class="text-white" mdl-button mdl-ripple>-->
+                    <!--<i class="fa fa-1x fa-fw fa-sign-out"></i>-->
+                    <!--Logout-->
+                    <!--</a>-->
+                    <!--</div>-->
 
-          <div class="d-inline-block button-alignment" *ngIf="!isLoggedIn()">
-            <a *ngIf="router.url === '/login'" routerLink="/signUp"  class="text-white" mdl-button mdl-ripple>
-              <i class="fa fa-1x fa-fw fa-user-plus"></i>
-              Signup
-            </a>
-            <a *ngIf="router.url === '/signUp'" routerLink="/login" class="text-white" mdl-button mdl-ripple>
-              <i class="fa fa-1x fa-fw fa-user-plus"></i>
-              Login
-            </a>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="d-inline-block link-alignment">
-            <div class="bg-circle-outline d-inline-block">
-              <a  class="link-text" (click)="navigateToCorrectLink('linkedin')">
-                <i class="fa fa-2x fa-fw fa-linkedin"></i>
-              </a>
+                    <div class="d-inline-block button-alignment" *ngIf="!isLoggedIn()">
+                        <a *ngIf="router.url === '/login'" routerLink="/signUp" class="text-white" mdl-button mdl-ripple>
+                            <i class="fa fa-1x fa-fw fa-user-plus"></i> Signup
+                        </a>
+                        <a *ngIf="router.url === '/signUp'" routerLink="/login" class="text-white" mdl-button mdl-ripple>
+                            <i class="fa fa-1x fa-fw fa-user-plus"></i> Login
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="d-inline-block link-alignment">
+                        <div class="bg-circle-outline d-inline-block">
+                            <a class="link-text" (click)="navigateToCorrectLink('linkedin')">
+                                <i class="fa fa-2x fa-fw fa-linkedin"></i>
+                            </a>
+                        </div>
+
+                        <div class="bg-circle-outline d-inline-block">
+                            <a class="link-text" (click)="navigateToCorrectLink('github')">
+                                <i class="fa fa-2x fa-fw fa-github"></i></a>
+                        </div>
+
+                        <div class="bg-circle-outline d-inline-block">
+                            <a class="link-text" (click)="navigateToCorrectLink('bitbucket')">
+                                <i class="fa fa-2x fa-fw fa-bitbucket \"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="bg-circle-outline d-inline-block" >
-              <a  class="link-text" (click)="navigateToCorrectLink('github')">
-                <i class="fa fa-2x fa-fw fa-github"></i></a>
-            </div>
-
-            <div class="bg-circle-outline d-inline-block" >
-              <a class="link-text" (click)="navigateToCorrectLink('bitbucket')">
-                <i class="fa fa-2x fa-fw fa-bitbucket \"></i></a>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </footer>

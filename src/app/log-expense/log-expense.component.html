@@ -1,216 +1,93 @@
 <div id="enter-expense">
 
-  <form #f="ngForm" novalidate (ngSubmit)="save(f.value, f.valid, f)">
-    <div class="col-sm-8 offset-sm-2" *ngIf="isLoading">
-      <mdl-progress [indeterminate]="true"></mdl-progress>
-    </div>
-    <md-card class="example-card col-sm-8 offset-sm-2">
-      <md-card-title>Enter expense</md-card-title>
-      <md-card-header>
-        <md-card-subtitle>
-          Enter required fields to save a new expense
-        </md-card-subtitle>
-      </md-card-header>
-      <md-card-content>
-        <div class="row">
-          <div class="col-sm-6">
-            <md-input-container class="example-full-width">
-              <input mdInput placeholder="Expense name" name="name" type="text" [(ngModel)]="expenseObj.name"
-                     #name="ngModel" required minlength="4">
-            </md-input-container>
-            <div *ngIf="name.errors && (name.dirty || name.touched)"
-                 class="alert alert-danger">
-              <small>Name is required (minimum 4 characters).</small>
-            </div>
-
-          </div>
-          <div class="col-sm-6">
-            <md-input-container class="example-full-width">
-              <input mdInput placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expenseObj.amount"
-                     (blur)="formatAmount()"
-                     #amount="ngModel" required>
-            </md-input-container>
-            <div *ngIf="amount.errors && (amount.dirty || amount.touched)"
-                 class="alert alert-danger">
-              <small>Amount is required (positive amount, max 2 decimal places).</small>
-            </div>
-          </div>
+    <form #f="ngForm" novalidate (ngSubmit)="save(f.value, f.valid, f)">
+        <div class="col-sm-8 offset-sm-2" *ngIf="isLoading">
+            <mdl-progress [indeterminate]="true"></mdl-progress>
         </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div>
-              <md2-datepicker #expenseDate openOnFocus="true" format="MM-dd-y"
-                              placeholder="Expense date"
-                              [(ngModel)]="expenseObj.date" name="date" #date="ngModel" touchUi="true"
-                              (onClose)="checkDate($event)"
-                              required></md2-datepicker>
-            </div>
-            <div *ngIf="dateError"
-                 class="alert alert-danger">
-              <small>
+        <md-card class="example-card col-sm-8 offset-sm-2">
+            <md-card-title>Enter expense</md-card-title>
+            <md-card-header>
+                <md-card-subtitle>
+                    Enter required fields to save a new expense
+                </md-card-subtitle>
+            </md-card-header>
+            <md-card-content>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <md-input-container class="example-full-width">
+                            <input mdInput placeholder="Expense name" name="name" type="text" [(ngModel)]="expenseObj.name" #name="ngModel" required minlength="4">
+                        </md-input-container>
+                        <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+                            <small>Name is required (minimum 4 characters).</small>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+                        <md-input-container class="example-full-width">
+                            <input mdInput placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expenseObj.amount" (blur)="formatAmount()" #amount="ngModel" required>
+                        </md-input-container>
+                        <div *ngIf="amount.errors && (amount.dirty || amount.touched)" class="alert alert-danger">
+                            <small>Amount is required (positive amount, max 2 decimal places).</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <md2-datepicker #expenseDate openOnFocus="true" format="MM-dd-y" placeholder="Expense date" [(ngModel)]="expenseObj.date" name="date" #date="ngModel" touchUi="true" (onClose)="checkDate($event)" required></md2-datepicker>
+                        </div>
+                        <div *ngIf="dateError" class="alert alert-danger">
+                            <small>
                 Date is required.
               </small>
-            </div>
+                        </div>
 
-          </div>
-          <div class="col-sm-3">
-            <md2-select placeholder="Expense category" [(ngModel)]="expenseObj.category" name="category"
-                        #category="ngModel" required>
-              <md2-option *ngFor="let cat of categories " [value]="cat">{{cat}}</md2-option>
-            </md2-select>
-            <div *ngIf="category.errors && (category.dirty || category.touched)"
-                 class="alert alert-danger">
-              <small>Category is required.</small>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <md2-select placeholder="Payment type" [(ngModel)]="expenseObj.type" name="payment" #payment="ngModel"
-                        required>
-              <md2-option *ngFor="let type of types " [value]="type">
-                {{type}}
-              </md2-option>
-            </md2-select>
-            <div *ngIf="payment.errors && (payment.dirty || payment.touched)"
-                 class="alert alert-danger">
-              <small>Payment is required.</small>
-            </div>
-          </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <md2-select placeholder="Expense category" [(ngModel)]="expenseObj.category" name="category" #category="ngModel" required>
+                            <md2-option *ngFor="let cat of categories " [value]="cat">{{cat}}</md2-option>
+                        </md2-select>
+                        <div *ngIf="category.errors && (category.dirty || category.touched)" class="alert alert-danger">
+                            <small>Category is required.</small>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <md2-select placeholder="Payment type" [(ngModel)]="expenseObj.type" name="payment" #payment="ngModel" required>
+                            <md2-option *ngFor="let type of types " [value]="type">
+                                {{type}}
+                            </md2-option>
+                        </md2-select>
+                        <div *ngIf="payment.errors && (payment.dirty || payment.touched)" class="alert alert-danger">
+                            <small>Payment is required.</small>
+                        </div>
+                    </div>
 
-        </div>
-        <div class="row">
+                </div>
+                <div class="row">
 
 
-          <div class="col-sm-6">
-            <md-input-container class="example-full-width">
-              <textarea mdInput placeholder="Comments" [(ngModel)]="expenseObj.comments" name="comments"></textarea>
-            </md-input-container>
-          </div>
-        </div>
+                    <div class="col-sm-6">
+                        <md-input-container class="example-full-width">
+                            <textarea mdInput placeholder="Comments" [(ngModel)]="expenseObj.comments" name="comments"></textarea>
+                        </md-input-container>
+                    </div>
+                </div>
 
 
-      </md-card-content>
-      <md-card-actions>
-        <div class="row button-row">
+            </md-card-content>
+            <md-card-actions>
+                <div class="row button-row">
 
-          <button type="button" class="col-sm-6" mdl-button mdl-colored="primary" mdl-ripple (click)="clearForm(f)">
+                    <button type="button" class="col-sm-6" mdl-button mdl-colored="primary" mdl-ripple (click)="clearForm(f)">
             Reset
           </button>
 
-          <button class="col-sm-6" type="submit" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple
-                  [disabled]="!f.form.valid">
+                    <button class="col-sm-6" type="submit" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple [disabled]="!f.form.valid">
             <md-icon>save</md-icon>
             Save
           </button>
-
-        </div>
-      </md-card-actions>
-
-    </md-card>
-  </form>
-
-
-  <!--<div class="card">-->
-  <!--<div class="card-header">-->
-  <!--Enter Expense-->
-  <!--</div>-->
-  <!--<div class="card-block">-->
-  <!--<div class="row" *ngIf="isLoading">-->
-  <!--<div class="col-sm-12">-->
-  <!--<md-progress-bar mode="indeterminate" color="primary"></md-progress-bar>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--<div class="container">-->
-
-  <!--<form #f="ngForm" novalidate (ngSubmit)="save(f.value, f.valid, f)">-->
-
-  <!--<div class="row">-->
-  <!--<div class="col-sm-5">-->
-  <!--<md-input-container class="example-full-width">-->
-  <!--<input mdInput placeholder="Expense name" name="name" type="text" [(ngModel)]="expenseObj.name"-->
-  <!--#name="ngModel" required minlength="4">-->
-  <!--</md-input-container>-->
-
-  <!--<div *ngIf="name.errors && (name.dirty || name.touched)"-->
-  <!--class="alert alert-danger">-->
-  <!--<small>Name is required (minimum 4 characters).</small>-->
-  <!--</div>-->
-
-  <!--</div>-->
-  <!--<div class="col-sm-4">-->
-  <!--<md-input-container class="example-full-width">-->
-  <!--<input mdInput placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expenseObj.amount"-->
-  <!--#amount="ngModel" required>-->
-  <!--</md-input-container>-->
-  <!--<div *ngIf="amount.errors && (amount.dirty || amount.touched)"-->
-  <!--class="alert alert-danger">-->
-  <!--<small>Amount is required (positive amount, max 2 decimal places).</small>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--<div class="col-sm-3">-->
-  <!--<div>-->
-  <!--<md2-datepicker #expenseDate openOnFocus="true" format="MM-dd-y"-->
-  <!--placeholder="Expense date"-->
-  <!--[(ngModel)]="expenseObj.date" name="date" #date="ngModel" touchUi="true"-->
-  <!--(onClose)="checkDate($event)"-->
-  <!--required></md2-datepicker>-->
-  <!--</div>-->
-  <!--<div *ngIf="dateError"-->
-  <!--class="alert alert-danger">-->
-  <!--<small>-->
-  <!--Date is required.-->
-  <!--</small>-->
-  <!--</div>-->
-
-  <!--</div>-->
-  <!--</div>-->
-  <!--<div class="row">-->
-  <!--<div class="col-sm-3">-->
-  <!--<md2-select placeholder="Expense category" [(ngModel)]="expenseObj.category" name="category"-->
-  <!--#category="ngModel" required>-->
-  <!--<md2-option *ngFor="let cat of categories " [value]="cat">{{cat}}</md2-option>-->
-  <!--</md2-select>-->
-  <!--<div *ngIf="category.errors && (category.dirty || category.touched)"-->
-  <!--class="alert alert-danger">-->
-  <!--<small>Category is required.</small>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--<div class="col-sm-3">-->
-  <!--<md-select placeholder="Payment type" [(ngModel)]="expenseObj.type" name="payment" #payment="ngModel"-->
-  <!--required>-->
-  <!--<md-option *ngFor="let type of types " [value]="type">-->
-  <!--{{type}}-->
-  <!--</md-option>-->
-  <!--</md-select>-->
-  <!--<div *ngIf="payment.errors && (payment.dirty || payment.touched)"-->
-  <!--class="alert alert-danger">-->
-  <!--<small>Payment is required.</small>-->
-  <!--</div>-->
-  <!--</div>-->
-
-  <!--</div>-->
-
-  <!--<div class="row">-->
-  <!--<div class="col-sm-6">-->
-  <!--<md-input-container class="example-full-width">-->
-  <!--<textarea mdInput placeholder="Comments" [(ngModel)]="expenseObj.comments" name="comments"></textarea>-->
-  <!--</md-input-container>-->
-  <!--</div>-->
-
-  <!--</div>-->
-  <!--<div class="row">-->
-  <!--<div class=" col-sm-1 offset-5 reset-button">-->
-  <!--<a md-button (click)="clearForm(f)">-->
-  <!--Reset-->
-  <!--</a>-->
-  <!--</div>-->
-  <!--<div class="col-sm-1">-->
-  <!--<button type="submit" md-raised-button color="primary" [disabled]="!f.form.valid">-->
-  <!--<md-icon>save</md-icon>-->
-  <!--Save-->
-  <!--</button>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--</form>-->
-  <!--</div>-->
-  <!--</div>-->
+                </div>
+            </md-card-actions>
+        </md-card>
+    </form>
 </div>

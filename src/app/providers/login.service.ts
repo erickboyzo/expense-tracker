@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Subject} from "rxjs";
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class LoginService {
@@ -8,9 +8,7 @@ export class LoginService {
   private categories: string[];
   private userIdSet = new Subject<string>();
 
-
   userIdSetAnnounced$ = this.userIdSet.asObservable();
-
 
   constructor() {
   }
@@ -43,8 +41,6 @@ export class LoginService {
   getCurrentCategories(): string[] {
     return this.categories;
   }
-
-
 }
 
 

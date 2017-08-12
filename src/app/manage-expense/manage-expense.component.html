@@ -2,139 +2,125 @@
 
 <form #f="ngForm" novalidate (ngSubmit)="updateExpense(f.value, f.valid, f)">
 
-  <md-dialog-content *ngIf="!update">
+    <md-dialog-content *ngIf="!update">
 
-    <div>
-      <div class="row">
-        <div class="col-sm-6">
-          <label>Name</label>
-          <p>{{expense.name}}</p>
-        </div>
-
-        <div class="col-sm-6">
-          <label>Amount</label>
-          <p>${{expense.amount}}</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-4">
-          <label>Date </label>
-          <p>{{expense.date}}</p>
-        </div>
-
-        <div class="col-sm-4">
-          <label>Category</label>
-          <p>{{expense.category}}</p>
-        </div>
-
-        <div class="col-sm-4">
-          <label>Expense Type</label>
-          <p>{{expense.type}}</p>
-        </div>
-
-      </div>
-
-      <div class="row">
-        <div class="col-sm-12">
-          <label>Comments </label>
-          <p>{{expense.comments}}</p>
-        </div>
-      </div>
-
-    </div>
-  </md-dialog-content>
-
-  <md-dialog-content *ngIf="update">
-
-
-    <div class="row">
-      <div class="col-sm-6">
-        <md-input-container class="example-full-width">
-          <input mdInput placeholder="Expense name" name="name" type="text" [(ngModel)]="expense.name"
-                 #name="ngModel" required minlength="4">
-        </md-input-container>
-        <div *ngIf="name.errors && (name.dirty || name.touched)"
-             class="alert alert-danger">
-          <small>Name is required (minimum 4 characters).</small>
-        </div>
-
-      </div>
-      <div class="col-sm-6">
-        <md-input-container class="example-full-width">
-          <input mdInput placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expense.amount"
-                 (blur)="formatAmount()"
-                 #amount="ngModel" required>
-        </md-input-container>
-        <div *ngIf="amount.errors && (amount.dirty || amount.touched)"
-             class="alert alert-danger">
-          <small>Amount is required (positive amount, max 2 decimal places).</small>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6 date-picker">
         <div>
-          <md2-datepicker #expenseDate openOnFocus="true" format="MM-dd-y"
-                          placeholder="Expense date"
-                          [(ngModel)]="expense.date" name="date" #date="ngModel" touchUi="true"
-                          required></md2-datepicker>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Name</label>
+                    <p>{{expense.name}}</p>
+                </div>
+
+                <div class="col-sm-6">
+                    <label>Amount</label>
+                    <p>${{expense.amount}}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Date </label>
+                    <p>{{expense.date}}</p>
+                </div>
+
+                <div class="col-sm-4">
+                    <label>Category</label>
+                    <p>{{expense.category}}</p>
+                </div>
+
+                <div class="col-sm-4">
+                    <label>Expense Type</label>
+                    <p>{{expense.type}}</p>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Comments </label>
+                    <p>{{expense.comments}}</p>
+                </div>
+            </div>
+
         </div>
-        <div *ngIf="dateError"
-             class="alert alert-danger">
-          <small>
+    </md-dialog-content>
+
+    <md-dialog-content *ngIf="update">
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                <md-input-container class="example-full-width">
+                    <input mdInput placeholder="Expense name" name="name" type="text" [(ngModel)]="expense.name" #name="ngModel" required minlength="4">
+                </md-input-container>
+                <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+                    <small>Name is required (minimum 4 characters).</small>
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+                <md-input-container class="example-full-width">
+                    <input mdInput placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expense.amount" (blur)="formatAmount()" #amount="ngModel" required>
+                </md-input-container>
+                <div *ngIf="amount.errors && (amount.dirty || amount.touched)" class="alert alert-danger">
+                    <small>Amount is required (positive amount, max 2 decimal places).</small>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 date-picker">
+                <div>
+                    <md2-datepicker #expenseDate openOnFocus="true" format="MM-dd-y" placeholder="Expense date" [(ngModel)]="expense.date" name="date" #date="ngModel" touchUi="true" required></md2-datepicker>
+                </div>
+                <div *ngIf="dateError" class="alert alert-danger">
+                    <small>
             Date is required.
           </small>
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+                <md2-select placeholder="Expense category" [(ngModel)]="expense.category" name="category" #category="ngModel" required>
+                    <md2-option *ngFor="let cat of categories " [value]="cat">{{cat}}</md2-option>
+                </md2-select>
+                <div *ngIf="category.errors && (category.dirty || category.touched)" class="alert alert-danger">
+                    <small>Category is required.</small>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <md2-select placeholder="Payment type" [(ngModel)]="expense.type" name="payment" #payment="ngModel" required>
+                    <md2-option *ngFor="let type of types " [value]="type">
+                        {{type}}
+                    </md2-option>
+                </md2-select>
+                <div *ngIf="payment.errors && (payment.dirty || payment.touched)" class="alert alert-danger">
+                    <small>Payment is required.</small>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <md-input-container class="example-full-width">
+                    <textarea mdInput placeholder="Comments" [(ngModel)]="expense.comments" name="comments"></textarea>
+                </md-input-container>
+            </div>
         </div>
 
-      </div>
-      <div class="col-sm-3">
-        <md2-select placeholder="Expense category" [(ngModel)]="expense.category" name="category"
-                    #category="ngModel" required>
-          <md2-option *ngFor="let cat of categories " [value]="cat">{{cat}}</md2-option>
-        </md2-select>
-        <div *ngIf="category.errors && (category.dirty || category.touched)"
-             class="alert alert-danger">
-          <small>Category is required.</small>
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <md2-select placeholder="Payment type" [(ngModel)]="expense.type" name="payment" #payment="ngModel"
-                    required>
-          <md2-option *ngFor="let type of types " [value]="type">
-            {{type}}
-          </md2-option>
-        </md2-select>
-        <div *ngIf="payment.errors && (payment.dirty || payment.touched)"
-             class="alert alert-danger">
-          <small>Payment is required.</small>
-        </div>
-      </div>
 
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <md-input-container class="example-full-width">
-          <textarea mdInput placeholder="Comments" [(ngModel)]="expense.comments" name="comments"></textarea>
-        </md-input-container>
-      </div>
-    </div>
+    </md-dialog-content>
 
+    <md-dialog-actions>
+        <button type="button" mdl-button mdl-ripple md-dialog-close>Close</button>
 
-  </md-dialog-content>
-
-  <md-dialog-actions>
-    <button type="button" mdl-button mdl-ripple md-dialog-close>Close</button>
-
-    <button type="button" *ngIf="!update" class="delete" mdl-button mdl-ripple (click)="deleteExpense()">Delete</button>
-    <button type="button" *ngIf="!update" mdl-button mdl-colored="primary" mdl-ripple (click)="update = true">Edit
+        <button type="button" *ngIf="!update" class="delete" mdl-button mdl-ripple (click)="deleteExpense()">Delete</button>
+        <button type="button" *ngIf="!update" mdl-button mdl-colored="primary" mdl-ripple (click)="update = true">Edit
     </button>
 
-    <button type="button" *ngIf="update" class="delete" mdl-button mdl-ripple (click)="reset()">Reset</button>
-    <button *ngIf="update" type="submit" [disabled]="!f.form.valid || isExpenseUntouched()" mdl-button
-            mdl-colored="primary" mdl-ripple>Update
+        <button type="button" *ngIf="update" class="delete" mdl-button mdl-ripple (click)="reset()">Reset</button>
+        <button *ngIf="update" type="submit" [disabled]="!f.form.valid || isExpenseUntouched()" mdl-button mdl-colored="primary" mdl-ripple>Update
     </button>
 
-  </md-dialog-actions>
+    </md-dialog-actions>
 
 </form>

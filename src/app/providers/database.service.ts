@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from 'angularfire2/database/database';
-import {Expense} from '../models/expense-model'
-import {Subject} from "rxjs";
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database/database';
+import { Expense } from '../models/expense-model'
+import { Subject } from 'rxjs';
 
 
 @Injectable()
@@ -35,7 +35,7 @@ export class DatabaseService {
   }
 
   getUserExpenses(userId: string) {
-    return this.db.list('users/' + userId + '/expenses', {preserveSnapshot: true});
+    return this.db.list('users/' + userId + '/expenses', { preserveSnapshot: true });
   }
 
 

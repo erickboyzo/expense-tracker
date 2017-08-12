@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, OnChanges} from '@angular/core';
-import {Router} from "@angular/router";
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
   templateUrl: 'chart-summary.component.html',
   styleUrls: ['chart-summary.component.less']
 })
+
 export class ChartSummaryComponent implements OnInit, OnChanges {
   @Input() data: any;
   chart: any;
@@ -21,7 +22,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges {
       text: 'All expenses up till ' + new Date().toDateString().slice(0, 15)
     },
     legend: {
-      align: "center",
+      align: 'center',
       padding: 10,
       title: {
         text: 'Click on category to hide/show'
