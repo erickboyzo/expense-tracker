@@ -1,4 +1,13 @@
-# ExpensesLog
+# About Expense Tracker
+
+This was app was build with the intention of providing a clean and simple responsive web app for entering and managing expenses. The app was build while keeping material design guidlines in mind. Feel free to reach out with any feedback. 
+
+
+## Find app live here
+
+https://expense-tracker-e0028.firebaseapp.com/
+
+# Expense Tracker
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.1.
 
@@ -27,11 +36,6 @@ Before running the tests make sure you are serving the app via `ng serve`.
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
-
-
-## Find app live here
-
-https://expense-tracker-e0028.firebaseapp.com/
 
 # Steps to build to firebase hosting 
 `ng build --prod`
