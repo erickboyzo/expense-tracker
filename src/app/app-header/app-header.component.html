@@ -35,20 +35,8 @@
         </nav>
       </ng-template>
     </mdl-layout-drawer>
-    <!--<main class="mdl-layout__content">-->
-      <!--<div class="container-fluid" id="content">-->
-        <!--<router-outlet></router-outlet>-->
-      <!--</div>-->
-      <!--<app-footer></app-footer>-->
-    <!--</main>-->
-
-
-
     <mdl-layout-content>
-      <div class="container-fluid" id="content">
-        <router-outlet></router-outlet>
-      </div>
-      <app-footer></app-footer>
+      <ng-content select="[app-content]"></ng-content>
     </mdl-layout-content>
 
   </mdl-layout>

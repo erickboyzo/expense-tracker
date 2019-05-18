@@ -4,7 +4,6 @@ export class User {
   email: string;
   password: string;
   enterExpenses: any;
-
 }
 
 export const expense_categories: string[] = ['Groceries', 'Transportation', 'Entertainment', 'Dining out'];

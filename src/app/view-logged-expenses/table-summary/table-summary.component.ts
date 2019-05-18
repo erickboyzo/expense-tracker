@@ -1,11 +1,8 @@
-import {Component, OnInit, Input, OnChanges, Renderer} from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
-
-import {Router} from "@angular/router";
-import {MdDialog} from "@angular/material";
-import {LogExpenseComponent} from "../../log-expense/log-expense.component";
-import {ManageExpenseComponent} from "../../manage-expense/manage-expense.component";
-import {MdlDialogService, MdlDialogReference} from "@angular-mdl/core";
+import { Router } from '@angular/router';
+import { ManageExpenseComponent } from '../../manage-expense/manage-expense.component';
+import { MatDialog } from '@angular/material';
 
 
 @Component({
@@ -21,7 +18,7 @@ export class TableSummaryComponent implements OnInit, OnChanges {
   activePage: number = 1;
 
   constructor(private router: Router,
-              public dialog: MdDialog) {
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {

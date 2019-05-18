@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Expense } from '../models/expense-model';
-import { MD_DIALOG_DATA, MdDialogRef, MdSnackBar } from '@angular/material';
 import { DatabaseService } from '../providers/database.service';
 import { LoginService } from '../providers/login.service';
 import { expense_types } from '../models/user-model';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-manage-expense',
@@ -19,11 +19,11 @@ export class ManageExpenseComponent implements OnInit {
   categories: string[] = this.loginService.getCurrentCategories();
   types: string[] = expense_types;
 
-  constructor( @Inject(MD_DIALOG_DATA) public data: any,
-    public dialogRef: MdDialogRef<ManageExpenseComponent>,
+  constructor( @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<ManageExpenseComponent>,
     private database: DatabaseService,
     private loginService: LoginService,
-    private snackBar: MdSnackBar) {
+    private snackBar: MatSnackBar) {
 
     this.expense = { ...this.data };
     this.original = { ...this.data };

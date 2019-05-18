@@ -1,14 +1,10 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../providers/auth.service';
 import { User } from '../models/user-model';
-import { MdSnackBar } from '@angular/material';
 import { LoginService } from '../providers/login.service';
-import { state, trigger, transition, style, animate } from '@angular/animations';
-import { AngularFireAuth } from 'angularfire2/auth/auth';
-
-declare var Materialize: any;
-
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +27,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,
     public authService: AuthService,
-    public snackBar: MdSnackBar,
+    public snackBar: MatSnackBar,
     public loginService: LoginService) {
   }
 
@@ -82,7 +78,7 @@ export class LoginComponent implements OnInit {
   }
 
   scrollToLogin() {
-    var element = document.getElementById('target');
+    const element = document.getElementById('target');
     element.scrollIntoView();
   }
 
@@ -93,7 +89,7 @@ export class LoginComponent implements OnInit {
   }
 
   scrollTop() {
-    let element = document.getElementById('content');
+    const element = document.getElementById('content');
     element.scrollIntoView();
   }
 

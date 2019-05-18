@@ -8,20 +8,20 @@
   <form #f="ngForm" novalidate (ngSubmit)="checkForm(f.value, f.valid, f)">
     <div class="row" id="signUp">
       <div class="col-sm-6 offset-sm-3">
-        <md-card>
-          <md-card-title>Sign Up</md-card-title>
-          <md-card-content>
+        <mat-card>
+          <mat-card-title>Sign Up</mat-card-title>
+          <mat-card-content>
             <div class="row">
               <div class="col-sm-12">
-                <md-input-container class="example-full-width">
-                  <input mdInput
+                <mat-form-field class="example-full-width">
+                  <input matInput 
                          placeholder="First Name"
                          type="text"
                          name="fName"
                          #fName="ngModel"
                          [(ngModel)]="currentUser.firstName"
                          required minlength="2">
-                </md-input-container>
+                </mat-form-field>
 
                 <div *ngIf="fName.errors && (fName.dirty || fName.touched)"
                      class="alert alert-danger">
@@ -33,14 +33,14 @@
 
             <div class="row">
               <div class="col-sm-12">
-                <md-input-container class="example-full-width">
-                  <input mdInput
+                <mat-form-field class="example-full-width">
+                  <input matInput 
                          placeholder="Last Name"
                          name="lName"
                          #lName="ngModel"
                          type="text" [(ngModel)]="currentUser.lastName"
                          required minlength="1">
-                </md-input-container>
+                </mat-form-field>
 
                 <div *ngIf="lName.errors && (lName.dirty || lName.touched)"
                      class="alert alert-danger">
@@ -52,15 +52,15 @@
 
             <div class="row">
               <div class="col-sm-12">
-                <md-input-container class="example-full-width">
-                  <input mdInput
+                <mat-form-field class="example-full-width">
+                  <input matInput 
                          placeholder="email"
                          type="email"
                          name="formEmail"
                          #formEmail="ngModel"
                          [(ngModel)]="currentUser.email"
                          [email]="true">
-                </md-input-container>
+                </mat-form-field>
 
                 <div *ngIf="formEmail.errors && (formEmail.dirty || formEmail.touched)"
                      class="alert alert-danger">
@@ -72,14 +72,14 @@
 
             <div class="row">
               <div class="col-sm-12">
-                <md-input-container class="example-full-width">
-                  <input mdInput
+                <mat-form-field class="example-full-width">
+                  <input matInput 
                          placeholder="password"
                          type="password"
                          name="pswd"
                          #pswd="ngModel"
                          [(ngModel)]="currentUser.password" required minlength="6">
-                </md-input-container>
+                </mat-form-field>
 
                 <div *ngIf="pswd.errors && (pswd.dirty || pswd.touched)"
                      class="alert alert-danger">
@@ -88,15 +88,15 @@
               </div>
             </div>
 
-          </md-card-content>
-          <md-card-actions>
+          </mat-card-content>
+          <mat-card-actions>
             <div class="col-sm-12">
               <button class="col-sm-12" type="submit" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple
                       [disabled]="!f.form.valid">Register
               </button>
             </div>
-          </md-card-actions>
-        </md-card>
+          </mat-card-actions>
+        </mat-card>
       </div>
     </div>
   </form>

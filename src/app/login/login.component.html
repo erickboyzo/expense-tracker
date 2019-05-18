@@ -1,7 +1,7 @@
 <div class="container-fluid" id="login">
-    <div class="jumbotron container col-sm-12 z-depth-5 ">
-        <h1 class="display-3">Expense Tracker</h1>
-        <p class="lead">Expense tracker is a simple application to help you keep track of your daily expenses. Charts and tables help you better track spending behaviors.</p>
+    <div class="container col-sm-12">
+        <h1 class="display-3 text-center">Expense Tracker</h1>
+        <p class="lead text-center">Expense tracker is a simple application to help you keep track of your daily expenses. Charts and tables help you better track spending behaviors.</p>
         <hr class="my-4">
         <div class="col-sm-5 offset-sm-4">
             <small></small>
@@ -23,33 +23,33 @@
             </div>
             <div class="row">
                 <div class="col-sm-8 offset-sm-2">
-                    <md-card class="z-depth-5">
-                        <md-card-title>Login</md-card-title>
+                    <mat-card class="z-depth-5">
+                        <mat-card-title class="text-center">Login</mat-card-title>
                         <hr class="my-4">
-                        <md-card-content>
+                        <mat-card-content>
                             <div class="col-sm-12">
-                                <md-input-container class="example-full-width">
-                                    <input mdInput placeholder="Email" name="email" #email="ngModel" type="text" [(ngModel)]="currentUser.email" [email]="true">
-                                </md-input-container>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput  placeholder="Email" name="email" #email="ngModel" type="text" [(ngModel)]="currentUser.email" [email]="true">
+                                </mat-form-field>
                                 <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
                                     <small>Please enter valid email.</small>
                                 </div>
                             </div>
                             <div class="col-sm-12">
-                                <md-input-container class="example-full-width">
-                                    <input mdInput placeholder="Password" name="pswd" type="password" #pswd="ngModel" [(ngModel)]="currentUser.password" required minlength="6">
-                                </md-input-container>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput  placeholder="Password" name="pswd" type="password" #pswd="ngModel" [(ngModel)]="currentUser.password" required minlength="6">
+                                </mat-form-field>
                                 <div *ngIf="pswd.errors && (pswd.dirty || pswd.touched)" class="alert alert-danger">
                                     <small>Please enter valid password.</small>
                                 </div>
                             </div>
-                        </md-card-content>
-                        <md-card-actions>
+                        </mat-card-content>
+                        <mat-card-actions>
                             <div class="col-sm-12">
                                 <button class="col-sm-12" type="submit" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple [disabled]="!f.form.valid">Login</button>
                             </div>
-                        </md-card-actions>
-                    </md-card>
+                        </mat-card-actions>
+                    </mat-card>
                 </div>
             </div>
         </form>

@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from './providers/auth.service';
-import { Observable, Subscription } from 'rxjs/Rx';
-import * as firebase from 'firebase';
-import { AngularFireAuth } from 'angularfire2/auth/auth';
-import { LoginService } from './providers/login.service';
 
+import * as firebase from 'firebase';
+import { LoginService } from './providers/login.service';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { Observable } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-root',
@@ -26,9 +27,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.loggedInSubscription = afAuth.authState.subscribe(authData => {
       console.log(authData);
-      if (authData.email) {
+      if (authData && authData.email) {
         console.log(authData);
-        let uid = authData.email;
+        const uid = authData.email;
         this.email = uid;
         console.log(this.email);
         this.loginService.setUser(authData);

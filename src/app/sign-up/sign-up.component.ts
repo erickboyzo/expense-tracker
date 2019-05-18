@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { User, expense_categories } from '../models/user-model'
+import { expense_categories, User } from '../models/user-model'
 import { AuthService } from '../providers/auth.service';
-import { MdSnackBar } from '@angular/material';
-import { Routes, Router } from '@angular/router';
-import { AngularFireDatabase } from 'angularfire2/database/database';
+import { Router } from '@angular/router';
 import { LoginService } from '../providers/login.service';
+import { MatSnackBar } from '@angular/material';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class SignUpComponent implements OnInit {
   defaultExpenses: string[] = expense_categories;
 
   constructor(public authService: AuthService,
-    public snackBar: MdSnackBar,
+    public snackBar: MatSnackBar,
     private router: Router,
     public db: AngularFireDatabase,
     private loginService: LoginService) {

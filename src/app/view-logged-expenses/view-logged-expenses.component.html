@@ -1,62 +1,80 @@
 <div class="container-fluid" id="view-expense">
 
+<!--  <div class="row">-->
+<!--    <div *ngIf="isLoadingExpenses" class="col-12 loading-progress-bar">-->
+<!--      <mdl-progress [indeterminate]="true"></mdl-progress>-->
+<!--    </div>-->
+<!--    <div class="col-12">-->
+<!--      <mat-card>-->
+<!--        <mat-card-title>Quick summary</mat-card-title>-->
+<!--        <mat-card-content>-->
+<!--          <app-number-cards [data]="expenseDataChart"></app-number-cards>-->
+<!--        </mat-card-content>-->
+<!--      </mat-card>-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+  <app-number-cards [data]="expenseDataChart"></app-number-cards>
+
   <div class="row" *ngIf="isLoadingExpenses">
-    <div class="col-sm-8 offset-sm-2 loading-progress-bar">
+    <div class="col-sm-6 offset-sm-2 loading-progress-bar">
       <mdl-progress [indeterminate]="true"></mdl-progress>
     </div>
   </div>
-  <md-card class="example-card col-sm-8 offset-sm-2">
-    <md-card-title>Category summary</md-card-title>
-    <md-card-header>
-      <md-card-subtitle *ngIf="expenseDataChart.length !==0"> Click on category to view details</md-card-subtitle>
-    </md-card-header>
-    <md-card-content>
+  <mat-card class="mb-5 col-sm-8 offset-sm-2">
+    <mat-card-title>Category summary</mat-card-title>
+    <mat-card-header>
+      <mat-card-subtitle *ngIf="expenseDataChart.length !==0"> Click on category to view details</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
       <app-chart-summary *ngIf="!isLoadingExpenses && isDataReady" [data]="expenseDataChart"></app-chart-summary>
-    </md-card-content>
-    <md-card-actions>
-    </md-card-actions>
-  </md-card>
+    </mat-card-content>
+    <mat-card-actions>
+    </mat-card-actions>
+  </mat-card>
 
   <div class="row" *ngIf="isLoadingExpenses">
     <div class="col-sm-8 offset-sm-2 loading-progress-bar">
       <mdl-progress [indeterminate]="true"></mdl-progress>
     </div>
   </div>
-  <md-card class="example-card col-sm-8 offset-sm-2">
-    <md-card-title>Monthly summary</md-card-title>
-    <md-card-header>
-      <md-card-subtitle *ngIf="expenseDataChart.length !==0">Select month to view details for 5 month range proceeding
+  <mat-card class="mb-5 col-sm-8 offset-sm-2">
+    <mat-card-title>Monthly summary</mat-card-title>
+    <mat-card-header>
+      <mat-card-subtitle *ngIf="expenseDataChart.length !==0">Select month to view details for 5 month range proceeding
         selection
-      </md-card-subtitle>
-    </md-card-header>
-    <md-card-content>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
       <app-monthly-summary-chart *ngIf="!isLoadingExpenses && isDataReady"
                                  [data]="expenseDataTable"></app-monthly-summary-chart>
-    </md-card-content>
-    <md-card-actions>
-    </md-card-actions>
-  </md-card>
+    </mat-card-content>
+    <mat-card-actions>
+    </mat-card-actions>
+  </mat-card>
 
   <div class="row" *ngIf="isLoadingExpenses">
     <div class="col-sm-8 offset-sm-2 loading-progress-bar">
       <mdl-progress [indeterminate]="true"></mdl-progress>
     </div>
   </div>
-  <md-card class="example-card col-sm-8 offset-sm-2">
-    <md-card-title>Detail summary</md-card-title>
-    <md-card-header>
-      <md-card-subtitle *ngIf="expenseDataTable.length !==0">Click on row to edit expense</md-card-subtitle>
-    </md-card-header>
-    <md-card-content>
+  <mat-card class="example-card col-sm-8 offset-sm-2">
+    <mat-card-title>Detail summary</mat-card-title>
+    <mat-card-header>
+      <mat-card-subtitle *ngIf="expenseDataTable.length !==0">Click on row to edit expense</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
       <app-table-summary *ngIf="!isLoadingExpenses && isDataReady" [data]="expenseDataTable"></app-table-summary>
-    </md-card-content>
-    <md-card-actions>
-    </md-card-actions>
-  </md-card>
+    </mat-card-content>
+    <mat-card-actions>
+      <app-expense-import></app-expense-import>
+    </mat-card-actions>
+  </mat-card>
 
-  <button md-fab class="fab" routerLink="/home">
-    <md-icon>note_add</md-icon>
+  <button mat-fab class="fab" routerLink="/home">
+    <mat-icon>note_add</mat-icon>
   </button>
-
-
 </div>
+
+

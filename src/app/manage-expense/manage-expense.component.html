@@ -1,8 +1,8 @@
-<h2 md-dialog-title>Manage Expense</h2>
+<h2 mat-dialog-title>Manage Expense</h2>
 
 <form #f="ngForm" novalidate (ngSubmit)="updateExpense(f.value, f.valid, f)">
 
-    <md-dialog-content *ngIf="!update">
+    <mat-dialog-content *ngIf="!update">
 
         <div>
             <div class="row">
@@ -43,25 +43,25 @@
             </div>
 
         </div>
-    </md-dialog-content>
+    </mat-dialog-content>
 
-    <md-dialog-content *ngIf="update">
+    <mat-dialog-content *ngIf="update">
 
 
         <div class="row">
             <div class="col-sm-6">
-                <md-input-container class="example-full-width">
-                    <input mdInput placeholder="Expense name" name="name" type="text" [(ngModel)]="expense.name" #name="ngModel" required minlength="4">
-                </md-input-container>
+                <mat-form-field class="example-full-width">
+                    <input matInput  placeholder="Expense name" name="name" type="text" [(ngModel)]="expense.name" #name="ngModel" required minlength="4">
+                </mat-form-field>
                 <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
                     <small>Name is required (minimum 4 characters).</small>
                 </div>
 
             </div>
             <div class="col-sm-6">
-                <md-input-container class="example-full-width">
-                    <input mdInput placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expense.amount" (blur)="formatAmount()" #amount="ngModel" required>
-                </md-input-container>
+                <mat-form-field class="example-full-width">
+                    <input matInput  placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expense.amount" (blur)="formatAmount()" #amount="ngModel" required>
+                </mat-form-field>
                 <div *ngIf="amount.errors && (amount.dirty || amount.touched)" class="alert alert-danger">
                     <small>Amount is required (positive amount, max 2 decimal places).</small>
                 </div>
@@ -101,17 +101,17 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <md-input-container class="example-full-width">
-                    <textarea mdInput placeholder="Comments" [(ngModel)]="expense.comments" name="comments"></textarea>
-                </md-input-container>
+                <mat-form-field class="example-full-width">
+                    <textarea matInput  placeholder="Comments" [(ngModel)]="expense.comments" name="comments"></textarea>
+                </mat-form-field>
             </div>
         </div>
 
 
-    </md-dialog-content>
+    </mat-dialog-content>
 
-    <md-dialog-actions>
-        <button type="button" mdl-button mdl-ripple md-dialog-close>Close</button>
+    <mat-dialog-actions>
+        <button type="button" mdl-button mdl-ripple mat-dialog-close>Close</button>
 
         <button type="button" *ngIf="!update" class="delete" mdl-button mdl-ripple (click)="deleteExpense()">Delete</button>
         <button type="button" *ngIf="!update" mdl-button mdl-colored="primary" mdl-ripple (click)="update = true">Edit
@@ -121,6 +121,6 @@
         <button *ngIf="update" type="submit" [disabled]="!f.form.valid || isExpenseUntouched()" mdl-button mdl-colored="primary" mdl-ripple>Update
     </button>
 
-    </md-dialog-actions>
+    </mat-dialog-actions>
 
 </form>

@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { MdSnackBar } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
+
 import { AuthService } from '../providers/auth.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class AppHeaderComponent implements OnInit {
 
   constructor(private router: Router,
     public authService: AuthService,
-    public snackBar: MdSnackBar) {
+    public snackBar: MatSnackBar) {
   }
 
   ngOnInit() {

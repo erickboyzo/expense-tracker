@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../providers/auth.service';
-import { AngularFireAuth } from 'angularfire2/auth/auth';
 import { LoginService } from '../providers/login.service';
-import { AngularFireDatabase } from 'angularfire2/database/database';
-import { User, expense_categories } from '../models/user-model';
+import { expense_categories, User } from '../models/user-model';
 import { DatabaseService } from '../providers/database.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -18,15 +15,16 @@ export class HomeComponent implements OnInit {
   user: User = new User;
   categories: string[] = expense_categories;
   originalCategories: string[] = expense_categories;
-  isLoadingUserInformation: boolean = false;
+  isLoadingUserInformation = false;
   isLoadingCategories: boolean = false;
-  expenseInfo: any = { numOfEntries: null, totalAmount: null, categoryTotals: null, selectedCategory: null };
+  expenseInfo: any = {numOfEntries: null, totalAmount: null, categoryTotals: null, selectedCategory: null};
   isDataAvailable: boolean;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private loginService: LoginService,
     private database: DatabaseService,
-    public snackBar: MdSnackBar) {
+    private snackBar: MatSnackBar) {
 
     database.expenseAddedAnnounced$.subscribe(
       category => {
@@ -42,7 +40,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getAllUserDetails();
-    setTimeout(() => this.scrollTop(), );
+    setTimeout(() => this.scrollTop());
   }
 
   scrollTop() {
@@ -73,10 +71,10 @@ export class HomeComponent implements OnInit {
         this.getUserCategories();
         this.isLoadingUserInformation = false;
       }).catch(e => {
-        this.isLoadingUserInformation = false;
-        console.log('failed');
-        console.log(e);
-      })
+      this.isLoadingUserInformation = false;
+      console.log('failed');
+      console.log(e);
+    })
 
   }
 
@@ -96,10 +94,10 @@ export class HomeComponent implements OnInit {
         this.onUpdateToCategories();
         this.isLoadingCategories = false;
       }).catch(e => {
-        this.isLoadingCategories = false;
-        console.log('failed');
-        console.log(e);
-      })
+      this.isLoadingCategories = false;
+      console.log('failed');
+      console.log(e);
+    })
   }
 
   onUpdateToCategories() {
@@ -166,7 +164,7 @@ export class HomeComponent implements OnInit {
           categorySum += value.amount;
         }
       }
-      let dataObj = { name: category, amount: categorySum.toFixed(2) };
+      let dataObj = {name: category, amount: categorySum.toFixed(2)};
       totals.push(dataObj);
     }
     return totals;
@@ -176,16 +174,16 @@ export class HomeComponent implements OnInit {
     this.categories = e.value;
   }
 
-  isValidAmountCategories() {
-    let categoriesLength = this.categories.length;
-    return categoriesLength >= 4 && categoriesLength < 21;
+  isValidAmountCategories(): boolean {
+    const categoriesLength = this.categories.length;
+    return categoriesLength >= 4;
   }
 
   saveCategories() {
     this.isLoadingCategories = true;
     let currentUser = this.loginService.getUserId();
     this.database.saveNewCategories(this.categories, currentUser).then(jsonData => {
-      this.originalCategories = { ...this.categories };
+      this.originalCategories = {...this.categories};
       this.loginService.setCategories(this.categories);
       this.openSnackBar('Categories saved!');
       this.onUpdateToCategories();
@@ -201,7 +199,7 @@ export class HomeComponent implements OnInit {
   }
 
   openSnackBar(message) {
-    this.snackBar.open(message, '', { duration: 2000 });
+    this.snackBar.open(message, '', {duration: 2000});
   }
 
   checkCategoriesAreSame() {

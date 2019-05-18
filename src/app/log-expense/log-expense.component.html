@@ -4,28 +4,28 @@
         <div class="col-sm-8 offset-sm-2" *ngIf="isLoading">
             <mdl-progress [indeterminate]="true"></mdl-progress>
         </div>
-        <md-card class="example-card col-sm-8 offset-sm-2">
-            <md-card-title>Enter expense</md-card-title>
-            <md-card-header>
-                <md-card-subtitle>
+        <mat-card class="col-sm-8 offset-sm-2">
+            <mat-card-title>Enter expense</mat-card-title>
+            <mat-card-header>
+                <mat-card-subtitle>
                     Enter required fields to save a new expense
-                </md-card-subtitle>
-            </md-card-header>
-            <md-card-content>
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
                 <div class="row">
                     <div class="col-sm-6">
-                        <md-input-container class="example-full-width">
-                            <input mdInput placeholder="Expense name" name="name" type="text" [(ngModel)]="expenseObj.name" #name="ngModel" required minlength="4">
-                        </md-input-container>
+                        <mat-form-field class="example-full-width">
+                            <input matInput  placeholder="Expense name" name="name" type="text" [(ngModel)]="expenseObj.name" #name="ngModel" required minlength="4">
+                        </mat-form-field>
                         <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
                             <small>Name is required (minimum 4 characters).</small>
                         </div>
 
                     </div>
                     <div class="col-sm-6">
-                        <md-input-container class="example-full-width">
-                            <input mdInput placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expenseObj.amount" (blur)="formatAmount()" #amount="ngModel" required>
-                        </md-input-container>
+                        <mat-form-field class="example-full-width">
+                            <input matInput  placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expenseObj.amount" (blur)="formatAmount()" #amount="ngModel" required>
+                        </mat-form-field>
                         <div *ngIf="amount.errors && (amount.dirty || amount.touched)" class="alert alert-danger">
                             <small>Amount is required (positive amount, max 2 decimal places).</small>
                         </div>
@@ -67,15 +67,15 @@
 
 
                     <div class="col-sm-6">
-                        <md-input-container class="example-full-width">
-                            <textarea mdInput placeholder="Comments" [(ngModel)]="expenseObj.comments" name="comments"></textarea>
-                        </md-input-container>
+                        <mat-form-field class="example-full-width">
+                            <textarea matInput  placeholder="Comments" [(ngModel)]="expenseObj.comments" name="comments"></textarea>
+                        </mat-form-field>
                     </div>
                 </div>
 
 
-            </md-card-content>
-            <md-card-actions>
+            </mat-card-content>
+            <mat-card-actions>
                 <div class="row button-row">
 
                     <button type="button" class="col-sm-6" mdl-button mdl-colored="primary" mdl-ripple (click)="clearForm(f)">
@@ -83,11 +83,11 @@
           </button>
 
                     <button class="col-sm-6" type="submit" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple [disabled]="!f.form.valid">
-            <md-icon>save</md-icon>
+            <mat-icon>save</mat-icon>
             Save
           </button>
                 </div>
-            </md-card-actions>
-        </md-card>
+            </mat-card-actions>
+        </mat-card>
     </form>
 </div>

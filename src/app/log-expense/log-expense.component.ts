@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database/database';
 import { LoginService } from '../providers/login.service';
 import { DatabaseService } from '../providers/database.service';
 import { Expense } from '../models/expense-model'
-import { expense_types, expense_categories } from '../models/user-model';
-import { MdSnackBar } from '@angular/material';
-import { CurrencyPipe } from '@angular/common';
+import { expense_types } from '../models/user-model';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -22,7 +20,7 @@ export class LogExpenseComponent implements OnInit {
   dateError = false;
 
   constructor(private loginService: LoginService,
-    public snackBar: MdSnackBar,
+    public snackBar: MatSnackBar,
     private database: DatabaseService) {
     database.categoriesAddedAnnounced$.subscribe(
       category => {
