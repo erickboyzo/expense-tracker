@@ -1,7 +1,7 @@
 export class Expense {
-  id: string;
+  id?: string;
   name: string;
-  date: any;
+  date: Date | string;
   category: string;
   type: string;
   amount: number;

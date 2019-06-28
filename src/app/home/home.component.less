@@ -4,6 +4,7 @@
     bottom: 85px;
     right: 25px;
   }
+
   .account {
     font-size: 60px;
     padding-top: 20px;
@@ -31,11 +32,11 @@
     padding-left: 40px;
   }
 
-  .info-alignment{
+  .info-alignment {
     text-align: center;
   }
 
-  .info-content{
+  .info-content {
     font-size: x-large;
     font-weight: 100;
   }
@@ -44,4 +45,11 @@
     width: inherit;
   }
 
+  ::ng-deep {
+    mat-step-header {
+      .mat-step-header .mat-step-icon-selected {
+        background-color: #2196F3!important;
+      }
+    }
+  }
 }

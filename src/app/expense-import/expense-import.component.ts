@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Papa, PapaParseConfig } from 'ngx-papaparse';
+import { MatSnackBar } from '@angular/material';
+import { ExpenseImportModel, requiredColumns } from './expense-import.model';
 
 @Component({
   selector: 'app-expense-import',
@@ -8,7 +10,12 @@ import { Papa, PapaParseConfig } from 'ngx-papaparse';
 })
 export class ExpenseImportComponent implements OnInit {
 
-  constructor(private papa: Papa) { }
+  @Input() disabled: boolean;
+  @Output() dataExported: EventEmitter<ExpenseImportModel[]> = new EventEmitter();
+
+  constructor(private papa: Papa,
+              private snackBar: MatSnackBar) {
+  }
 
   ngOnInit() {
   }
@@ -17,12 +24,22 @@ export class ExpenseImportComponent implements OnInit {
     const files = $event.srcElement.files[0];
     console.log(files);
 
-    let options = <PapaParseConfig>{
+    const options = <PapaParseConfig>{
       complete: (results, file) => {
-        console.log('Parsed: ', results, file);
-        console.log(results);
+
+        if (results.data.length > 0) {
+          if (requiredColumns.every(x => results.meta.fields.includes(x))) {
+            console.log('all found');
+            this.dataExported.emit(results.data);
+          } else {
+            this.snackBar.open(`Error when processing csv file. Missing columns ${requiredColumns.filter(x => !results.meta.fields.includes(x))}`, null, {duration: 3000});
+          }
+        } else {
+          this.snackBar.open('No data found! Please check csv file and try again.', null, {duration: 3000});
+        }
       },
-      header: true};
+      header: true, skipEmptyLines: true
+    };
     this.papa.parse(files, options);
   }
 

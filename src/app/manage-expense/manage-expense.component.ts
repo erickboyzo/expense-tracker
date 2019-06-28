@@ -1,7 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Expense } from '../models/expense-model';
-import { DatabaseService } from '../providers/database.service';
-import { LoginService } from '../providers/login.service';
+import { DatabaseService } from '../services/database.service';
+import { LoginService } from '../services/login.service';
 import { expense_types } from '../models/user-model';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
@@ -15,12 +15,12 @@ export class ManageExpenseComponent implements OnInit {
 
   expense = new Expense;
   original = new Expense;
-  update: boolean = false;
+  update = false;
   categories: string[] = this.loginService.getCurrentCategories();
   types: string[] = expense_types;
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<ManageExpenseComponent>,
+    private dialogRef: MatDialogRef<ManageExpenseComponent>,
     private database: DatabaseService,
     private loginService: LoginService,
     private snackBar: MatSnackBar) {
@@ -33,7 +33,7 @@ export class ManageExpenseComponent implements OnInit {
   }
 
   deleteExpense() {
-    let userId = this.loginService.getUserId();
+    const userId = this.loginService.getUserId();
     this.database.deleteExpense(userId, this.expense.id)
       .then(_ => this.successfulDelete())
       .catch(err => this.failedDeleted(err));

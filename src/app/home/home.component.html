@@ -1,125 +1,168 @@
 <div class="container-fluid" id="home">
-  <div class="row" *ngIf="isLoadingUserInformation">
-    <div class="col-sm-8 offset-sm-2 loading-progress-bar">
-      <mdl-progress [indeterminate]="true"></mdl-progress>
-    </div>
-  </div>
-  <mat-card class="col-sm-8 offset-sm-2">
-    <mat-card-title>Expenses summary</mat-card-title>
-    <mat-card-header>
-      <mat-card-subtitle></mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <div *ngIf="!isLoadingUserInformation" class="row">
-        <div class="col-sm-3 info-alignment">
-          <mat-icon class="account">account_circle</mat-icon>
-          <div>
-            <label>Logged in as :</label>
-            <br><span class="info-content">{{user.firstName}} {{user.lastName}}</span>
-          </div>
-        </div>
-        <div class="col-sm-9" *ngIf="isDataAvailable; else noData">
-          <div class="row">
-            <div class="col-sm-6 info-alignment">
-              <label>Expenses Logged</label>
-              <div class="info-content">{{expenseInfo.numOfEntries}}</div>
-            </div>
-            <div class="col-sm-6 info-alignment">
-              <label>Total Amount</label>
-              <div class="info-content">{{expenseInfo.totalAmount}}</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6 info-alignment">
-              <label>First Expense Date</label>
-              <div class="info-content">{{expenseInfo.firstExpenseDate}}</div>
-            </div>
-            <div class="col-sm-6 info-alignment">
-              <label>Last Expense Date</label>
-              <div class="info-content">{{expenseInfo.lastExpenseDate}}</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6 select-padding info-alignment">
-              <label>View Totals by Category</label>
-              <md2-select placeholder="Category totals" [(ngModel)]="expenseInfo.selectedCategory" name="category">
-                <md2-option *ngFor="let cat of expenseInfo.categoryTotals " [value]="cat">{{cat.name}}</md2-option>
-              </md2-select>
-            </div>
-            <div class="col-sm-6 info-alignment">
-              <label>{{expenseInfo.selectedCategory.name}} totals</label>
-              <div class="info-content">${{expenseInfo.selectedCategory.amount}}</div>
-            </div>
-          </div>
-        </div>
-        <ng-template #noData>
-          <div class="col-sm-9">
-            <div class="container no-data">
-              <div class="col-sm-6 offset-sm-3">
-                <div class="icon">
-                  <mat-icon class="icon-alert">error</mat-icon>
-                </div>
+  <div class="row">
+
+    <div class="col-12 col-md-6 offset-md-3">
+      <mat-card>
+        <mat-card-title>Expenses summary</mat-card-title>
+        <mat-card-header>
+          <mat-card-subtitle></mat-card-subtitle>
+        </mat-card-header>
+        <ng-container *ngIf="!isLoadingUserInformation;else loadingSpinner">
+          <mat-card-content>
+            <div *ngIf="!isLoadingUserInformation" class="row">
+              <div class="col-sm-3 info-alignment">
+                <mat-icon class="account">account_circle</mat-icon>
                 <div>
-                  <h2>No expense data!</h2>
-                  <div class="alert-action">
-                    <button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple
-                            (click)="scrollToEnterExpense()">Enter expense
-                    </button>
+                  <label>Logged in as :</label>
+                  <br><span class="info-content">{{user.firstName}} {{user.lastName}}</span>
+                </div>
+              </div>
+              <div class="col-sm-9" *ngIf="isDataAvailable; else noData">
+                <div class="row">
+                  <div class="col-sm-6 info-alignment">
+                    <label>Expenses Logged</label>
+                    <div class="info-content">{{expenseInfo.numOfEntries}}</div>
+                  </div>
+                  <div class="col-sm-6 info-alignment">
+                    <label>Total Amount</label>
+                    <div class="info-content">{{expenseInfo.totalAmount}}</div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6 info-alignment">
+                    <label>First Expense Date</label>
+                    <div class="info-content">{{expenseInfo.firstExpenseDate}}</div>
+                  </div>
+                  <div class="col-sm-6 info-alignment">
+                    <label>Last Expense Date</label>
+                    <div class="info-content">{{expenseInfo.lastExpenseDate}}</div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6 select-padding info-alignment">
+                    <label>View Totals by Category</label>
+                    <md2-select placeholder="Category totals" [(ngModel)]="expenseInfo.selectedCategory"
+                                name="category">
+                      <md2-option *ngFor="let cat of expenseInfo.categoryTotals "
+                                  [value]="cat">{{cat.name}}</md2-option>
+                    </md2-select>
+                  </div>
+                  <div class="col-sm-6 info-alignment">
+                    <label>{{expenseInfo.selectedCategory.name}} totals</label>
+                    <div class="info-content">${{expenseInfo.selectedCategory.amount}}</div>
                   </div>
                 </div>
               </div>
+              <ng-template #noData>
+                <div class="col-sm-9">
+                  <div class="container no-data">
+                    <div class="col-sm-6 offset-sm-3">
+                      <div class="icon">
+                        <mat-icon class="icon-alert">error</mat-icon>
+                      </div>
+                      <div>
+                        <h2>No expense data</h2>
+                        <div class="alert-action">
+                          <button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple
+                                  (click)="scrollToEnterExpense()">Enter expense
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
             </div>
-          </div>
-        </ng-template>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-    </mat-card-actions>
-  </mat-card>
-  <div class="row" *ngIf="isLoadingCategories || isLoadingUserInformation">
-    <div class="col-sm-8 offset-sm-2 loading-progress-bar">
-      <mdl-progress [indeterminate]="true"></mdl-progress>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </ng-container>
+      </mat-card>
+    </div>
+
+    <div class="col-12 col-md-6 offset-md-3">
+      <mat-card>
+        <mat-card-title>Expense Categories</mat-card-title>
+        <ng-container *ngIf="!isLoadingCategories && !isLoadingUserInformation; else loadingSpinner">
+          <mat-card-header>
+            <mat-card-subtitle>Add/Remove Expense Categories Below
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <md2-chips [ngModel]="categories"
+                       [minChips]="4"
+                       (change)="selected($event)" placeholder="Add">
+            </md2-chips>
+          </mat-card-content>
+          <mat-card-actions>
+            <div class="row button-row">
+              <button class="col-sm-6" mdl-button mdl-colored="primary" mdl-ripple (click)="resetCategories()">Reset
+              </button>
+              <button class="col-sm-6" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple
+                      [disabled]="!isValidAmountCategories() || isLoadingCategories" (click)="saveCategories()">
+                <mat-icon>save</mat-icon>
+                <span>Save</span></button>
+            </div>
+          </mat-card-actions>
+        </ng-container>
+      </mat-card>
     </div>
   </div>
-  <mat-card class="col-sm-8 offset-sm-2">
-    <mat-card-title>Expense Categories</mat-card-title>
-    <mat-card-header>
-      <mat-card-subtitle *ngIf="!isLoadingCategories && !isLoadingUserInformation">Add/Remove Expense Categories Below
-      </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <md2-chips *ngIf="!isLoadingCategories && !isLoadingUserInformation"
-                 [ngModel]="categories"
-                 [minChips]="4"
-                 (change)="selected($event)" placeholder="Add">
-      </md2-chips>
-    </mat-card-content>
-    <mat-card-actions>
-      <div *ngIf="!isLoadingCategories && !isLoadingUserInformation" class="row button-row">
-        <button class="col-sm-6" mdl-button mdl-colored="primary" mdl-ripple (click)="resetCategories()">Reset</button>
-        <button class="col-sm-6" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple
-                [disabled]="!isValidAmountCategories() || isLoadingCategories" (click)="saveCategories()">
-          <mat-icon>save</mat-icon>
-          <span>Save</span></button>
-      </div>
-    </mat-card-actions>
-  </mat-card>
-  <app-log-expense *ngIf="!isLoadingUserInformation"></app-log-expense>
-  <mat-card class="col-sm-8 offset-sm-2">
-    <mat-card-title>Import CSV Expenses</mat-card-title>
-    <mat-card-content>
-      <app-expense-import class="align-content-center"></app-expense-import>
-    </mat-card-content>
-    <mat-card-actions>
-      <div class="row button-row">
-        <button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple
-                [disabled]="!isValidAmountCategories() || isLoadingCategories" (click)="saveCategories()">
-          <mat-icon>save</mat-icon>
-          <span>Save</span></button>
-      </div>
-    </mat-card-actions>
-  </mat-card>
+
+
+  <div class="row">
+
+    <div class="col-12 col-md-6 offset-md-3" *ngIf="!isLoadingUserInformation">
+      <app-log-expense></app-log-expense>
+    </div>
+
+    <div class="col-12 col-md-6 offset-md-3">
+      <mat-card>
+        <mat-card-title>Import CSV Expenses</mat-card-title>
+        <mat-card-content>
+          <div class="my-5">
+
+            <mat-horizontal-stepper linear (selectionChange)="onStep($event)">
+              <mat-step label="Import" [completed]="step === 1">
+                <app-expense-import-guidance></app-expense-import-guidance>
+              </mat-step>
+              <mat-step label="Review Expenses Imported" [completed]="step === 2">
+                <app-expense-import-grid [data]="importedExpenses" (saveAction)="saveImportedExpenses()"></app-expense-import-grid>
+              </mat-step>
+              <mat-step label="All Done" [completed]="importComplete">
+                <h2>Expenses Saved</h2>
+                <button  mdl-button
+                         mdl-button-type="raised"
+                         mdl-colored="primary"
+                         mdl-ripple  routerLink="/view-expenses">
+                  <mat-icon>insert_chart</mat-icon>
+                  View Expenses Dashboard
+                </button>
+              </mat-step>
+            </mat-horizontal-stepper>
+
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <div class="row button-row">
+            <div class="col-12">
+              <div class="float-right">
+                <app-expense-import (dataExported)="dataExported($event)"></app-expense-import>
+              </div>
+            </div>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
   <button mat-fab class="fab" routerLink="/view-expenses">
     <mat-icon>insert_chart</mat-icon>
   </button>
 </div>
+
+<ng-template #loadingSpinner>
+  <mat-card-content>
+    <app-card-spinner></app-card-spinner>
+  </mat-card-content>
+</ng-template>

@@ -3,6 +3,7 @@ import { Expense } from '../models/expense-model'
 import { Subject } from 'rxjs';
 import { AngularFireDatabase, SnapshotAction } from '@angular/fire/database';
 import { Observable } from 'rxjs/Rx';
+import { ExpenseImportModel } from '../expense-import/expense-import.model';
 
 
 @Injectable()
@@ -29,7 +30,7 @@ export class DatabaseService {
   }
 
 
-  saveNewExpense(expense: Expense, userId: string) {
+  saveNewExpense(expense: Expense | ExpenseImportModel, userId: string) {
     return this.db.database.ref('users/' + userId + '/expenses').push(
       expense
     );

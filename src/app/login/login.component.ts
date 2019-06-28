@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../providers/auth.service';
+import { AuthService } from '../services/auth.service';
 import { User } from '../models/user-model';
-import { LoginService } from '../providers/login.service';
+import { LoginService } from '../services/login.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSnackBar } from '@angular/material';
 

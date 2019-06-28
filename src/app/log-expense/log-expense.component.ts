@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { LoginService } from '../providers/login.service';
-import { DatabaseService } from '../providers/database.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { LoginService } from '../services/login.service';
+import { DatabaseService } from '../services/database.service';
 import { Expense } from '../models/expense-model'
 import { expense_types } from '../models/user-model';
 import { MatSnackBar } from '@angular/material';
@@ -11,8 +11,7 @@ import { MatSnackBar } from '@angular/material';
   templateUrl: './log-expense.component.html',
   styleUrls: ['./log-expense.component.less']
 })
-export class LogExpenseComponent implements OnInit {
-
+export class LogExpenseComponent implements OnInit, OnDestroy {
   categories: string[] = this.loginService.getCurrentCategories();
   types: string[] = expense_types;
   expenseObj: Expense = new Expense;
@@ -20,7 +19,7 @@ export class LogExpenseComponent implements OnInit {
   dateError = false;
 
   constructor(private loginService: LoginService,
-    public snackBar: MatSnackBar,
+    private snackBar: MatSnackBar,
     private database: DatabaseService) {
     database.categoriesAddedAnnounced$.subscribe(
       category => {
@@ -38,9 +37,11 @@ export class LogExpenseComponent implements OnInit {
 
   saveExpenseEntry(expenseForm: any) {
     this.isLoading = true;
-    this.expenseObj.date = this.expenseObj.date.toDateString();
-    let currentUserKey = this.loginService.getUserId();
-    this.database.saveNewExpense(this.expenseObj, currentUserKey).then((data) => {
+    if (typeof this.expenseObj.date !== 'string') {
+      this.expenseObj.date = this.expenseObj.date.toDateString();
+    }
+    this.database.saveNewExpense(this.expenseObj, this.loginService.getUserId())
+      .then((data) => {
       this.isLoading = false;
       expenseForm.resetForm();
       this.resetExpenseObj();
@@ -85,6 +86,9 @@ export class LogExpenseComponent implements OnInit {
       let rounded = this.expenseObj.amount.toFixed(2);
       this.expenseObj.amount = parseFloat(rounded);
     }
+  }
+
+  ngOnDestroy(): void {
   }
 
 

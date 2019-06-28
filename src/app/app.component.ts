@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './providers/auth.service';
+import { AuthService } from './services/auth.service';
 
 import * as firebase from 'firebase';
-import { LoginService } from './providers/login.service';
+import { LoginService } from './services/login.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';

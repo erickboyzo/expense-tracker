@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-pie-grid',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pie-grid.component.less']
 })
 export class PieGridComponent implements OnInit {
+  @Input() data: any[];
 
   constructor() { }
 

@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DatabaseService } from '../providers/database.service';
-import { LoginService } from '../providers/login.service';
+import { DatabaseService } from '../services/database.service';
+import { LoginService } from '../services/login.service';
 import { Subscription } from 'rxjs';
+import { Expense } from '../models/expense-model';
 
 @Component({
   selector: 'app-view-logged-expenses',
@@ -11,11 +12,11 @@ import { Subscription } from 'rxjs';
 export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
 
   expenseDataChart: any = [];
-  expenseDataCards: any = [];
-  expenseDataTable: any = [];
-  private expenses: Subscription;
-  isLoadingExpenses=false;
+  expenseDataTable: Expense[] = [];
+  isLoadingExpenses = false;
   isDataReady = false;
+
+  private expenses: Subscription;
 
   constructor(private database: DatabaseService,
               private loginService: LoginService) {
@@ -27,16 +28,16 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getUserExpenses();
-    setTimeout(() => this.scrollTop(),);
+    setTimeout(() => this.scrollTop());
   }
 
   scrollTop() {
-    var element = document.getElementById('content');
-    element.scrollIntoView();
+    const contentElement = document.getElementById('content');
+    contentElement.scrollIntoView();
   }
 
   getUserExpenses() {
-    let userId = this.loginService.getUserId();
+    const userId = this.loginService.getUserId();
     this.isLoadingExpenses = true;
     if (userId) {
       this.expenses = this.database.getUserExpenses(userId)
@@ -44,15 +45,12 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     }  else {
       this.isLoadingExpenses = true;
     }
-
   }
 
   parseData(snapsShots: any) {
-    let data = [];
-    console.log(snapsShots);
+    const data = [];
     snapsShots.forEach(snapshot => {
-      let expense = snapshot.payload.exportVal();
-      console.log(expense);
+      const expense = snapshot.payload.exportVal();
       expense.id = snapshot.key;
       data.push(expense);
     });
@@ -60,24 +58,22 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
   }
 
   filterData(snapshots) {
-    console.log(snapshots);
     this.isLoadingExpenses = true;
-
-    let parsedData = this.parseData(snapshots);
+    const parsedData = this.parseData(snapshots);
 
     const categories = parsedData.map(item => item.category)
       .filter((value, index, self) => self.indexOf(value) === index);
 
-    let pieData = [];
+    const pieData = [];
 
-    for (let category of categories) {
+    for (const category of categories) {
       let categorySum = 0;
-      for (let value of parsedData) {
-        if (value.category == category) {
+      for (const value of parsedData) {
+        if (value.category === category) {
           categorySum += value.amount;
         }
       }
-      let dataObj = {name: category, y: categorySum, value: categorySum.toFixed(2)};
+      const dataObj = {name: category, y: categorySum, value: categorySum.toFixed(2)};
       pieData.push(dataObj);
     }
     this.expenseDataChart = pieData;
@@ -92,7 +88,5 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     if (this.expenses) {
       this.expenses.unsubscribe();
     }
-
   }
-
 }

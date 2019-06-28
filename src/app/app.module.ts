@@ -45,9 +45,9 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { AuthService } from './providers/auth.service';
-import { LoginService } from './providers/login.service';
-import { DatabaseService } from './providers/database.service';
+import { AuthService } from './services/auth.service';
+import { LoginService } from './services/login.service';
+import { DatabaseService } from './services/database.service';
 import { HomeComponent } from './home/home.component';
 import { ChartSummaryComponent } from './view-logged-expenses/chart-summary/chart-summary.component';
 import { TableSummaryComponent } from './view-logged-expenses/table-summary/table-summary.component';
@@ -60,6 +60,7 @@ import { PieGridComponent } from './view-logged-expenses/pie-grid/pie-grid.compo
 import { NumberCardsComponent } from './view-logged-expenses/number-cards/number-cards.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ExpenseImportModule } from './expense-import/expense-import.module';
+import { CardSpinnerModule } from './card-spinner/card-spinner.module';
 
 @NgModule({
   declarations: [
@@ -116,17 +117,15 @@ import { ExpenseImportModule } from './expense-import/expense-import.module';
     MatButtonToggleModule,
     MatChipsModule,
     MatIconModule,
-    MatProgressSpinnerModule,
     MatProgressBarModule,
     MatDialogModule,
     MatTooltipModule,
     MatSnackBarModule,
-    MatTableModule,
     MatSortModule,
-    MatPaginatorModule,
     NoConflictStyleCompatibilityMode,
     NgxChartsModule,
-    ExpenseImportModule
+    ExpenseImportModule,
+    CardSpinnerModule
   ],
   providers: [AuthService,
     LoginService,

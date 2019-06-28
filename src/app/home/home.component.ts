@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginService } from '../providers/login.service';
-import { expense_categories, User } from '../models/user-model';
-import { DatabaseService } from '../providers/database.service';
-import { MatSnackBar } from '@angular/material';
+import { LoginService } from '../services/login.service';
+import { expense_categories, ExpenseInfo, User } from '../models/user-model';
+import { DatabaseService } from '../services/database.service';
+import { MatHorizontalStepper, MatSnackBar } from '@angular/material';
+import { ExpenseImportModel } from '../expense-import/expense-import.model';
+import { Expense } from '../models/expense-model';
 
 @Component({
   selector: 'app-home',
@@ -12,13 +14,19 @@ import { MatSnackBar } from '@angular/material';
 })
 
 export class HomeComponent implements OnInit {
+
+  @ViewChild(MatHorizontalStepper) stepper: MatHorizontalStepper;
+
   user: User = new User;
   categories: string[] = expense_categories;
   originalCategories: string[] = expense_categories;
   isLoadingUserInformation = false;
-  isLoadingCategories: boolean = false;
-  expenseInfo: any = {numOfEntries: null, totalAmount: null, categoryTotals: null, selectedCategory: null};
+  isLoadingCategories = false;
+  expenseInfo: ExpenseInfo = {numOfEntries: null, totalAmount: null, categoryTotals: null, selectedCategory: null};
   isDataAvailable: boolean;
+  importedExpenses: ExpenseImportModel[] = [];
+  step = 0;
+  importComplete = false;
 
   constructor(
     private router: Router,
@@ -44,12 +52,12 @@ export class HomeComponent implements OnInit {
   }
 
   scrollTop() {
-    let element = document.getElementById('content');
+    const element = document.getElementById('content');
     element.scrollIntoView();
   }
 
   scrollToEnterExpense() {
-    let element = document.getElementById('enter-expense');
+    const element = document.getElementById('enter-expense');
     element.scrollIntoView();
   }
 
@@ -84,13 +92,12 @@ export class HomeComponent implements OnInit {
     let current: string = this.loginService.getUserId();
     this.database.getCurrentCategories(current)
       .then(jsonData => {
-        let object = jsonData.toJSON();
-        let array = Object.keys(object).map(function (key) {
-          return object[key];
-        });
-        this.categories = array;
-        this.originalCategories = array;
-        this.loginService.setCategories(array);
+        let obj = jsonData.toJSON();
+        const categoriesArr = Object.keys(obj).map((key) => obj[key]);
+        this.categories = categoriesArr;
+        console.log(this.categories);
+        this.originalCategories = categoriesArr;
+        this.loginService.setCategories(categoriesArr);
         this.onUpdateToCategories();
         this.isLoadingCategories = false;
       }).catch(e => {
@@ -117,6 +124,8 @@ export class HomeComponent implements OnInit {
         let expenses = Object.keys(object).map(function (key) {
           return object[key];
         });
+
+        console.log(expenses);
 
         let firstDate = new Date(Math.min.apply(null, expenses.map((e) => {
           return new Date(e.date);
@@ -152,19 +161,19 @@ export class HomeComponent implements OnInit {
     return categorySum.toFixed(2);
   }
 
-  getCategoryTotals(expenses: any) {
+  getCategoryTotals(expenses: Expense[]) {
     const categories = expenses.map(item => item.category)
       .filter((value, index, self) => self.indexOf(value) === index);
-    let totals = [];
+    const totals = [];
 
-    for (let category of categories) {
+    for (const category of categories) {
       let categorySum = 0;
-      for (let value of expenses) {
-        if (value.category == category) {
+      for (const value of expenses) {
+        if (value.category === category) {
           categorySum += value.amount;
         }
       }
-      let dataObj = {name: category, amount: categorySum.toFixed(2)};
+      const dataObj = {name: category, amount: categorySum.toFixed(2)};
       totals.push(dataObj);
     }
     return totals;
@@ -181,7 +190,7 @@ export class HomeComponent implements OnInit {
 
   saveCategories() {
     this.isLoadingCategories = true;
-    let currentUser = this.loginService.getUserId();
+    const currentUser = this.loginService.getUserId();
     this.database.saveNewCategories(this.categories, currentUser).then(jsonData => {
       this.originalCategories = {...this.categories};
       this.loginService.setCategories(this.categories);
@@ -194,6 +203,27 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  saveImportedExpenses() {
+    let categoriesAdded = false;
+    const currentUserKey = this.loginService.getUserId();
+    this.importedExpenses
+      .filter(e => !e.error)
+      .forEach(expense => {
+      if (!this.categories.includes(expense.category)) {
+        this.categories.push(expense.category);
+        categoriesAdded = true;
+      }
+      this.database.saveNewExpense(expense, currentUserKey);
+    });
+    if (categoriesAdded) { this.saveCategories(); }
+    this.getExpensesInfo();
+    this.importedExpenses = [];
+    this.step = 2;
+    this.importComplete = true;
+    this.openSnackBar('Import Successful!');
+    this.moveToNextStep();
+  }
+
   resetCategories() {
     this.categories = this.loginService.getCurrentCategories();
   }
@@ -204,5 +234,52 @@ export class HomeComponent implements OnInit {
 
   checkCategoriesAreSame() {
     return this.categories.toString === this.originalCategories.toString;
+  }
+
+  dataExported(data) {
+    this.importedExpenses = data.map(e => this.validateImportedData(e));
+    this.step = 1;
+    this.importComplete = false;
+    this.moveToNextStep();
+    console.log(this.importedExpenses);
+  }
+
+  private moveToNextStep() {
+    setTimeout(() => {
+      this.stepper.next();
+    });
+  }
+
+  validateImportedData(e: ExpenseImportModel): ExpenseImportModel {
+    if (!e.comments) {
+      e.comments = '';
+    }
+
+    if (!e.type) {
+      e.type = 'Debit';
+    }
+
+    if (!e.category) {
+      e.category = 'Unassigned';
+    }
+
+    e.amount = e.amount > 0 ? +e.amount : this.handleMissingCsvData(e);
+    e.date = new Date(e.date) ? new Date(e.date).toDateString() : this.handleMissingCsvData(e);
+    e.description = e.description || this.handleMissingCsvData(e);
+
+    if (!e.error) {
+      e.name = e.description;
+    }
+    return e;
+  }
+
+  private handleMissingCsvData(expense: ExpenseImportModel): string {
+    expense.error = true;
+    return '?';
+  }
+
+  onStep(data) {
+    console.log(data);
+    console.log(this.stepper);
   }
 }
