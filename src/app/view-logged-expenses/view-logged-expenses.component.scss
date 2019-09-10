@@ -20,17 +20,18 @@
 
   button.fab {
     position: fixed;
-    bottom: 85px;
-    right: 25px;
+    bottom: 20%;
+    right: 5%;
   }
 
   .no-data {
-    h2 {
-      text-align: center;
+
+    .mat-icon {
+      width: auto;
     }
 
-    .icon {
-      margin-right: 30px;
+    h2 {
+      text-align: center;
     }
   }
 

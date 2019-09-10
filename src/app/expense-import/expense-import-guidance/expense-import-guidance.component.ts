@@ -4,7 +4,7 @@ import { displayedColumns } from '../expense-import.model';
 @Component({
   selector: 'app-expense-import-guidance',
   templateUrl: './expense-import-guidance.component.html',
-  styleUrls: ['./expense-import-guidance.component.less']
+  styleUrls: ['./expense-import-guidance.component.scss']
 })
 export class ExpenseImportGuidanceComponent implements OnInit {
   displayedColumns: string[] = displayedColumns;

@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material';
 @Component({
   selector: 'app-table-summary',
   templateUrl: 'table-summary.component.html',
-  styleUrls: ['table-summary.component.less']
+  styleUrls: ['table-summary.component.scss']
 })
 export class TableSummaryComponent implements OnInit, OnChanges {
 

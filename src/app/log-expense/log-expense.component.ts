@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-log-expense',
   templateUrl: './log-expense.component.html',
-  styleUrls: ['./log-expense.component.less']
+  styleUrls: ['./log-expense.component.scss']
 })
 export class LogExpenseComponent implements OnInit, OnDestroy {
   categories: string[] = this.loginService.getCurrentCategories();

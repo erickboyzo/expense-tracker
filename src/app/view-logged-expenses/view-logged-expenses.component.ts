@@ -7,7 +7,7 @@ import { Expense } from '../models/expense-model';
 @Component({
   selector: 'app-view-logged-expenses',
   templateUrl: './view-logged-expenses.component.html',
-  styleUrls: ['./view-logged-expenses.component.less']
+  styleUrls: ['./view-logged-expenses.component.scss']
 })
 export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
 
@@ -22,6 +22,7 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
               private loginService: LoginService) {
     loginService.userIdSetAnnounced$.subscribe(
       category => {
+        console.log(category);
         this.getUserExpenses();
       });
   }
@@ -43,7 +44,7 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
       this.expenses = this.database.getUserExpenses(userId)
         .subscribe(snapshots => this.filterData(snapshots));
     }  else {
-      this.isLoadingExpenses = true;
+      this.isLoadingExpenses = false;
     }
   }
 
@@ -58,7 +59,7 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
   }
 
   filterData(snapshots) {
-    this.isLoadingExpenses = true;
+    this.isLoadingExpenses = false;
     const parsedData = this.parseData(snapshots);
 
     const categories = parsedData.map(item => item.category)
@@ -78,7 +79,6 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     }
     this.expenseDataChart = pieData;
     this.expenseDataTable = parsedData;
-    console.log(this.expenseDataChart);
 
     this.isDataReady = true;
     this.isLoadingExpenses = false;

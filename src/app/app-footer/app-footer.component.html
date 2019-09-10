@@ -1,12 +1,11 @@
-<footer class="mt-3">
-  <div class="container-fluid bg-primary py-1">
-    <div class="">
-      <div class="row py-1">
-        <div class="col-sm-3">
-          <p class="app-title">Expense Tacker <span class="by-title">by Erick Boyzo</span></p>
-        </div>
-        <div class="col-sm-6">
-          <div class="d-inline-block button-alignment" *ngIf="isLoggedIn()">
+<td-layout-footer color="primary">
+  <div>
+    <div class="row">
+
+      <div class="col-4">
+        <div class="d-inline-flex button-alignment">
+
+          <ng-container *ngIf="isLoggedIn(); else notLoggedIn">
 
             <a class="text-white" *ngIf="router.url === '/view-expenses'" routerLink="/home" mdl-button mdl-ripple>
               <i class="fa fa-1x fa-fw fa-home"></i> Home
@@ -15,36 +14,40 @@
             <a class="text-white" *ngIf="router.url === '/home'" routerLink="/view-expenses" mdl-button mdl-ripple>
               <i class="fa fa-1x fa-fw fa-bar-chart"></i> View Expenses
             </a>
-          </div>
-          <div class="d-inline-block button-alignment" *ngIf="!isLoggedIn()">
+          </ng-container>
+
+          <ng-template #notLoggedIn>
             <a *ngIf="router.url === '/login'" routerLink="/signUp" class="text-white" mdl-button mdl-ripple>
               <i class="fa fa-1x fa-fw fa-user-plus"></i> Signup
             </a>
             <a *ngIf="router.url === '/signUp'" routerLink="/login" class="text-white" mdl-button mdl-ripple>
               <i class="fa fa-1x fa-fw fa-user-plus"></i> Login
             </a>
-          </div>
+          </ng-template>
         </div>
-        <div class="col-sm-3">
-          <div class="d-inline-block link-alignment">
-            <div class="bg-circle-outline d-inline-block">
-              <a class="link-text" (click)="navigateToCorrectLink('linkedin')">
-                <i class="fa fa-2x fa-fw fa-linkedin"></i>
-              </a>
-            </div>
+      </div>
+      <div class="col-4">
+        <!--        <p class="app-title">Expense Tacker <span class="by-title">by Erick Boyzo</span></p>-->
+      </div>
+      <div class="col-4">
+        <div class="d-inline-flex link-alignment">
+          <div class="bg-circle-outline d-inline-block">
+            <a class="link-text" (click)="navigateToCorrectLink('linkedin')">
+              <i class="fa fa-2x fa-fw fa-linkedin"></i>
+            </a>
+          </div>
 
-            <div class="bg-circle-outline d-inline-block">
-              <a class="link-text" (click)="navigateToCorrectLink('github')">
-                <i class="fa fa-2x fa-fw fa-github"></i></a>
-            </div>
+          <div class="bg-circle-outline d-inline-block">
+            <a class="link-text" (click)="navigateToCorrectLink('github')">
+              <i class="fa fa-2x fa-fw fa-github"></i></a>
+          </div>
 
-            <div class="bg-circle-outline d-inline-block">
-              <a class="link-text" (click)="navigateToCorrectLink('bitbucket')">
-                <i class="fa fa-2x fa-fw fa-bitbucket \"></i></a>
-            </div>
+          <div class="bg-circle-outline d-inline-block">
+            <a class="link-text" (click)="navigateToCorrectLink('bitbucket')">
+              <i class="fa fa-2x fa-fw fa-bitbucket \"></i></a>
           </div>
         </div>
       </div>
     </div>
   </div>
-</footer>
+</td-layout-footer>

@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.less'],
+  styleUrls: ['./login.component.scss'],
   animations: [
     trigger('visibilityChanged', [
       state('true', style({ opacity: 1, transform: 'scale(1.0)' })),
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
   }
 
   public onSuccessfulLogIn() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/view-expenses']);
   }
 
   announceLogin(user: any) {

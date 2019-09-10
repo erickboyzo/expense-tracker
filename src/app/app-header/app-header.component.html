@@ -1,44 +1,104 @@
-<div mdl-shadow="2">
-  <mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed #mdlLayout1="mdlLayout">
-    <mdl-layout-header>
-      <mdl-layout-header-row>
-        <mdl-layout-title>{{title}}</mdl-layout-title>
-        <mdl-layout-spacer></mdl-layout-spacer>
-        <!-- Navigation. We hide it in small screens. -->
-        <nav class="mdl-navigation mdl-layout--large-screen-only" *ngIf="shouldDisplay(); else notLogged">
-          <a class="mdl-navigation__link" routerLink="/home" routerLinkActive="active-link">Home</a>
-          <a class="mdl-navigation__link" routerLink="/view-expenses" routerLinkActive="active-link">View expenses</a>
-          <a class="mdl-navigation__link" routerLink="/login" (click)="logOut()">Logout</a>
-        </nav>
-        <ng-template #notLogged>
-          <nav class="mdl-navigation mdl-layout--large-screen-only">
-            <a class="mdl-navigation__link" *ngIf="router.url === '/login'" routerLink="/signUp" routerLinkActive="active-link" >Signup</a>
-            <a class="mdl-navigation__link" *ngIf="router.url === '/signUp'" routerLink="/login" routerLinkActive="active-link">Login</a>
-          </nav>
-        </ng-template>
-      </mdl-layout-header-row>
-    </mdl-layout-header>
-    <mdl-layout-drawer>
-      <mdl-layout-title>{{title}}</mdl-layout-title>
-      <nav class="mdl-navigation" *ngIf="shouldDisplay(); else elseBlock">
-        <a class="mdl-navigation__link" routerLink="/home" routerLinkActive="active-link" (click)="mdlLayout1.closeDrawer()">Home</a>
-        <a class="mdl-navigation__link" routerLink="/view-expenses" routerLinkActive="active-link" (click)="mdlLayout1.closeDrawer()">View expenses</a>
-        <a class="mdl-navigation__link" routerLink="/login" (click)="logOut()"
-           (click)="mdlLayout1.closeDrawer()">Logout</a>
-      </nav>
+<!--<div mdl-shadow="2">-->
+<!--  <mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed #mdlLayout1="mdlLayout">-->
+<!--    <mdl-layout-header>-->
+<!--      <mdl-layout-header-row>-->
+<!--        <mdl-layout-title>{{title}}</mdl-layout-title>-->
+<!--        <mdl-layout-spacer></mdl-layout-spacer>-->
+<!--        &lt;!&ndash; Navigation. We hide it in small screens. &ndash;&gt;-->
+<!--        <nav class="mdl-navigation mdl-layout&#45;&#45;large-screen-only" *ngIf="shouldDisplay(); else notLogged">-->
+<!--          <a class="mdl-navigation__link" routerLink="/home" routerLinkActive="active-link">Home</a>-->
+<!--          <a class="mdl-navigation__link" routerLink="/view-expenses" routerLinkActive="active-link">View expenses</a>-->
+<!--          <a class="mdl-navigation__link" routerLink="/login" (click)="logOut()">Logout</a>-->
+<!--        </nav>-->
+<!--        <ng-template #notLogged>-->
+<!--          <nav class="mdl-navigation mdl-layout&#45;&#45;large-screen-only">-->
+<!--            <a class="mdl-navigation__link" *ngIf="router.url === '/login'" routerLink="/signUp" routerLinkActive="active-link" >Signup</a>-->
+<!--            <a class="mdl-navigation__link" *ngIf="router.url === '/signUp'" routerLink="/login" routerLinkActive="active-link">Login</a>-->
+<!--          </nav>-->
+<!--        </ng-template>-->
+<!--      </mdl-layout-header-row>-->
+<!--    </mdl-layout-header>-->
+<!--    <mdl-layout-drawer>-->
+<!--      <mdl-layout-title>{{title}}</mdl-layout-title>-->
+<!--      <nav class="mdl-navigation" *ngIf="shouldDisplay(); else elseBlock">-->
+<!--        <a class="mdl-navigation__link" routerLink="/home" routerLinkActive="active-link" (click)="mdlLayout1.closeDrawer()">Home</a>-->
+<!--        <a class="mdl-navigation__link" routerLink="/view-expenses" routerLinkActive="active-link" (click)="mdlLayout1.closeDrawer()">View expenses</a>-->
+<!--        <a class="mdl-navigation__link" routerLink="/login" (click)="logOut()"-->
+<!--           (click)="mdlLayout1.closeDrawer()">Logout</a>-->
+<!--      </nav>-->
+<!--      <ng-template #elseBlock>-->
+<!--        <nav class="mdl-navigation">-->
+<!--          <a class="mdl-navigation__link" *ngIf="router.url === '/login'" routerLink="/signUp" routerLinkActive="active-link"-->
+<!--             (click)="mdlLayout1.closeDrawer()">Signup</a>-->
+<!--          <a class="mdl-navigation__link" *ngIf="router.url === '/signUp'" routerLink="/login" routerLinkActive="active-link"-->
+<!--             (click)="mdlLayout1.closeDrawer()">Login</a>-->
+<!--        </nav>-->
+<!--      </ng-template>-->
+<!--    </mdl-layout-drawer>-->
+<!--    <mdl-layout-content>-->
+<!--      <ng-content select="[app-content]"></ng-content>-->
+<!--    </mdl-layout-content>-->
+
+<!--  </mdl-layout>-->
+<!--</div>-->
+
+<td-layout [mode]="'side'">
+  <td-navigation-drawer #navDrawer flex sidenavTitle="{{title}}"
+                        name=""
+                        email="">
+    <mat-nav-list>
+      <ng-container *ngIf="shouldDisplay(); else elseBlock">
+        <a mat-list-item routerLink="/home" routerLinkActive="active-link" (click)="navDrawer.close()">Home</a>
+        <a mat-list-item routerLink="/view-expenses" routerLinkActive="active-link" (click)="navDrawer.close()">View
+          expenses</a>
+        <a mat-list-item routerLink="/login" (click)="logOut();navDrawer.close()"
+        >Logout</a>
+      </ng-container>
       <ng-template #elseBlock>
-        <nav class="mdl-navigation">
-          <a class="mdl-navigation__link" *ngIf="router.url === '/login'" routerLink="/signUp" routerLinkActive="active-link"
-             (click)="mdlLayout1.closeDrawer()">Signup</a>
-          <a class="mdl-navigation__link" *ngIf="router.url === '/signUp'" routerLink="/login" routerLinkActive="active-link"
-             (click)="mdlLayout1.closeDrawer()">Login</a>
-        </nav>
+        <a mat-list-item *ngIf="router.url === '/login'" routerLink="/signUp"
+           routerLinkActive="active-link" (click)="navDrawer.close()">Signup</a>
+        <a mat-list-item *ngIf="router.url === '/signUp'" routerLink="/login"
+           routerLinkActive="active-link" (click)="navDrawer.close()">Login</a>
       </ng-template>
-    </mdl-layout-drawer>
-    <mdl-layout-content>
-      <ng-content select="[app-content]"></ng-content>
-    </mdl-layout-content>
+    </mat-nav-list>
+  </td-navigation-drawer>
+  <td-layout-nav>
+    <div td-toolbar-content layout="row" layout-align="start center" flex>
+      <button mat-icon-button td-menu-button tdLayoutToggle>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>{{title}}</span>
+      <span flex></span>
 
-  </mdl-layout>
-</div>
+      <!--      <div class="d-flex">-->
+      <!--        <ng-container *ngIf="shouldDisplay(); else elseBlock">-->
+      <!--          <a mat-list-item routerLink="/home" routerLinkActive="active-link">Home</a>-->
+      <!--          <a mat-list-item routerLink="/view-expenses" routerLinkActive="active-link">View-->
+      <!--            expenses</a>-->
+      <!--          <a mat-list-item routerLink="/login" (click)="logOut();navDrawer.close()"-->
+      <!--          >Logout</a>-->
+      <!--        </ng-container>-->
+      <!--        <ng-template #elseBlock>-->
+      <!--          <a mat-list-item *ngIf="router.url === '/login'" routerLink="/signUp"-->
+      <!--             routerLinkActive="active-link" (click)="navDrawer.close()">Signup</a>-->
+      <!--          <a mat-list-item *ngIf="router.url === '/signUp'" routerLink="/login"-->
+      <!--             routerLinkActive="active-link" (click)="navDrawer.close()">Login</a>-->
+      <!--        </ng-template>-->
 
+      <!--      </div>-->
+
+<!--      <span class="d-flex justify-content-end">-->
+<!--         <a mat-icon-button matTooltip="Docs" matTooltipPosition="before" href="https://teradata.github.io/covalent/"-->
+<!--            target="_blank">-->
+<!--        <mat-icon>chrome_reader_mode</mat-icon>-->
+<!--      </a>-->
+<!--      </span>-->
+    </div>
+
+    <ng-content select="[app-content]"></ng-content>
+
+<!--    <td-layout-footer color="primary">-->
+<!--      <app-footer></app-footer>-->
+<!--    </td-layout-footer>-->
+  </td-layout-nav>
+</td-layout>

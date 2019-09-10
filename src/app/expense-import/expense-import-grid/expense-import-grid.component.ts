@@ -7,7 +7,7 @@ import { displayedColumns, ExpenseImportModel } from '../expense-import.model';
 @Component({
   selector: 'app-expense-import-grid',
   templateUrl: './expense-import-grid.component.html',
-  styleUrls: ['./expense-import-grid.component.less']
+  styleUrls: ['./expense-import-grid.component.scss']
 })
 export class ExpenseImportGridComponent implements OnInit, OnChanges {
   @Input() data: ExpenseImportModel[] = [];

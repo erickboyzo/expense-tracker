@@ -6,7 +6,7 @@ import { ExpenseImportModel, requiredColumns } from './expense-import.model';
 @Component({
   selector: 'app-expense-import',
   templateUrl: './expense-import.component.html',
-  styleUrls: ['./expense-import.component.less']
+  styleUrls: ['./expense-import.component.scss']
 })
 export class ExpenseImportComponent implements OnInit {
 

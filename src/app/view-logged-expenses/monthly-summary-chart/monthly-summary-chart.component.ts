@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-monthly-summary-chart',
   templateUrl: './monthly-summary-chart.component.html',
-  styleUrls: ['./monthly-summary-chart.component.less']
+  styleUrls: ['./monthly-summary-chart.component.scss']
 })
 export class MonthlySummaryChartComponent implements OnInit, OnChanges {
 
@@ -67,7 +67,7 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.originalData = [...this.data];
+    this.originalData = [ ...this.data ];
     this.currentData = this.data;
   }
 

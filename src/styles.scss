@@ -1,8 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-@import '../src/stylesheets/_variables.less';
+@import 'stylesheets/_variables';
+@import 'stylesheets/theme';
 
-@material-blue: #2196f3;
+$material-blue: #2196f3;
 
 html {
   height: 100%;
@@ -12,13 +11,8 @@ html {
     font-weight: 300;
     background-color: #EEEEEE;
 
-    .container-fluid {
-      padding-top: 60px;
-      padding-bottom: 100px;
-    }
-
     #content {
-      min-height: 91vh;
+      margin-top: 5%;
     }
 
     .cdk-overlay-pane {
@@ -69,22 +63,6 @@ html {
       width: 100%;
     }
 
-    .mat-focused .mat-input-underline .mat-input-ripple {
-      background-color: @material-blue;
-    }
-
-    .mat-focused .mat-input-placeholder.mat-empty {
-      color: @material-blue;
-    }
-
-    .mat-focused .mat-input-placeholder {
-      color: @material-blue;
-    }
-
-    .mat-input-underline .mat-input-ripple {
-      color: @material-blue;
-    }
-
     .no-data {
       .icon {
         text-align: center;
@@ -123,11 +101,6 @@ html {
       h2 {
         text-align: center;
       }
-    }
-
-    .mdl-layout__drawer-button {
-      margin: 4px;
-      color: white !important;
     }
 
   }

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-chart-summary',
   templateUrl: 'chart-summary.component.html',
-  styleUrls: ['chart-summary.component.less']
+  styleUrls: ['chart-summary.component.scss']
 })
 
 export class ChartSummaryComponent implements OnInit, OnChanges {

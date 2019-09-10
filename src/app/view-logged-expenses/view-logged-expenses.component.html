@@ -5,75 +5,91 @@
       <app-number-cards [data]="expenseDataChart"></app-number-cards>
     </div>
 
-    <div class="row" *ngIf="isLoadingExpenses">
-      <div class="col-sm-6 offset-sm-2 loading-progress-bar">
-        <mdl-progress [indeterminate]="true"></mdl-progress>
+    <div class="row">
+      <div class="mb-5 col-6">
+        <mat-card>
+          <mat-card-title>Category summary
+            <mat-progress-bar *ngIf="isLoadingExpenses" mode="indeterminate"></mat-progress-bar>
+          </mat-card-title>
+          <mat-card-header>
+            <mat-card-subtitle *ngIf="expenseDataChart.length !==0"> Click on category to view details
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <app-chart-summary *ngIf="!isLoadingExpenses && isDataReady" [data]="expenseDataChart"></app-chart-summary>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
       </div>
-    </div>
-    <mat-card class="mb-5 col-12 col-md-6">
-      <mat-card-title>Category summary</mat-card-title>
-      <mat-card-header>
-        <mat-card-subtitle *ngIf="expenseDataChart.length !==0"> Click on category to view details</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <app-chart-summary *ngIf="!isLoadingExpenses && isDataReady" [data]="expenseDataChart"></app-chart-summary>
-      </mat-card-content>
-      <mat-card-actions>
-      </mat-card-actions>
-    </mat-card>
 
-    <div class="row" *ngIf="isLoadingExpenses">
-      <div class="col-sm-8 offset-sm-2 loading-progress-bar">
-        <mdl-progress [indeterminate]="true"></mdl-progress>
+      <div class="mb-5 col-6">
+        <mat-card>
+          <mat-card-title>Monthly summary
+            <mat-progress-bar *ngIf="isLoadingExpenses" mode="indeterminate"></mat-progress-bar>
+          </mat-card-title>
+          <mat-card-header>
+            <mat-card-subtitle *ngIf="expenseDataChart.length !==0">Select month to view details for 5 month range
+              proceeding
+              selection
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <app-monthly-summary-chart *ngIf="!isLoadingExpenses && isDataReady"
+                                       [data]="expenseDataTable"></app-monthly-summary-chart>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
       </div>
     </div>
-    <mat-card class="mb-5 col-12 col-md-6">
-      <mat-card-title>Monthly summary</mat-card-title>
-      <mat-card-header>
-        <mat-card-subtitle *ngIf="expenseDataChart.length !==0">Select month to view details for 5 month range proceeding
-          selection
-        </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <app-monthly-summary-chart *ngIf="!isLoadingExpenses && isDataReady"
-                                   [data]="expenseDataTable"></app-monthly-summary-chart>
-      </mat-card-content>
-      <mat-card-actions>
-      </mat-card-actions>
-    </mat-card>
-    <div class="row" *ngIf="isLoadingExpenses">
-      <div class="col-sm-8 offset-sm-2 loading-progress-bar">
-        <mdl-progress [indeterminate]="true"></mdl-progress>
+
+
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-title>Detail summary
+            <mat-progress-bar *ngIf="isLoadingExpenses" mode="indeterminate"></mat-progress-bar>
+          </mat-card-title>
+          <mat-card-header>
+            <mat-card-subtitle *ngIf="expenseDataTable.length !==0">Click on row to edit expense</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <app-table-summary *ngIf="!isLoadingExpenses && isDataReady" [data]="expenseDataTable"></app-table-summary>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
       </div>
     </div>
-    <mat-card class="example-card col-12">
-      <mat-card-title>Detail summary</mat-card-title>
-      <mat-card-header>
-        <mat-card-subtitle *ngIf="expenseDataTable.length !==0">Click on row to edit expense</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <app-table-summary *ngIf="!isLoadingExpenses && isDataReady" [data]="expenseDataTable"></app-table-summary>
-      </mat-card-content>
-      <mat-card-actions>
-      </mat-card-actions>
-    </mat-card>
+
+
   </ng-container>
 
   <ng-template #noData>
-      <div class="container no-data">
-        <div class="col-sm-6 offset-sm-3">
-          <div class="icon">
+
+    <ng-container *ngTemplateOutlet="isLoadingExpenses ? loading: noData"></ng-container>
+
+    <ng-template #loading>
+      <app-card-spinner></app-card-spinner>
+    </ng-template>
+    <ng-template #noData>
+      <div class="no-data">
+        <div class="col-12 justify-content-center">
+          <div class="icon justify-content-center">
             <mat-icon class="icon-alert">assessment</mat-icon>
           </div>
           <div><h2>No expense data</h2> <h6>Please enter an expense.</h6>
             <div class="alert-action">
-              <button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple routerLink="/home">Enter
+              <button mat-raised-button color="primary" routerLink="/home">Enter
                 expense
               </button>
             </div>
           </div>
         </div>
       </div>
+    </ng-template>
+
   </ng-template>
 
   <button mat-fab class="fab" routerLink="/home">

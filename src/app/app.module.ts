@@ -61,6 +61,7 @@ import { NumberCardsComponent } from './view-logged-expenses/number-cards/number
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ExpenseImportModule } from './expense-import/expense-import.module';
 import { CardSpinnerModule } from './card-spinner/card-spinner.module';
+import { CovalentLayoutModule } from "@covalent/core";
 
 @NgModule({
   declarations: [
@@ -125,7 +126,8 @@ import { CardSpinnerModule } from './card-spinner/card-spinner.module';
     NoConflictStyleCompatibilityMode,
     NgxChartsModule,
     ExpenseImportModule,
-    CardSpinnerModule
+    CardSpinnerModule,
+    CovalentLayoutModule
   ],
   providers: [AuthService,
     LoginService,

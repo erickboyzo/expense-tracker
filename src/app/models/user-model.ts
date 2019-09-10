@@ -7,10 +7,13 @@ export class User {
 }
 
 export interface ExpenseInfo {
-  numOfEntries: string;
+  numOfEntries: string | number;
   totalAmount: string;
   categoryTotals: string;
   selectedCategory: string;
+  umOfEntries?: any;
+  firstExpenseDate?: string;
+  lastExpenseDate?: string;
 }
 
 export const expense_categories: string[] = ['Groceries', 'Transportation', 'Entertainment', 'Dining out', 'Unassigned'];

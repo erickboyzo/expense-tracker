@@ -21,10 +21,9 @@
               "src/favicon.ico"
             ],
             "styles": [
-              "src/styles.less",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/roboto-fontface/css/roboto/roboto-fontface.css",
-              "node_modules/font-awesome/css/font-awesome.css"
+              "src/styles.scss",
+              "node_modules/font-awesome/css/font-awesome.scss",
+              "node_modules/bootstrap/scss/bootstrap.scss"
             ],
             "scripts": []
           },
@@ -127,7 +126,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "less"
+      "styleext": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

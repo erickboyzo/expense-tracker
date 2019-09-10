@@ -1,4 +1,4 @@
-@primary: #106cc8;
+$primary: #106cc8;
 
 /*
  * Data Table
@@ -88,7 +88,7 @@ md2-pagination {
       }
 
       &.active {
-        background: @primary;
+        background: $primary;
         color: white;
         cursor: default;
       }

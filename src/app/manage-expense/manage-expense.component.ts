@@ -8,7 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-manage-expense',
   templateUrl: './manage-expense.component.html',
-  styleUrls: ['./manage-expense.component.less']
+  styleUrls: ['./manage-expense.component.scss']
 })
 
 export class ManageExpenseComponent implements OnInit {

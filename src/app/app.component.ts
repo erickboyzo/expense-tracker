@@ -11,7 +11,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.less']
+  styleUrls: ['./app.component.scss']
 })
 
 export class AppComponent implements OnInit, OnDestroy {
@@ -34,7 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
         console.log(this.email);
         this.loginService.setUser(authData);
         this.loginService.announceUserIdCreated('user created!');
-        this.router.navigate(['/home']);
+        this.router.navigate(['/view-expenses']);
       } else {
         this.router.navigate(['/login']);
       }

@@ -10,7 +10,7 @@ import { Expense } from '../models/expense-model';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.less']
+  styleUrls: ['./home.component.scss']
 })
 
 export class HomeComponent implements OnInit {
@@ -176,7 +176,7 @@ export class HomeComponent implements OnInit {
       const dataObj = {name: category, amount: categorySum.toFixed(2)};
       totals.push(dataObj);
     }
-    return totals;
+    return totals.toString();
   }
 
   selected(e: any) {
