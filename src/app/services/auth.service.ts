@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
-import UserCredential = firebase.auth.UserCredential;
+import { AngularFireAuth } from 'angularfire2/auth';
 import { User } from 'firebase';
+import UserCredential = firebase.auth.UserCredential;
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
 
  private user: User;

@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { ManageExpenseComponent } from '../../manage-expense/manage-expense.component';
+import { ManageExpenseComponent } from '../../../manage-expense/manage-expense.component';
 import { MatDialog } from '@angular/material';
 
 

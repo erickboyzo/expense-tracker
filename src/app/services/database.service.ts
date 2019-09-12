@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Expense } from '../models/expense-model'
+import { Expense } from '../shared/models/expense-model'
 import { Subject } from 'rxjs';
 import { AngularFireDatabase, SnapshotAction } from '@angular/fire/database';
 import { Observable } from 'rxjs/Rx';
-import { ExpenseImportModel } from '../expense-import/expense-import.model';
+import { ExpenseImportModel } from '../home/expense-import/expense-import.model';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DatabaseService {
 
   private expenseAddedSource = new Subject<string>();

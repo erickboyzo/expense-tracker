@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
-import { expense_categories, ExpenseInfo, User } from '../models/user-model';
+import { expense_categories, ExpenseInfo, User } from '../shared/models/user-model';
 import { DatabaseService } from '../services/database.service';
 import { MatHorizontalStepper, MatSnackBar } from '@angular/material';
-import { ExpenseImportModel } from '../expense-import/expense-import.model';
-import { Expense } from '../models/expense-model';
+import { ExpenseImportModel } from './expense-import/expense-import.model';
+import { Expense } from '../shared/models/expense-model';
 
 @Component({
   selector: 'app-home',
@@ -70,8 +70,9 @@ export class HomeComponent implements OnInit {
     let current: string = this.loginService.getUser().email;
     this.database.getUserDetails(current)
       .then(jsonData => {
-        let obj = jsonData.toJSON();
-        let key = Object.keys(obj)[0];
+        const obj = jsonData.toJSON();
+        const key = Object.keys(obj)[0];
+        console.log(key);
         this.loginService.setUserId(key);
         this.user.firstName = obj[key].firstName;
         this.user.lastName = obj[key].lastName;

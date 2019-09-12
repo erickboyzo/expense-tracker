@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DatabaseService } from '../services/database.service';
-import { LoginService } from '../services/login.service';
+import { DatabaseService } from '../../services/database.service';
+import { LoginService } from '../../services/login.service';
 import { Subscription } from 'rxjs';
-import { Expense } from '../models/expense-model';
+import { Expense } from '../../shared/models/expense-model';
 
 @Component({
   selector: 'app-view-logged-expenses',
@@ -20,7 +20,7 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
 
   constructor(private database: DatabaseService,
               private loginService: LoginService) {
-    loginService.userIdSetAnnounced$.subscribe(
+    this.loginService.userIdSetAnnounced$.subscribe(
       category => {
         console.log(category);
         this.getUserExpenses();

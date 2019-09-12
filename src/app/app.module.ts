@@ -21,57 +21,56 @@ import {
   MatDialogModule,
   MatExpansionModule,
   MatFormFieldModule,
-  MatGridListModule, MatIconModule,
+  MatGridListModule,
+  MatIconModule,
   MatInputModule,
   MatListModule,
-  MatMenuModule, MatPaginatorModule, MatProgressBarModule,
-  MatProgressSpinnerModule,
+  MatMenuModule,
+  MatProgressBarModule,
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
   MatSliderModule,
   MatSlideToggleModule,
-  MatSnackBarModule, MatSortModule,
-  MatStepperModule, MatTableModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatStepperModule,
   MatTabsModule,
-  MatToolbarModule, MatTooltipModule
+  MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
 
 
 import { AppComponent } from './app.component';
-import { ViewLoggedExpensesComponent } from './view-logged-expenses/view-logged-expenses.component';
-import { LogExpenseComponent } from './log-expense/log-expense.component';
-import { AppHeaderComponent } from './app-header/app-header.component';
-import { AppFooterComponent } from './app-footer/app-footer.component';
+import { ViewLoggedExpensesComponent } from './dashboard/view-logged-expenses/view-logged-expenses.component';
+import { LogExpenseComponent } from './home/log-expense/log-expense.component';
 import { LoginComponent } from './login/login.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
+import { LoginModule } from "./login/login.module";
+import { SignUpComponent } from './signup/sign-up/sign-up.component';
 import { AuthService } from './services/auth.service';
 import { LoginService } from './services/login.service';
 import { DatabaseService } from './services/database.service';
 import { HomeComponent } from './home/home.component';
-import { ChartSummaryComponent } from './view-logged-expenses/chart-summary/chart-summary.component';
-import { TableSummaryComponent } from './view-logged-expenses/table-summary/table-summary.component';
+import { ChartSummaryComponent } from './dashboard/view-logged-expenses/chart-summary/chart-summary.component';
+import { TableSummaryComponent } from './dashboard/view-logged-expenses/table-summary/table-summary.component';
 import { ManageExpenseComponent } from './manage-expense/manage-expense.component';
-import { MonthlySummaryChartComponent } from './view-logged-expenses/monthly-summary-chart/monthly-summary-chart.component';
+import { MonthlySummaryChartComponent } from './dashboard/view-logged-expenses/monthly-summary-chart/monthly-summary-chart.component';
 import { appRoutes } from './app.routes';
 import { firebaseConfig } from './app.firebase.config';
 import { highchartsFactory } from './app.highcharts';
-import { PieGridComponent } from './view-logged-expenses/pie-grid/pie-grid.component';
-import { NumberCardsComponent } from './view-logged-expenses/number-cards/number-cards.component';
+import { PieGridComponent } from './dashboard/view-logged-expenses/pie-grid/pie-grid.component';
+import { NumberCardsComponent } from './dashboard/view-logged-expenses/number-cards/number-cards.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { ExpenseImportModule } from './expense-import/expense-import.module';
-import { CardSpinnerModule } from './card-spinner/card-spinner.module';
-import { CovalentLayoutModule } from "@covalent/core";
+import { ExpenseImportModule } from './home/expense-import/expense-import.module';
+import { CardSpinnerModule } from './shared/card-spinner/card-spinner.module';
+import { CoreModule } from "./core/core.module";
+import { SignupModule } from "./signup/signup.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     ViewLoggedExpensesComponent,
     LogExpenseComponent,
-    AppHeaderComponent,
-    AppFooterComponent,
-    LoginComponent,
-    SignUpComponent,
     HomeComponent,
     ChartSummaryComponent,
     TableSummaryComponent,
@@ -127,15 +126,13 @@ import { CovalentLayoutModule } from "@covalent/core";
     NgxChartsModule,
     ExpenseImportModule,
     CardSpinnerModule,
-    CovalentLayoutModule
-  ],
-  providers: [AuthService,
-    LoginService,
-    DatabaseService,
-    {
-      provide: HighchartsStatic,
-      useFactory: highchartsFactory
-    }],
+    CoreModule,
+    LoginModule,
+    SignupModule],
+  providers: [{
+    provide: HighchartsStatic,
+    useFactory: highchartsFactory
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {
