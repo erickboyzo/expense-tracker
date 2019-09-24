@@ -1,9 +1,14 @@
 <div class="container-fluid" id="view-expense">
 
   <ng-container *ngIf="!isLoadingExpenses && expenseDataChart.length !==0; else noData">
-    <div class="mat-card mb-5">
-      <app-number-cards [data]="expenseDataChart"></app-number-cards>
+    <div class="row">
+      <div class="col-3" *ngFor="let item of metrics">
+        <app-number-cards [data]="item"></app-number-cards>
+      </div>
+      <div class="col-6"><app-pie-grid></app-pie-grid></div>
     </div>
+
+
 
     <div class="row">
       <div class="mb-5 col-6">

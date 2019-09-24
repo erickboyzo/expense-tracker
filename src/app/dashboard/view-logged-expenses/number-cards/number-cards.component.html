@@ -1,5 +1,12 @@
+<mat-card>
+  <mat-card-content>
 
-<div class="number__cards">
-  <ngx-charts-number-card [results]="data" scheme="vivid"></ngx-charts-number-card>
-</div>
+    <div>{{data.metricTitle}}</div>
+    <div>
+      <mat-icon >receipt</mat-icon>
+      <span class="data-value">{{data.value}}</span>
+    </div>
+
+  </mat-card-content>
+</mat-card>
 

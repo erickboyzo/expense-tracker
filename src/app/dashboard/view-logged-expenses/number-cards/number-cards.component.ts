@@ -7,9 +7,12 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class NumberCardsComponent implements OnInit {
 
-  @Input() data: any[];
+  @Input() data: {
+    color?: string, value: string | number, metricTitle: string
+  };
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

@@ -5,7 +5,7 @@
     <div *ngIf="filterErrors" class="text-danger"> Expenses with errors will not be saved. Correct csv file and import again before saving.</div>
   </div>
 
-  <button *ngIf="data.length > 0" class="ml-2" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple
+  <button *ngIf="data.length > 0" class="ml-2" mat-raised-button color="primary"
           [disabled]="filterErrors" (click)="saveImportedExpenses()">Save</button>
 </div>
 

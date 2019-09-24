@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Expense } from '../shared/models/expense-model';
-import { DatabaseService } from '../services/database.service';
-import { LoginService } from '../services/login.service';
-import { expense_types } from '../shared/models/user-model';
+import { Expense } from '../../shared/models/expense-model';
+import { DatabaseService } from '../../services/database.service';
+import { LoginService } from '../../services/login.service';
+import { expense_types } from '../../shared/models/user-model';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
 @Component({

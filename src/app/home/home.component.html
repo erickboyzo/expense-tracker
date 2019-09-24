@@ -41,11 +41,15 @@
                 <div class="row">
                   <div class="col-sm-6 select-padding info-alignment">
                     <label>View Totals by Category</label>
-                    <md2-select placeholder="Category totals" [(ngModel)]="expenseInfo.selectedCategory"
-                                name="category">
-                      <md2-option *ngFor="let cat of expenseInfo.categoryTotals "
-                                  [value]="cat">{{cat.name}}</md2-option>
-                    </md2-select>
+                    <mat-form-field>
+                      <mat-label>Category totals</mat-label>
+                      <mat-select [(ngModel)]="expenseInfo.selectedCategory"
+                                  name="category">
+                        <mat-option *ngFor="let category of expenseInfo.categoryTotals" [value]="category">
+                          {{category.name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
                   <div class="col-sm-6 info-alignment">
                     <label>{{expenseInfo.selectedCategory.name}} totals</label>
@@ -63,7 +67,7 @@
                       <div>
                         <h2>No expense data</h2>
                         <div class="alert-action">
-                          <button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple
+                          <button mat-raised-button color="primary"
                                   (click)="scrollToEnterExpense()">Enter expense
                           </button>
                         </div>
@@ -96,9 +100,9 @@
           </mat-card-content>
           <mat-card-actions>
             <div class="row button-row">
-              <button class="col-sm-6" mdl-button mdl-colored="primary" mdl-ripple (click)="resetCategories()">Reset
+              <button class="col-sm-6" mat-raised-button color="primary" (click)="resetCategories()">Reset
               </button>
-              <button class="col-sm-6" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple
+              <button class="col-sm-6" mat-raised-button color="primary"
                       [disabled]="!isValidAmountCategories() || isLoadingCategories" (click)="saveCategories()">
                 <mat-icon>save</mat-icon>
                 <span>Save</span></button>
@@ -131,10 +135,7 @@
               </mat-step>
               <mat-step label="All Done" [completed]="importComplete">
                 <h2>Expenses Saved</h2>
-                <button  mdl-button
-                         mdl-button-type="raised"
-                         mdl-colored="primary"
-                         mdl-ripple  routerLink="/view-expenses">
+                <button  mat-raised-button color="primary" routerLink="/view-expenses">
                   <mat-icon>insert_chart</mat-icon>
                   View Expenses Dashboard
                 </button>
