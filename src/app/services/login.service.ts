@@ -36,8 +36,8 @@ export class LoginService {
     return this.userId;
   }
 
-  setCategories(orginalCategories) {
-    this.categories = orginalCategories;
+  setCategories(originalCategories) {
+    this.categories = originalCategories;
   }
 
   getCurrentCategories(): string[] {

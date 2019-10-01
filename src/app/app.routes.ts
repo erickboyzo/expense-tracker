@@ -7,8 +7,8 @@ import { HomeComponent } from './home/home.component';
 import { AngularFireAuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
 
-const redirectUnauthorizedToLogin = redirectUnauthorizedTo(['login']);
-const redirectLoggedInToDashboard = redirectLoggedInTo(['view-expenses']);
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+const redirectLoggedInToDashboard = () => redirectLoggedInTo(['view-expenses']);
 
 
 export const appRoutes: Routes = [

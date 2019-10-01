@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { Expense } from '../../shared/models/expense-model';
 import { DatabaseService } from '../../services/database.service';
 import { LoginService } from '../../services/login.service';
-import { Subscription } from 'rxjs';
-import { Expense } from '../../shared/models/expense-model';
 
 @Component({
   selector: 'app-view-logged-expenses',
@@ -10,7 +11,6 @@ import { Expense } from '../../shared/models/expense-model';
   styleUrls: ['./view-logged-expenses.component.scss']
 })
 export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
-
   expenseDataChart: any = [];
   expenseDataTable: Expense[] = [];
   metrics: {
@@ -25,7 +25,6 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
               private loginService: LoginService) {
     this.loginService.userIdSetAnnounced$.subscribe(
       category => {
-        console.log(category);
         this.getUserExpenses();
       });
   }
@@ -41,15 +40,17 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
   }
 
   getUserExpenses() {
-    let current: string = this.loginService.getUser().email;
-    this.database.getUserDetails(current)
-      .then(jsonData => {
-        const obj = jsonData.toJSON();
-        const key = Object.keys(obj)[0];
-        this.loginService.setUserId(key);
-        this.subToExpensesChange();
-      }).catch(e => {
-    });
+    const currentUser: string = this.loginService.getUser() ? this.loginService.getUser().email : null;
+    if (currentUser) {
+      this.database.getUserDetails(currentUser)
+        .then(jsonData => {
+          const obj = jsonData.toJSON();
+          const key = Object.keys(obj)[0];
+          this.loginService.setUserId(key);
+          this.subToExpensesChange();
+        }).catch(e => {
+      });
+    }
   }
 
   private subToExpensesChange() {
@@ -77,42 +78,23 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     console.log(snapshots);
     this.isLoadingExpenses = false;
     const parsedData = this.parseData(snapshots);
-    console.log(parsedData);
 
-    let firstDate = new Date(Math.min.apply(null, parsedData.map((e) => {
-      return new Date(e.date);
-    })));
 
-    let lastDate = new Date(Math.max.apply(null, parsedData.map((e) => {
-      return new Date(e.date);
-    })));
+    const firstDate = new Date(Math.min.apply(null, parsedData.map((e) => new Date(e.date))));
+    const lastDate = new Date(Math.max.apply(null, parsedData.map((e) => new Date(e.date))));
+    const numOfEntries = parsedData.length;
+    const totalAmount = this.getTotal(parsedData);
 
-    let numOfEntries = parsedData.length;
-    let totalAmount = this.getTotal(parsedData);
 
-    console.log(firstDate);
-    console.log(lastDate);
-    console.log(numOfEntries);
-    console.log(totalAmount);
-
-   this.metrics = [
+    this.metrics = [
       {color: null, value: firstDate.toDateString().slice(0, 15), metricTitle: 'Earliest expense logged date'},
       {color: null, value: lastDate.toDateString().slice(0, 15), metricTitle: 'Latest expense logged date'},
       {color: null, value: numOfEntries, metricTitle: 'Expenses logged'},
       {color: null, value: totalAmount, metricTitle: 'Total Amount'},
     ];
 
-    console.log(this.metrics);
-
-
-    // this.expenseInfo.numOfEntries = expenses.parsedData;
-    // this.expenseInfo.totalAmount = '$' + this.getTotal(expenses);
-    // this.expenseInfo.categoryTotals = this.getCategoryTotals(expenses);
-    // this.expenseInfo.selectedCategory = this.expenseInfo.categoryTotals[0];
-    // this.expenseInfo.firstExpenseDate = firstDate.toDateString().slice(0, 15);
-    // this.expenseInfo.lastExpenseDate = lastDate.toDateString().slice(0, 15);
-
-    const categories = parsedData.map(item => item.category)
+    const categories = parsedData
+      .map(item => item.category)
       .filter((value, index, self) => self.indexOf(value) === index);
 
     const pieData = [];
@@ -134,9 +116,9 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     this.isLoadingExpenses = false;
   }
 
-  getTotal(expenses: any) {
+  getTotal(expenses: any): string {
     let categorySum = 0;
-    for (let expense of expenses) {
+    for (const expense of expenses) {
       categorySum += expense.amount;
     }
     return categorySum.toFixed(2);

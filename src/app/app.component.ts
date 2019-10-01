@@ -7,7 +7,7 @@ import { LoginService } from './services/login.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { User } from "firebase";
+import { User } from 'firebase';
 
 @Component({
   selector: 'app-root',

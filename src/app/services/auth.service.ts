@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { User } from 'firebase';
 import UserCredential = firebase.auth.UserCredential;
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 @Injectable({
