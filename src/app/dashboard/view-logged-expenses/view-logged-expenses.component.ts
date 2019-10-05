@@ -14,7 +14,7 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
   expenseDataChart: any = [];
   expenseDataTable: Expense[] = [];
   metrics: {
-    color?: string, value: string | number, metricTitle: string
+    color?: string, value: string | number, metricTitle: string, icon?:string
   }[] = [];
   isLoadingExpenses = false;
   isDataReady = false;
@@ -87,10 +87,10 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
 
 
     this.metrics = [
-      {color: null, value: firstDate.toDateString().slice(0, 15), metricTitle: 'Earliest expense logged date'},
-      {color: null, value: lastDate.toDateString().slice(0, 15), metricTitle: 'Latest expense logged date'},
-      {color: null, value: numOfEntries, metricTitle: 'Expenses logged'},
-      {color: null, value: totalAmount, metricTitle: 'Total Amount'},
+      {color: null, value: firstDate.toDateString().slice(0, 19), metricTitle: 'First Expense Date', icon: 'today'},
+      {color: null, value: lastDate.toDateString().slice(0, 19), metricTitle: 'Latest Expense Date', icon: 'today'},
+      {color: null, value: numOfEntries, metricTitle: 'Number of Expenses', icon: 'receipt'},
+      {color: 'money-icon', value: totalAmount, metricTitle: 'Total Amount', icon: 'attach_money'},
     ];
 
     const categories = parsedData

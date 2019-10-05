@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class NumberCardsComponent implements OnInit {
 
   @Input() data: {
-    color?: string, value: string | number, metricTitle: string
+    color?: string, value: string | number, metricTitle: string, icon?: string
   };
 
   constructor() {

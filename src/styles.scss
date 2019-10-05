@@ -56,11 +56,8 @@ html {
     }
 
     .mat-card:not([class*=mat-elevation-z]) {
-      box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3);
-    }
-
-    .mdl-progress {
-      width: 100%;
+      box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+      border-radius: 0;
     }
 
     .no-data {

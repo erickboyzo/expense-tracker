@@ -2,16 +2,12 @@
 
   <ng-container *ngIf="!isLoadingExpenses && expenseDataChart.length !==0; else noData">
     <div class="row">
-      <div class="col-3" *ngFor="let item of metrics">
+      <div class="col-md-3 col-sm-12" *ngFor="let item of metrics">
         <app-number-cards [data]="item"></app-number-cards>
       </div>
-      <div class="col-6"><app-pie-grid></app-pie-grid></div>
     </div>
-
-
-
     <div class="row">
-      <div class="mb-5 col-6">
+      <div class="mb-5 col-md-6 col-sm-12">
         <mat-card>
           <mat-card-title>Category summary
             <mat-progress-bar *ngIf="isLoadingExpenses" mode="indeterminate"></mat-progress-bar>
@@ -28,7 +24,7 @@
         </mat-card>
       </div>
 
-      <div class="mb-5 col-6">
+      <div class="mb-5 col-md-6 col-sm-12">
         <mat-card>
           <mat-card-title>Monthly summary
             <mat-progress-bar *ngIf="isLoadingExpenses" mode="indeterminate"></mat-progress-bar>
