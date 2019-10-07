@@ -14,25 +14,31 @@ import { MatSnackBar } from '@angular/material';
 export class LogExpenseComponent implements OnInit, OnDestroy {
   categories: string[] = this.loginService.getCurrentCategories();
   types: string[] = expense_types;
-  expenseObj: Expense = new Expense;
+  expenseObj: Expense = {
+    name: null,
+    date: null,
+    category: null,
+    type: null,
+    amount: null,
+    comments: ''
+  };
   isLoading = false;
   dateError = false;
 
   constructor(private loginService: LoginService,
-    private snackBar: MatSnackBar,
-    private database: DatabaseService) {
+              private snackBar: MatSnackBar,
+              private database: DatabaseService) {
     database.categoriesAddedAnnounced$.subscribe(
       category => {
         this.updateExpenseCategories(category);
       });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   updateExpenseCategories(category: string) {
-    console.log('new categories');
     this.categories = this.loginService.getCurrentCategories();
-    console.log(this.categories);
   }
 
   saveExpenseEntry(expenseForm: any) {
@@ -42,12 +48,12 @@ export class LogExpenseComponent implements OnInit, OnDestroy {
     }
     this.database.saveNewExpense(this.expenseObj, this.loginService.getUserId())
       .then((data) => {
-      this.isLoading = false;
-      expenseForm.resetForm();
-      this.resetExpenseObj();
-      this.showSnackBar();
-      this.announceChange();
-    }).catch(e => {
+        this.isLoading = false;
+        expenseForm.resetForm();
+        this.resetExpenseObj();
+        this.showSnackBar();
+        this.announceChange();
+      }).catch(e => {
       this.isLoading = false;
       console.log('Failed');
     })
@@ -58,11 +64,18 @@ export class LogExpenseComponent implements OnInit, OnDestroy {
   }
 
   resetExpenseObj() {
-    this.expenseObj = new Expense;
+    this.expenseObj = {
+      name: null,
+      date: null,
+      category: null,
+      type: null,
+      amount: null,
+      comments: ''
+    };
   }
 
   showSnackBar() {
-    this.snackBar.open('Expense saved!', '', { duration: 2000 });
+    this.snackBar.open('Expense saved!', '', {duration: 2000});
   }
 
   save(value: any, valid: any, form: any) {
@@ -71,7 +84,7 @@ export class LogExpenseComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkDate(e: any) {
+  checkDate(date: Date) {
     this.dateError = (this.expenseObj.date == null);
   }
 
@@ -83,13 +96,11 @@ export class LogExpenseComponent implements OnInit, OnDestroy {
 
   formatAmount() {
     if (this.expenseObj.amount !== null) {
-      let rounded = this.expenseObj.amount.toFixed(2);
+      const rounded = this.expenseObj.amount.toFixed(2);
       this.expenseObj.amount = parseFloat(rounded);
     }
   }
 
   ngOnDestroy(): void {
   }
-
-
 }

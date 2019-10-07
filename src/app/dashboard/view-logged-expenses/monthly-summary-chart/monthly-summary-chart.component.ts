@@ -67,6 +67,7 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    console.log(this.data);
     this.originalData = [ ...this.data ];
     this.currentData = this.data;
   }
@@ -96,21 +97,21 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
   }
 
   setDataForMonthRange() {
-    let monthNames = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
     ];
 
-    let monthRange = this.getDateRange();
+    const monthRange = this.getDateRange();
 
-    let monthSummary = [];
-    let drillDown = [];
-    for (let month of monthRange) {
+    const monthSummary = [];
+    const drillDown = [];
+    for (const month of monthRange) {
       let monthSum = 0;
-      let drillDownData = [];
+      const drillDownData = [];
 
-      for (let expense of this.currentData) {
+      for (const expense of this.currentData) {
 
-        let currentDate = new Date(expense.date);
+        const currentDate = new Date(expense.date);
         if (month.getMonth() === currentDate.getMonth() && month.getFullYear() === currentDate.getFullYear()) {
           monthSum += expense.amount;
           drillDownData.push(expense);
@@ -137,13 +138,13 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
 
   getDrillDownData(data: any) {
 
-    let summaryData = [];
+    const summaryData = [];
     const categories = data.map(item => item.category)
       .filter((value, index, self) => self.indexOf(value) === index);
 
-    for (let category of categories) {
+    for (const category of categories) {
       let categorySum = 0;
-      for (let expense of data) {
+      for (const expense of data) {
         if (category === expense.category) {
           categorySum += expense.amount;
         }
@@ -154,12 +155,15 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
   }
 
   getDateRange() {
-    let monthRange = [this.date];
+    const monthRange = [this.date];
+    console.log(monthRange);
     for (let i = 1; i < 6; i++) {
-      let month = new Date(this.date.getTime());
+      const month = new Date(this.date.getTime());
+      console.log(month);
       month.setMonth(this.date.getMonth() + i);
       monthRange.push(month);
     }
+    console.log(monthRange);
     return monthRange;
   }
 

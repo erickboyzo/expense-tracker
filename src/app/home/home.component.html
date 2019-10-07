@@ -99,10 +99,10 @@
             </md2-chips>
           </mat-card-content>
           <mat-card-actions>
-            <div class="row button-row">
-              <button class="col-sm-6" mat-raised-button color="primary" (click)="resetCategories()">Reset
+            <div class="d-flex justify-content-end">
+              <button mat-button color="primary" (click)="resetCategories()">Reset
               </button>
-              <button class="col-sm-6" mat-raised-button color="primary"
+              <button mat-raised-button color="primary"
                       [disabled]="!isValidAmountCategories() || isLoadingCategories" (click)="saveCategories()">
                 <mat-icon>save</mat-icon>
                 <span>Save</span></button>
@@ -115,7 +115,6 @@
 
 
   <div class="row">
-
     <div class="col-12 col-md-6 offset-md-3" *ngIf="!isLoadingUserInformation">
       <app-log-expense></app-log-expense>
     </div>
@@ -131,11 +130,12 @@
                 <app-expense-import-guidance></app-expense-import-guidance>
               </mat-step>
               <mat-step label="Review Expenses Imported" [completed]="step === 2">
-                <app-expense-import-grid [data]="importedExpenses" (saveAction)="saveImportedExpenses()"></app-expense-import-grid>
+                <app-expense-import-grid [data]="importedExpenses"
+                                         (saveAction)="saveImportedExpenses()"></app-expense-import-grid>
               </mat-step>
               <mat-step label="All Done" [completed]="importComplete">
                 <h2>Expenses Saved</h2>
-                <button  mat-raised-button color="primary" routerLink="/view-expenses">
+                <button mat-raised-button color="primary" routerLink="/view-expenses">
                   <mat-icon>insert_chart</mat-icon>
                   View Expenses Dashboard
                 </button>

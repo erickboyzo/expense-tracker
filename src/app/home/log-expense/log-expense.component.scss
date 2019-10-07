@@ -1,47 +1,5 @@
 #enter-expense {
-  font-family: 'Roboto', sans-serif !important;
-  .card-header {
-    background-color: #1565C0;
-    color: #EEEEEE;
-  }
   .row {
-    padding: 15px 0 30px 0;
+    padding: 20px 0 20px 0;
   }
-  .md2-select {
-    width: 100%;
-  }
-
-  .mat-fab {
-    background-color: #00C853;
-  }
-  .reset-button {
-    //padding-top: 10px;
-  }
-
-  .btn {
-    cursor: pointer;
-  }
-
-  .mat-raised-button.mat-primary {
-    background-color: #4CAF50;
-    color: #EEEEEE;
-
-    &:disabled {
-      background-color: #C8E6C9;
-    }
-  }
-
-  .md2-select {
-    width: 100%;
-    margin-top: 30px;
-  }
-
-  md2-datepicker {
-    width: 100%;
-  }
-
-  .button-row{
-    padding-bottom: 0;
-  }
-
 }

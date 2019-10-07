@@ -14,7 +14,7 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
   expenseDataChart: any = [];
   expenseDataTable: Expense[] = [];
   metrics: {
-    color?: string, value: string | number, metricTitle: string, icon?:string
+    color?: string, value: string | number, metricTitle: string, icon?: string
   }[] = [];
   isLoadingExpenses = false;
   isDataReady = false;
@@ -75,7 +75,6 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
   }
 
   filterData(snapshots) {
-    console.log(snapshots);
     this.isLoadingExpenses = false;
     const parsedData = this.parseData(snapshots);
 

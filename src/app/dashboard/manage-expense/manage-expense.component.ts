@@ -13,23 +13,26 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
 export class ManageExpenseComponent implements OnInit {
 
-  expense = new Expense;
-  original = new Expense;
+  expense: Expense;
+  original: Expense;
   update = false;
   categories: string[] = this.loginService.getCurrentCategories();
   types: string[] = expense_types;
 
-  constructor( @Inject(MAT_DIALOG_DATA) public data: any,
+  constructor( @Inject(MAT_DIALOG_DATA) public data: Expense,
     private dialogRef: MatDialogRef<ManageExpenseComponent>,
     private database: DatabaseService,
     private loginService: LoginService,
     private snackBar: MatSnackBar) {
 
-    this.expense = { ...this.data };
-    this.original = { ...this.data };
+    this.expense = {...this.data, ...{date: new Date(this.data.date)}};
+    this.original = {...this.data, ...{date: new Date(this.data.date)}};
   }
 
   ngOnInit() {
+    console.log(this.data);
+    console.log(this.expense);
+    console.log(this.original);
   }
 
   deleteExpense() {
@@ -54,9 +57,9 @@ export class ManageExpenseComponent implements OnInit {
   }
 
   pushUpdate() {
-    let userId = this.loginService.getUserId();
-    let key = this.expense.id;
-    let expenseObj = { ...this.expense };
+    const userId = this.loginService.getUserId();
+    const key = this.expense.id;
+    const expenseObj = { ...this.expense };
     delete expenseObj.id;
     this.database.updateExpense(userId, key, expenseObj)
       .then(_ => this.successfulUpdate())
@@ -81,7 +84,7 @@ export class ManageExpenseComponent implements OnInit {
 
   formatAmount() {
     if (this.expense.amount !== null) {
-      let rounded = this.expense.amount.toFixed(2);
+      const rounded = this.expense.amount.toFixed(2);
       this.expense.amount = parseFloat(rounded);
     }
   }
@@ -90,7 +93,7 @@ export class ManageExpenseComponent implements OnInit {
     this.expense = { ...this.original };
   }
 
-  isExpenseUntouched() {
+  isExpenseUntouched(): boolean {
     return JSON.stringify(this.expense) === JSON.stringify(this.original);
   }
 

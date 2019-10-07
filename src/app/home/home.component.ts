@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit {
 
   getAllUserDetails() {
     this.isLoadingUserInformation = true;
-    let current: string = this.loginService.getUser().email;
+    const current: string = this.loginService.getUser().email;
     this.database.getUserDetails(current)
       .then(jsonData => {
         const obj = jsonData.toJSON();
@@ -90,13 +90,12 @@ export class HomeComponent implements OnInit {
 
   getUserCategories() {
     this.isLoadingCategories = true;
-    let current: string = this.loginService.getUserId();
-    this.database.getCurrentCategories(current)
+    const currentUser: string = this.loginService.getUserId();
+    this.database.getCurrentCategories(currentUser)
       .then(jsonData => {
-        let obj = jsonData.toJSON();
+        const obj = jsonData.toJSON();
         const categoriesArr = Object.keys(obj).map((key) => obj[key]);
         this.categories = categoriesArr;
-        console.log(this.categories);
         this.originalCategories = categoriesArr;
         this.loginService.setCategories(categoriesArr);
         this.onUpdateToCategories();
@@ -113,10 +112,10 @@ export class HomeComponent implements OnInit {
   }
 
   getExpensesInfo() {
-    let currentUser: string = this.loginService.getUserId();
+    const currentUser: string = this.loginService.getUserId();
     this.database.getExpensesOnce(currentUser).then(jsonData => {
 
-      let object = jsonData.toJSON();
+      const object = jsonData.toJSON();
       console.log(object);
 
       if (object === null) {
@@ -128,11 +127,11 @@ export class HomeComponent implements OnInit {
 
         console.log(expenses);
 
-        let firstDate = new Date(Math.min.apply(null, expenses.map((e) => {
+        const firstDate = new Date(Math.min.apply(null, expenses.map((e) => {
           return new Date(e.date);
         })));
 
-        let lastDate = new Date(Math.max.apply(null, expenses.map((e) => {
+        const lastDate = new Date(Math.max.apply(null, expenses.map((e) => {
           return new Date(e.date);
         })));
 
@@ -156,7 +155,7 @@ export class HomeComponent implements OnInit {
 
   getTotal(expenses: any) {
     let categorySum = 0;
-    for (let expense of expenses) {
+    for (const expense of expenses) {
       categorySum += expense.amount;
     }
     return categorySum.toFixed(2);
@@ -210,13 +209,15 @@ export class HomeComponent implements OnInit {
     this.importedExpenses
       .filter(e => !e.error)
       .forEach(expense => {
-      if (!this.categories.includes(expense.category)) {
-        this.categories.push(expense.category);
-        categoriesAdded = true;
-      }
-      this.database.saveNewExpense(expense, currentUserKey);
-    });
-    if (categoriesAdded) { this.saveCategories(); }
+        if (!this.categories.includes(expense.category)) {
+          this.categories.push(expense.category);
+          categoriesAdded = true;
+        }
+        this.database.saveNewExpense(expense, currentUserKey);
+      });
+    if (categoriesAdded) {
+      this.saveCategories();
+    }
     this.getExpensesInfo();
     this.importedExpenses = [];
     this.step = 2;
@@ -267,10 +268,6 @@ export class HomeComponent implements OnInit {
     e.amount = e.amount > 0 ? +e.amount : this.handleMissingCsvData(e);
     e.date = new Date(e.date) ? new Date(e.date).toDateString() : this.handleMissingCsvData(e);
     e.description = e.description || this.handleMissingCsvData(e);
-
-    if (!e.error) {
-      e.name = e.description;
-    }
     return e;
   }
 

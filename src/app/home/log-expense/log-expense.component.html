@@ -1,5 +1,4 @@
 <div id="enter-expense">
-
   <form #f="ngForm" novalidate (ngSubmit)="save(f.value, f.valid, f)">
     <div *ngIf="isLoading">
       <mat-progress-bar color="primary"></mat-progress-bar>
@@ -36,9 +35,12 @@
         <div class="row">
           <div class="col-sm-6">
             <div>
-              <md2-datepicker #expenseDate openOnFocus="true" format="MM-dd-y" placeholder="Expense date"
-                              [(ngModel)]="expenseObj.date" name="date" #date="ngModel" touchUi="true"
-                              (onClose)="checkDate($event)" required></md2-datepicker>
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Expense date" [(ngModel)]="expenseObj.date"
+                       name="date" #date="ngModel" (dateChange)="checkDate($event)" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+              </mat-form-field>
             </div>
             <div *ngIf="dateError" class="alert alert-danger">
               <small>
@@ -60,6 +62,8 @@
               <small>Category is required.</small>
             </div>
           </div>
+        </div>
+        <div class="row">
           <div class="col-sm-6">
 
             <mat-form-field>
@@ -74,7 +78,6 @@
               <small>Payment is required.</small>
             </div>
           </div>
-
         </div>
         <div class="row">
           <div class="col-sm-12">
@@ -84,19 +87,17 @@
           </div>
         </div>
 
-
       </mat-card-content>
       <mat-card-actions>
-        <div class="row button-row">
-          <button type="button" class="col-sm-6" mat-button color="primary" (click)="clearForm(f)">
-            Reset
-          </button>
-
-          <button class="col-sm-6" type="submit" mat-raised-button color="primary"
-                  [disabled]="!f.form.valid">
-            <mat-icon>save</mat-icon>
-            Save
-          </button>
+        <div class="d-flex justify-content-end">
+            <button type="button" mat-button color="primary" (click)="clearForm(f)">
+              Reset
+            </button>
+            <button type="submit" mat-raised-button color="primary"
+                    [disabled]="!f.form.valid">
+              <mat-icon>save</mat-icon>
+              Save
+            </button>
         </div>
       </mat-card-actions>
     </mat-card>

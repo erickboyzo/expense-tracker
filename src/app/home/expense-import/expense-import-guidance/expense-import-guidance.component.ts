@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { displayedColumns } from '../expense-import.model';
+import { ExpenseImportModel } from '../expense-import.model';
 
 @Component({
   selector: 'app-expense-import-guidance',
@@ -7,15 +7,14 @@ import { displayedColumns } from '../expense-import.model';
   styleUrls: ['./expense-import-guidance.component.scss']
 })
 export class ExpenseImportGuidanceComponent implements OnInit {
-  displayedColumns: string[] = displayedColumns;
-  dataRequirements: string[] = [
-    '<span class="font-weight-bold">date</span> : Required format MM/DD/YYYY',
-    '<span class="font-weight-bold">description</span> : Required',
-    '<span class="font-weight-bold">amount</span> : Required',
-    '<span class="font-weight-bold">category</span> : Not required. Defaults to Unassigned',
-    '<span class="font-weight-bold">type</span> : Not required. Defaults to Debit. Valid Values: Debit, Credit or Cash',
-    '<span class="font-weight-bold">comments</span> : Not required'
-  ];
+  guidanceData: ExpenseImportModel[] = [<ExpenseImportModel>{
+    date: 'Required format MM/DD/YYYY',
+    description: 'Required',
+    amount: 'Required',
+    category: 'Not required. Defaults to Unassigned',
+    type: 'Not required. Defaults to Debit. Valid Values: Debit, Credit or Cash',
+    comments: 'Not required'
+  }];
 
   constructor() { }
 

@@ -1,13 +1,14 @@
 ::ng-deep {
-  table {
-    width: 750px;
+  .mat-header-cell:first-child,.mat-cell:first-child{
+    flex:10%;
   }
-
-  .mat-list-base {
-    .mat-list-item {
-      height: 29px;
-      font-size: 12px;
-    }
+  //Second column and header
+  .mat-header-cell:nth-child(2),.mat-cell:nth-child(2){
+    flex:85%;
+  }
+  //Last column and header
+  .mat-header-cell:last-child,.mat-cell:last-child{
+    flex:10%
   }
 
   .error {

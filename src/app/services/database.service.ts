@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Rx';
 import { ExpenseImportModel } from '../home/expense-import/expense-import.model';
 import { AngularFireDatabase, SnapshotAction } from '@angular/fire/database';
+import * as firebase from 'firebase';
 
 
 @Injectable({
@@ -53,7 +54,7 @@ export class DatabaseService {
     return this.db.database.ref('users/').orderByChild('email').equalTo(currentUser).once('value');
   }
 
-  getCurrentCategories(userId) {
+  getCurrentCategories(userId): Promise<firebase.database.DataSnapshot> {
     return this.db.database.ref('users/' + userId + '/categories').once('value');
   }
 

@@ -15,8 +15,8 @@ import { ManageExpenseComponent } from '../../manage-expense/manage-expense.comp
 export class TableSummaryComponent implements OnInit, OnChanges {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, {read: true}) sort: MatSort;
-  @Input() data: Expense[] =[];
-  @Input() displayColumns: string[] = ['name', 'amount', 'date', 'category', 'type','comments' ];
+  @Input() data: Expense[] = [];
+  @Input() displayColumns: string[] = ['name', 'amount', 'date', 'category', 'type', 'comments'];
 
   expensesData = new MatTableDataSource<Expense>();
 
