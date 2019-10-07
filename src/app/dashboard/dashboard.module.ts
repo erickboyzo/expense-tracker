@@ -3,16 +3,21 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatSelectModule } from "@angular/material/select";
+import { MatSortModule } from "@angular/material/sort";
+import { MatTableModule } from "@angular/material/table";
 import { RouterModule } from "@angular/router";
 import { PieChartModule } from "@swimlane/ngx-charts";
 import { ChartModule } from "angular2-highcharts";
 import { HighchartsStatic } from "angular2-highcharts/dist/HighchartsService";
-import { Md2DataTableModule, Md2DatepickerModule } from "md2";
 import { highchartsFactory } from "../app.highcharts";
 import { ManageExpenseComponent } from "./manage-expense/manage-expense.component";
 import { CardSpinnerModule } from "../shared/card-spinner/card-spinner.module";
@@ -43,12 +48,16 @@ import { ViewLoggedExpensesComponent } from "./view-logged-expenses/view-logged-
     MatButtonModule,
     RouterModule,
     PieChartModule,
-    Md2DatepickerModule,
-    Md2DataTableModule,
+    MatNativeDateModule,
     MatDialogModule,
     MatFormFieldModule,
     FormsModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   exports: [
     ViewLoggedExpensesComponent

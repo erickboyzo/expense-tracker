@@ -1,9 +1,11 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
-
-import { Router } from '@angular/router';
-import { ManageExpenseComponent } from '../../manage-expense/manage-expense.component';
+import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { Expense } from "../../../shared/models/expense-model";
 
+import { ManageExpenseComponent } from '../../manage-expense/manage-expense.component';
 
 @Component({
   selector: 'app-table-summary',
@@ -11,24 +13,27 @@ import { MatDialog } from '@angular/material';
   styleUrls: ['table-summary.component.scss']
 })
 export class TableSummaryComponent implements OnInit, OnChanges {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, {read: true}) sort: MatSort;
+  @Input() data: Expense[] =[];
+  @Input() displayColumns: string[] = ['name', 'amount', 'date', 'category', 'type','comments' ];
 
-  @Input() data: any;
+  expensesData = new MatTableDataSource<Expense>();
 
-  expensesData: any;
-  activePage: number = 1;
 
-  constructor(private router: Router,
-              public dialog: MatDialog) {
-  }
+  constructor(public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.expensesData = this.data;
+    this.expensesData = new MatTableDataSource<Expense>(this.data);
+    this.expensesData.paginator = this.paginator;
+    this.expensesData.sort = this.sort;
   }
 
   ngOnChanges(changes: any) {
-    console.log(changes);
     if (!changes.data.firstChange) {
-      this.expensesData = changes.data.currentValue;
+      this.expensesData = new MatTableDataSource<Expense>(this.data);
+      this.expensesData.paginator = this.paginator;
+      this.expensesData.sort = this.sort;
     }
   }
 
@@ -37,8 +42,9 @@ export class TableSummaryComponent implements OnInit, OnChanges {
   }
 
   editData(expense: any) {
+    console.log(expense);
     let dialogRef = this.dialog.open(ManageExpenseComponent, {
-      data: expense,
+      data: expense as any,
       hasBackdrop: true,
       disableClose: true,
     });

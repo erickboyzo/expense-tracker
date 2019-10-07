@@ -91,6 +91,7 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
   }
 
   checkDate(e: any) {
+    console.log(this.date);
     this.setDataForMonthRange();
   }
 

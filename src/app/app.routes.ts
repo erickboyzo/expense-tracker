@@ -1,10 +1,10 @@
+import { AngularFireAuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { Routes } from '@angular/router';
 
 import { ViewLoggedExpensesComponent } from './dashboard/view-logged-expenses/view-logged-expenses.component';
+import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './signup/sign-up/sign-up.component';
-import { HomeComponent } from './home/home.component';
-import { AngularFireAuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);

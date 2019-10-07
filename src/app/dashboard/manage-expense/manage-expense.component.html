@@ -70,7 +70,11 @@
         <div class="row">
             <div class="col-sm-6 date-picker">
                 <div>
-                    <md2-datepicker #expenseDate openOnFocus="true" format="MM-dd-y" placeholder="Expense date" [(ngModel)]="expense.date" name="date" #date="ngModel" touchUi="true" required></md2-datepicker>
+                  <mat-form-field class="example-full-width">
+                    <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="expense.date" name="date" #date="ngModel">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #picker></mat-datepicker>
+                  </mat-form-field>
                 </div>
                 <div *ngIf="dateError" class="alert alert-danger">
                     <small>

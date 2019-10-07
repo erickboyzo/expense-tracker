@@ -1,5 +1,11 @@
 <div class="container" *ngIf="!isDataEmpty(); else elseBlock">
-  <md2-datepicker [(ngModel)]="date" type="month" openOnFocus="true" (onClose)="checkDate($event)"></md2-datepicker>
+<!--  <md2-datepicker [(ngModel)]="date" type="month" openOnFocus="true" (onClose)="checkDate($event)"></md2-datepicker>-->
+
+  <mat-form-field class="example-full-width">
+    <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker touchUi #picker [startView]="'year'" (monthSelected)="checkDate($event); picker.close();"></mat-datepicker>
+  </mat-form-field>
   <chart [options]="options" (load)="saveInstance($event.context)"></chart>
 </div>
 <ng-template #elseBlock>
