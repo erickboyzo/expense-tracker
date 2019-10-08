@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import { User } from 'firebase';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -19,12 +21,11 @@ export class LoginService {
     this.userIdSet.next(message);
   }
 
-
-  setUser(data: any): any {
+  setUser(data: User) {
     this.currentUser = data;
   }
 
-  getUser() {
+  getUser(): User {
     return this.currentUser;
   }
 
@@ -36,7 +37,7 @@ export class LoginService {
     return this.userId;
   }
 
-  setCategories(originalCategories) {
+  setCategories(originalCategories: string[]) {
     this.categories = originalCategories;
   }
 

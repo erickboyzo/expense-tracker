@@ -1,12 +1,14 @@
-export class User {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  enterExpenses: any;
+export interface User {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  expensesEntered?: number;
+  lastLogin?: string;
+  creationDate?: string;
 }
 
-export interface ExpenseInfo {
+export interface ExpensesInfo {
   numOfEntries: string | number;
   totalAmount: string;
   categoryTotals: string;

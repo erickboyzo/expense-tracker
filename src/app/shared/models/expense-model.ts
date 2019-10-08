@@ -4,6 +4,6 @@ export interface Expense {
   date: Date | string;
   category: string;
   type: string;
-  amount: number;
+  amount: number | string;
   comments?: string;
 }

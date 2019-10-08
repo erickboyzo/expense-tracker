@@ -12,6 +12,7 @@ import { displayedColumns, ExpenseImportModel } from '../expense-import.model';
 export class ExpenseImportGridComponent implements OnInit, OnChanges {
   @Input() data: ExpenseImportModel[] = [];
   @Input() referenceOnly = false;
+  @Input() importComplete = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Output() saveAction: EventEmitter<void> = new EventEmitter();
   displayedColumns: string[] = displayedColumns;

@@ -20,19 +20,18 @@ export class ExpenseImportComponent implements OnInit {
   ngOnInit() {
   }
 
-  fileChangeListener($event): void {
-    const files = $event.srcElement.files[0];
-    console.log(files);
-
+  fileChangeListener(event): void {
+    const files = event.srcElement.files[0];
     const options = <PapaParseConfig>{
       complete: (results, file) => {
 
         if (results.data.length > 0) {
-          if (requiredColumns.every(x => results.meta.fields.includes(x))) {
+          if (requiredColumns.every(x => results.meta.fields.includes(x) || results.meta.fields.includes(x.toLowerCase()))) {
             console.log('all found');
             this.dataExported.emit(results.data);
           } else {
             this.snackBar.open(`Error when processing csv file. Missing columns ${requiredColumns.filter(x => !results.meta.fields.includes(x))}`, null, {duration: 3000});
+            event.srcElement.files = null;
           }
         } else {
           this.snackBar.open('No data found! Please check csv file and try again.', null, {duration: 3000});

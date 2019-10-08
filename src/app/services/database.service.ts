@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Expense } from '../shared/models/expense-model'
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Rx';
-import { ExpenseImportModel } from '../home/expense-import/expense-import.model';
 import { AngularFireDatabase, SnapshotAction } from '@angular/fire/database';
 import * as firebase from 'firebase';
 
+import { Expense } from '../shared/models/expense-model'
+import { ExpenseImportModel } from '../home/expense-import/expense-import.model';
 
 @Injectable({
   providedIn: 'root',
@@ -43,14 +43,13 @@ export class DatabaseService {
     return this.db.list('users/' + userId + '/expenses').snapshotChanges();
   }
 
-
-  saveNewCategories(categories: string[], userId: string) {
+  saveNewCategories(categories: string[], userId: string): Promise<any> {
     return this.db.database.ref('users/' + userId + '/categories').set(
       categories
     );
   }
 
-  getUserDetails(currentUser) {
+  getUserDetails(currentUser): Promise<firebase.database.DataSnapshot> {
     return this.db.database.ref('users/').orderByChild('email').equalTo(currentUser).once('value');
   }
 
@@ -58,16 +57,15 @@ export class DatabaseService {
     return this.db.database.ref('users/' + userId + '/categories').once('value');
   }
 
-  getExpensesOnce(userId: string) {
+  getExpensesOnce(userId: string): Promise<firebase.database.DataSnapshot> {
     return this.db.database.ref('users/' + userId + '/expenses').once('value');
   }
 
-  updateExpense(userId: string, key: string, expense: any) {
+  updateExpense(userId: string, key: string, expense: Expense): Promise<void> {
     return this.db.list('users/' + userId + '/expenses').update(key, expense);
   }
 
-  deleteExpense(userId: string, key: string) {
+  deleteExpense(userId: string, key: string): Promise<void> {
     return this.db.list('users/' + userId + '/expenses').remove(key);
   }
-
 }

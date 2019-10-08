@@ -3,79 +3,39 @@
 
     <div class="col-12 col-md-6 offset-md-3">
       <mat-card>
-        <mat-card-title>Expenses summary</mat-card-title>
+        <mat-card-title>User Info</mat-card-title>
         <mat-card-header>
           <mat-card-subtitle></mat-card-subtitle>
         </mat-card-header>
         <ng-container *ngIf="!isLoadingUserInformation;else loadingSpinner">
           <mat-card-content>
             <div *ngIf="!isLoadingUserInformation" class="row">
-              <div class="col-sm-3 info-alignment">
+              <div class="col-sm-12 info-alignment justify-content-center">
                 <mat-icon class="account">account_circle</mat-icon>
-                <div>
-                  <label>Logged in as :</label>
-                  <br><span class="info-content">{{user.firstName}} {{user.lastName}}</span>
+                <div class="justify-content-center">
+                  <span class="info-content">{{user.firstName}} {{user.lastName}}</span>
                 </div>
-              </div>
-              <div class="col-sm-9" *ngIf="isDataAvailable; else noData">
-                <div class="row">
-                  <div class="col-sm-6 info-alignment">
-                    <label>Expenses Logged</label>
-                    <div class="info-content">{{expenseInfo.numOfEntries}}</div>
+                <div class="d-flex justify-content-around user-summary">
+                  <div class="user-summary__section">
+                    <label class="text-muted">User since</label>
+                    <div class="info-content">{{user.creationDate  | date:'mediumDate'}}</div>
                   </div>
-                  <div class="col-sm-6 info-alignment">
-                    <label>Total Amount</label>
-                    <div class="info-content">{{expenseInfo.totalAmount}}</div>
+
+                  <div class="divider"></div>
+
+                  <div class="user-summary__section">
+                    <label class="text-muted">Expenses logged</label>
+                    <div class="info-content">{{user.expensesEntered || 0}}</div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6 info-alignment">
-                    <label>First Expense Date</label>
-                    <div class="info-content">{{expenseInfo.firstExpenseDate}}</div>
-                  </div>
-                  <div class="col-sm-6 info-alignment">
-                    <label>Last Expense Date</label>
-                    <div class="info-content">{{expenseInfo.lastExpenseDate}}</div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6 select-padding info-alignment">
-                    <label>View Totals by Category</label>
-                    <mat-form-field>
-                      <mat-label>Category totals</mat-label>
-                      <mat-select [(ngModel)]="expenseInfo.selectedCategory"
-                                  name="category">
-                        <mat-option *ngFor="let category of expenseInfo.categoryTotals" [value]="category">
-                          {{category.name}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-sm-6 info-alignment">
-                    <label>{{expenseInfo.selectedCategory.name}} totals</label>
-                    <div class="info-content">${{expenseInfo.selectedCategory.amount}}</div>
+
+                  <div class="divider"></div>
+
+                  <div class="user-summary__section">
+                    <label class="text-muted">Last login</label>
+                    <div class="info-content">{{user.lastLogin  | date:'mediumDate'}}</div>
                   </div>
                 </div>
               </div>
-              <ng-template #noData>
-                <div class="col-sm-9">
-                  <div class="container no-data">
-                    <div class="col-sm-6 offset-sm-3">
-                      <div class="icon">
-                        <mat-icon class="icon-alert">error</mat-icon>
-                      </div>
-                      <div>
-                        <h2>No expense data</h2>
-                        <div class="alert-action">
-                          <button mat-raised-button color="primary"
-                                  (click)="scrollToEnterExpense()">Enter expense
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ng-template>
             </div>
           </mat-card-content>
           <mat-card-actions>
@@ -93,17 +53,30 @@
             </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            <md2-chips [ngModel]="categories"
-                       [minChips]="4"
-                       (change)="selected($event)" placeholder="Add">
-            </md2-chips>
+            <mat-form-field class="example-chip-list">
+              <mat-chip-list #chipList aria-label="Fruit selection">
+                <mat-chip *ngFor="let category of categories; let i = index"
+                          [selectable]="false"
+                          [removable]="category.removable"
+                          (removed)="removeCategory(category.value, i)">
+                  {{category.value}}
+                  <mat-icon matChipRemove *ngIf="category.removable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Add category..."
+                       [matChipInputFor]="chipList"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="false"
+                       (matChipInputTokenEnd)="onCategoryEntered($event)">
+              </mat-chip-list>
+            </mat-form-field>
+
           </mat-card-content>
           <mat-card-actions>
             <div class="d-flex justify-content-end">
               <button mat-button color="primary" (click)="resetCategories()">Reset
               </button>
               <button mat-raised-button color="primary"
-                      [disabled]="!isValidAmountCategories() || isLoadingCategories" (click)="saveCategories()">
+                      [disabled]="!categoriesUpdated || isLoadingCategories" (click)="saveCategories()">
                 <mat-icon>save</mat-icon>
                 <span>Save</span></button>
             </div>
@@ -113,35 +86,40 @@
     </div>
   </div>
 
-
   <div class="row">
     <div class="col-12 col-md-6 offset-md-3" *ngIf="!isLoadingUserInformation">
       <app-log-expense></app-log-expense>
     </div>
-
     <div class="col-12 col-md-6 offset-md-3">
       <mat-card>
         <mat-card-title>Import CSV Expenses</mat-card-title>
         <mat-card-content>
           <div class="my-5">
-
             <mat-horizontal-stepper linear (selectionChange)="onStep($event)">
-              <mat-step label="Import" [completed]="step === 1">
+              <mat-step label="Import">
                 <app-expense-import-guidance></app-expense-import-guidance>
               </mat-step>
-              <mat-step label="Review Expenses Imported" [completed]="step === 2">
+              <mat-step label="Review Expenses Imported">
                 <app-expense-import-grid [data]="importedExpenses"
                                          (saveAction)="saveImportedExpenses()"></app-expense-import-grid>
               </mat-step>
               <mat-step label="All Done" [completed]="importComplete">
-                <h2>Expenses Saved</h2>
-                <button mat-raised-button color="primary" routerLink="/view-expenses">
-                  <mat-icon>insert_chart</mat-icon>
-                  View Expenses Dashboard
-                </button>
+                <div class="d-flex flex-column">
+                  <div class="d-flex justify-content-center">
+                    <h2>
+                      <mat-icon>check_circle_outline</mat-icon>
+                      Expenses Saved.
+                    </h2>
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <button mat-raised-button color="primary" routerLink="/view-expenses">
+                      <mat-icon>insert_chart</mat-icon>
+                      View Expenses Dashboard
+                    </button>
+                  </div>
+                </div>
               </mat-step>
             </mat-horizontal-stepper>
-
           </div>
         </mat-card-content>
         <mat-card-actions>

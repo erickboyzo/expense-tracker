@@ -1,14 +1,10 @@
-export interface ExpenseImportModel {
-  date: string;
-  description: string;
-  amount: string | number;
-  category?: string;
-  type?: string;
-  comments?: string;
-  name?: string;
+import { Expense } from '../../shared/models/expense-model';
+
+export interface ExpenseImportModel extends Expense {
   error?: boolean;
+  description?: string;
 }
 
 export const displayedColumns: string[] = ['date', 'description', 'amount', 'category', 'type', 'comments'];
-export const requiredColumns: string[] = ['date', 'description', 'amount'];
+export const requiredColumns: string[] = ['Date', 'Description', 'Amount'];
 

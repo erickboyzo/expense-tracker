@@ -96,8 +96,10 @@ export class LogExpenseComponent implements OnInit, OnDestroy {
 
   formatAmount() {
     if (this.expenseObj.amount !== null) {
-      const rounded = this.expenseObj.amount.toFixed(2);
-      this.expenseObj.amount = parseFloat(rounded);
+      if (typeof this.expenseObj.amount !== 'string') {
+        const rounded = this.expenseObj.amount.toFixed(2);
+        this.expenseObj.amount = parseFloat(rounded);
+      }
     }
   }
 

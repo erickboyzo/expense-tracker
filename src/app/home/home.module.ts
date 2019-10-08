@@ -16,6 +16,7 @@ import { ExpenseImportModule } from "./expense-import/expense-import.module";
 import { HomeComponent } from "./home.component";
 import { LogExpenseComponent } from "./log-expense/log-expense.component";
 import { RouterModule } from '@angular/router';
+import { MatChipsModule } from '@angular/material';
 
 @NgModule({
   declarations: [LogExpenseComponent, HomeComponent],
@@ -36,7 +37,8 @@ import { RouterModule } from '@angular/router';
     MatStepperModule,
     CardSpinnerModule,
     MatDatepickerModule,
-    RouterModule
+    RouterModule,
+    MatChipsModule
   ],
   exports: [HomeComponent]
 })

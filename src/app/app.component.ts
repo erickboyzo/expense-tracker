@@ -18,7 +18,6 @@ import { User } from 'firebase';
 export class AppComponent implements OnInit, OnDestroy {
   loggedInUser = false;
   user: Observable<firebase.User>;
-  email: any;
   loggedInSubscription: Subscription;
 
   constructor(private router: Router,
@@ -26,14 +25,11 @@ export class AppComponent implements OnInit, OnDestroy {
     public afAuth: AngularFireAuth,
     public loginService: LoginService) {
 
-    this.loggedInSubscription = afAuth.authState.subscribe((authData:User) => {
+    this.loggedInSubscription = afAuth.authState.subscribe((authData: User) => {
       console.log(authData);
 
       if (authData && authData.email) {
         console.log(authData);
-        const uid = authData.email;
-        this.email = uid;
-        console.log(this.email);
         this.loginService.setUserId(authData.uid);
         this.loginService.setUser(authData);
         this.loginService.announceUserIdCreated('user created!');

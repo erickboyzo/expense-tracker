@@ -1,4 +1,4 @@
-<label for="txtFileUpload" class="mdl-button mdl-button--raised mdl-button--primary">
+<label for="txtFileUpload" class="mat-raised-button mat-primary">
 Import Expenses File
 </label>
 
@@ -6,5 +6,6 @@ Import Expenses File
        #fileImportInput
        name="File Upload"
        id="txtFileUpload"
+       (click)="fileImportInput.value = null"
        (change)="fileChangeListener($event)"
        accept=".csv"/>

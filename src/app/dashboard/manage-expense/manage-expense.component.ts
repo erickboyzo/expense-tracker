@@ -84,8 +84,10 @@ export class ManageExpenseComponent implements OnInit {
 
   formatAmount() {
     if (this.expense.amount !== null) {
-      const rounded = this.expense.amount.toFixed(2);
-      this.expense.amount = parseFloat(rounded);
+      if (typeof this.expense.amount !== 'string') {
+        const rounded = this.expense.amount.toFixed(2);
+        this.expense.amount = parseFloat(rounded);
+      }
     }
   }
 

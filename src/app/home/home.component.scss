@@ -1,14 +1,16 @@
 #home {
+  $primary: #2196F3;
+
   button.fab {
     position: fixed;
-    bottom: 20%;
+    bottom: 10%;
     right: 5%;
+    z-index: 100;
   }
 
   .account {
-    font-size: 60px;
-    padding-top: 20px;
-    color: #2196F3
+    font-size: 80px;
+    color: $primary;
   }
 
   .loading-progress-bar {
@@ -21,24 +23,24 @@
     font-weight: bold;
   }
 
-  .select-padding {
-    //padding-top: 7px;
-  }
-
-  .md2-select {
-    width: 100%;
-    margin-top: 30px;
-    padding-right: 30px;
-    padding-left: 40px;
-  }
-
   .info-alignment {
     text-align: center;
   }
 
   .info-content {
-    font-size: x-large;
+    font-size: 18px;
     font-weight: 100;
+  }
+
+  .user-summary {
+
+    .user-summary__section {
+      padding: 0 20px;
+    }
+
+    .divider{
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+    }
   }
 
   .mat-icon {
@@ -48,8 +50,13 @@
   ::ng-deep {
     mat-step-header {
       .mat-step-header .mat-step-icon-selected {
-        background-color: #2196F3!important;
+        background-color: $primary !important;
       }
+    }
+
+    .mat-horizontal-content-container {
+      overflow: hidden;
+      padding: 0;
     }
   }
 }

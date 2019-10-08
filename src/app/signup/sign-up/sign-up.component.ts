@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { MatSnackBar } from '@angular/material';
 import { AngularFireDatabase } from '@angular/fire/database';
-
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-sign-up',
@@ -14,10 +14,14 @@ import { AngularFireDatabase } from '@angular/fire/database';
 })
 
 export class SignUpComponent implements OnInit {
-
-  currentUser: User = new User;
+  currentUser: User = {
+    firstName: '',
+    lastName:  '',
+    email:  '',
+    password: ''
+  };
   isLoading = false;
-  user: any;
+  user: firebase.database.Reference;
   defaultExpenses: string[] = expense_categories;
 
   constructor(public authService: AuthService,
@@ -36,14 +40,14 @@ export class SignUpComponent implements OnInit {
     this.isLoading = true;
     this.authService.signUp(this.currentUser.email, this.currentUser.password).then((data) => {
       this.isLoading = false;
-      this.loginService.setUser(data);
+      this.loginService.setUser(data.user);
       this.setUserInformation();
       this.openSnackBarSuccess();
       this.onSuccessfulSignUp();
     }).catch(e => {
       this.isLoading = false;
       this.openSnackBarError(e.message);
-      console.log('Catched object set:' + e.message);
+      console.log('Catch object set:' + e.message);
     })
   }
 
@@ -67,7 +71,6 @@ export class SignUpComponent implements OnInit {
       categories: this.defaultExpenses,
       expenses: []
     }).then((snap) => {
-      console.log(snap);
     });
   }
 
@@ -78,7 +81,7 @@ export class SignUpComponent implements OnInit {
   }
 
   scrollTop() {
-    let element = document.getElementById('content');
+    const element = document.getElementById('content');
     element.scrollIntoView();
   }
 

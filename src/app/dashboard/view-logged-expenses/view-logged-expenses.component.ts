@@ -48,9 +48,20 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
           const key = Object.keys(obj)[0];
           this.loginService.setUserId(key);
           this.subToExpensesChange();
+          this.getUserCategories();
         }).catch(e => {
       });
     }
+  }
+
+  getUserCategories() {
+    this.database.getCurrentCategories(this.loginService.getUserId())
+      .then(jsonData => {
+        const obj = jsonData.toJSON();
+        const categoriesArr = Object.keys(obj).map((key) => obj[key]);
+        this.loginService.setCategories(categoriesArr);
+      }).catch(e => {
+    })
   }
 
   private subToExpensesChange() {
@@ -86,8 +97,8 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
 
 
     this.metrics = [
-      {color: null, value: firstDate.toDateString().slice(0, 19), metricTitle: 'First Expense Date', icon: 'today'},
-      {color: null, value: lastDate.toDateString().slice(0, 19), metricTitle: 'Latest Expense Date', icon: 'today'},
+      {color: null, value: firstDate.toDateString().slice(3, 15), metricTitle: 'First Expense Date', icon: 'today'},
+      {color: null, value: lastDate.toDateString().slice(3, 15), metricTitle: 'Latest Expense Date', icon: 'today'},
       {color: null, value: numOfEntries, metricTitle: 'Number of Expenses', icon: 'receipt'},
       {color: 'money-icon', value: totalAmount, metricTitle: 'Total Amount', icon: 'attach_money'},
     ];
@@ -121,6 +132,25 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
       categorySum += expense.amount;
     }
     return categorySum.toFixed(2);
+  }
+
+  getCategoryTotals(expenses: Expense[]) {
+    const categories = expenses
+      .map(item => item.category)
+      .filter((value, index, self) => self.indexOf(value) === index);
+    const totals = [];
+
+    for (const category of categories) {
+      let categorySum = 0;
+      for (const value of expenses) {
+        if (value.category === category) {
+          categorySum += value.amount as number;
+        }
+      }
+      const dataObj = {name: category, amount: categorySum.toFixed(2)};
+      totals.push(dataObj);
+    }
+    return totals.toString();
   }
 
   ngOnDestroy() {

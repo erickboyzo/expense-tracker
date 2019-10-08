@@ -21,7 +21,7 @@ import { MatSnackBar } from '@angular/material';
 })
 export class LoginComponent implements OnInit {
 
-  currentUser: User = new User;
+  currentUser: User = {email: '', password: ''};
   isLoading = false;
   isVisible: true;
 
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
   public login() {
     this.startLoading();
     this.authService.logIn(this.currentUser.email, this.currentUser.password).then((data) => {
-      this.loginService.setUser(data);
+      this.loginService.setUser(data.user);
       this.stopLoading();
       this.announceLogin(data);
       this.snackBar.open('Login Successful!', '', { duration: 2000 });

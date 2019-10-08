@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
-import { expense_categories, ExpenseInfo, User } from '../shared/models/user-model';
+import { expense_categories, User } from '../shared/models/user-model';
 import { DatabaseService } from '../services/database.service';
-import { MatHorizontalStepper, MatSnackBar } from '@angular/material';
+import { MatChipInputEvent, MatHorizontalStepper, MatSnackBar } from '@angular/material';
 import { ExpenseImportModel } from './expense-import/expense-import.model';
-import { Expense } from '../shared/models/expense-model';
+import { ENTER } from '@angular/cdk/keycodes';
+import { cloneDeep, find, includes, isEqual, transform, pick } from 'lodash';
 
 @Component({
   selector: 'app-home',
@@ -14,19 +15,30 @@ import { Expense } from '../shared/models/expense-model';
 })
 
 export class HomeComponent implements OnInit {
+  readonly separatorKeysCodes: number[] = [ENTER];
 
   @ViewChild(MatHorizontalStepper) stepper: MatHorizontalStepper;
 
-  user: User = new User;
-  categories: string[] = expense_categories;
-  originalCategories: string[] = expense_categories;
+  user: User = {
+    firstName: '',
+    lastName: '',
+    expensesEntered: 0,
+    creationDate: '',
+    lastLogin: ''
+  };
+  categories: { value: string, removable: boolean }[] = expense_categories.map(ec => {
+    return {value: ec, removable: false}
+  });
+  originalCategories: { value: string, removable: boolean }[] = cloneDeep(this.categories);
   isLoadingUserInformation = false;
   isLoadingCategories = false;
-  expenseInfo: ExpenseInfo = {numOfEntries: null, totalAmount: null, categoryTotals: null, selectedCategory: null};
-  isDataAvailable: boolean;
   importedExpenses: ExpenseImportModel[] = [];
   step = 0;
   importComplete = false;
+
+  get categoriesUpdated(): boolean {
+    return !isEqual(this.categories, this.originalCategories);
+  }
 
   constructor(
     private router: Router,
@@ -66,27 +78,27 @@ export class HomeComponent implements OnInit {
   }
 
   getAllUserDetails() {
-    this.isLoadingUserInformation = true;
-    const current: string = this.loginService.getUser().email;
-    this.database.getUserDetails(current)
-      .then(jsonData => {
-        const obj = jsonData.toJSON();
-        const key = Object.keys(obj)[0];
-        console.log(key);
-        this.loginService.setUserId(key);
-        this.user.firstName = obj[key].firstName;
-        this.user.lastName = obj[key].lastName;
-        this.getExpensesInfo();
-        this.getUserCategories();
+    if (this.loginService.getUser()) {
+      this.isLoadingUserInformation = true;
+      this.database.getUserDetails(this.loginService.getUser().email)
+        .then(jsonData => {
+          const obj = jsonData.toJSON();
+          const key = Object.keys(obj)[0];
+          console.log(key);
+          this.loginService.setUserId(key);
+          this.user.firstName = obj[key].firstName;
+          this.user.lastName = obj[key].lastName;
+          console.log(this.loginService.getUser());
+          this.getExpensesInfo();
+          this.getUserCategories();
+          this.isLoadingUserInformation = false;
+        }).catch(e => {
         this.isLoadingUserInformation = false;
-      }).catch(e => {
-      this.isLoadingUserInformation = false;
-      console.log('failed');
-      console.log(e);
-    })
-
+        console.log('failed');
+        console.log(e);
+      })
+    }
   }
-
 
   getUserCategories() {
     this.isLoadingCategories = true;
@@ -95,8 +107,10 @@ export class HomeComponent implements OnInit {
       .then(jsonData => {
         const obj = jsonData.toJSON();
         const categoriesArr = Object.keys(obj).map((key) => obj[key]);
-        this.categories = categoriesArr;
-        this.originalCategories = categoriesArr;
+        this.categories = categoriesArr.map(c => {
+          return {value: c, removable: !includes(expense_categories, c)}
+        });
+        this.originalCategories = cloneDeep(this.categories);
         this.loginService.setCategories(categoriesArr);
         this.onUpdateToCategories();
         this.isLoadingCategories = false;
@@ -112,88 +126,41 @@ export class HomeComponent implements OnInit {
   }
 
   getExpensesInfo() {
-    const currentUser: string = this.loginService.getUserId();
-    this.database.getExpensesOnce(currentUser).then(jsonData => {
-
-      const object = jsonData.toJSON();
-      console.log(object);
-
-      if (object === null) {
-        //do nothing for now
-      } else {
-        let expenses = Object.keys(object).map(function (key) {
-          return object[key];
-        });
-
-        console.log(expenses);
-
-        const firstDate = new Date(Math.min.apply(null, expenses.map((e) => {
-          return new Date(e.date);
-        })));
-
-        const lastDate = new Date(Math.max.apply(null, expenses.map((e) => {
-          return new Date(e.date);
-        })));
-
-
-        this.expenseInfo.numOfEntries = expenses.length;
-        this.expenseInfo.totalAmount = '$' + this.getTotal(expenses);
-        this.expenseInfo.categoryTotals = this.getCategoryTotals(expenses);
-        this.expenseInfo.selectedCategory = this.expenseInfo.categoryTotals[0];
-        this.expenseInfo.firstExpenseDate = firstDate.toDateString().slice(0, 15);
-        this.expenseInfo.lastExpenseDate = lastDate.toDateString().slice(0, 15);
-        this.isDataAvailable = true;
-
-      }
-
-    }).catch(e => {
-
-      console.log('failed');
-      console.log(e);
-    })
-  }
-
-  getTotal(expenses: any) {
-    let categorySum = 0;
-    for (const expense of expenses) {
-      categorySum += expense.amount;
+    if (this.loginService.getUserId()) {
+      this.database.getExpensesOnce(this.loginService.getUserId())
+        .then(jsonData => {
+          const object = jsonData.toJSON();
+          if (object !== null) {
+            const expenses = Object.keys(object).map((key) => object[key]);
+            this.user.expensesEntered = expenses.length;
+          }
+          this.user.lastLogin = this.loginService.getUser().metadata.lastSignInTime;
+          this.user.creationDate = this.loginService.getUser().metadata.creationTime;
+        })
+        .catch(e => console.error(e));
     }
-    return categorySum.toFixed(2);
   }
 
-  getCategoryTotals(expenses: Expense[]) {
-    const categories = expenses.map(item => item.category)
-      .filter((value, index, self) => self.indexOf(value) === index);
-    const totals = [];
 
-    for (const category of categories) {
-      let categorySum = 0;
-      for (const value of expenses) {
-        if (value.category === category) {
-          categorySum += value.amount;
-        }
-      }
-      const dataObj = {name: category, amount: categorySum.toFixed(2)};
-      totals.push(dataObj);
+  onCategoryEntered(data: MatChipInputEvent) {
+    const valueTrimmed = data.value.trim();
+    const matchingCategory = find(this.categories, c => c.value === valueTrimmed || c.value.toLowerCase() === valueTrimmed.toLowerCase());
+    if (!matchingCategory) {
+      this.categories.push({value: data.value, removable: true});
+      data.input.value = null;
     }
-    return totals.toString();
   }
 
-  selected(e: any) {
-    this.categories = e.value;
-  }
-
-  isValidAmountCategories(): boolean {
-    const categoriesLength = this.categories.length;
-    return categoriesLength >= 4;
+  removeCategory(data: string, index: number) {
+    this.categories.splice(index, 1);
   }
 
   saveCategories() {
     this.isLoadingCategories = true;
     const currentUser = this.loginService.getUserId();
-    this.database.saveNewCategories(this.categories, currentUser).then(jsonData => {
+    this.database.saveNewCategories(this.categories.map(category => category.value), currentUser).then(jsonData => {
       this.originalCategories = {...this.categories};
-      this.loginService.setCategories(this.categories);
+      this.loginService.setCategories(this.categories.map(category => category.value));
       this.openSnackBar('Categories saved!');
       this.onUpdateToCategories();
       this.isLoadingCategories = false;
@@ -209,33 +176,32 @@ export class HomeComponent implements OnInit {
     this.importedExpenses
       .filter(e => !e.error)
       .forEach(expense => {
-        if (!this.categories.includes(expense.category)) {
-          this.categories.push(expense.category);
+        const matchingCategory = find(this.categories, e => e.value === expense.category.trim() ||
+          e.value.toLowerCase() === expense.category.trim().toLowerCase());
+        if (!matchingCategory) {
+          this.categories.push({value: expense.category, removable: true});
           categoriesAdded = true;
+        } else {
+          expense.category = matchingCategory.value;
         }
-        this.database.saveNewExpense(expense, currentUserKey);
+        this.database.saveNewExpense(pick(expense, ['date', 'name', 'amount', 'category', 'type', 'comments']), currentUserKey);
       });
     if (categoriesAdded) {
       this.saveCategories();
     }
     this.getExpensesInfo();
-    this.importedExpenses = [];
-    this.step = 2;
+    this.step = 3;
     this.importComplete = true;
     this.openSnackBar('Import Successful!');
     this.moveToNextStep();
   }
 
   resetCategories() {
-    this.categories = this.loginService.getCurrentCategories();
+    this.categories = cloneDeep(this.originalCategories);
   }
 
   openSnackBar(message) {
     this.snackBar.open(message, '', {duration: 2000});
-  }
-
-  checkCategoriesAreSame() {
-    return this.categories.toString === this.originalCategories.toString;
   }
 
   dataExported(data) {
@@ -243,7 +209,6 @@ export class HomeComponent implements OnInit {
     this.step = 1;
     this.importComplete = false;
     this.moveToNextStep();
-    console.log(this.importedExpenses);
   }
 
   private moveToNextStep() {
@@ -253,22 +218,28 @@ export class HomeComponent implements OnInit {
   }
 
   validateImportedData(e: ExpenseImportModel): ExpenseImportModel {
-    if (!e.comments) {
-      e.comments = '';
+    const mappedExpense = transform(e as {}, (result, val, key: string) => {
+      result[key.toLowerCase()] = val;
+    }) as ExpenseImportModel;
+    console.log(mappedExpense);
+
+    if (!mappedExpense.comments) {
+      mappedExpense.comments = '';
     }
 
-    if (!e.type) {
-      e.type = 'Debit';
+    if (!mappedExpense.type) {
+      mappedExpense.type = 'Debit';
     }
 
-    if (!e.category) {
-      e.category = 'Unassigned';
+    if (!mappedExpense.category) {
+      mappedExpense.category = 'Unassigned';
     }
 
-    e.amount = e.amount > 0 ? +e.amount : this.handleMissingCsvData(e);
-    e.date = new Date(e.date) ? new Date(e.date).toDateString() : this.handleMissingCsvData(e);
-    e.description = e.description || this.handleMissingCsvData(e);
-    return e;
+    mappedExpense.amount = mappedExpense.amount > 0 ? +e.amount : this.handleMissingCsvData(mappedExpense);
+    mappedExpense.date = new Date(mappedExpense.date) ? new Date(mappedExpense.date).toDateString() : this.handleMissingCsvData(mappedExpense);
+    mappedExpense.description = mappedExpense.description || this.handleMissingCsvData(mappedExpense);
+    mappedExpense.name = mappedExpense.description;
+    return mappedExpense;
   }
 
   private handleMissingCsvData(expense: ExpenseImportModel): string {
@@ -277,7 +248,5 @@ export class HomeComponent implements OnInit {
   }
 
   onStep(data) {
-    console.log(data);
-    console.log(this.stepper);
   }
 }
