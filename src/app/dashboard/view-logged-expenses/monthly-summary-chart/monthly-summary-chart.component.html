@@ -1,26 +1,3 @@
-<div class="container" *ngIf="!isDataEmpty(); else elseBlock">
-<!--  <md2-datepicker [(ngModel)]="date" type="month" openOnFocus="true" (onClose)="checkDate($event)"></md2-datepicker>-->
-
-  <mat-form-field class="example-full-width">
-    <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="date">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker touchUi #picker [startView]="'year'" (monthSelected)="checkDate($event); picker.close();"></mat-datepicker>
-  </mat-form-field>
+<div class="container">
   <chart [options]="options" (load)="saveInstance($event.context)"></chart>
 </div>
-<ng-template #elseBlock>
-  <div class="container no-data">
-    <div class="col-sm-6 offset-sm-3">
-      <div class="icon">
-        <mat-icon class="icon-alert">assessment</mat-icon>
-      </div>
-      <div><h2>No expense data!</h2> <h6>Please enter an expense.</h6>
-        <div class="alert-action">
-          <button mat-raised-button color="primary" routerLink="/home">Enter
-            expense
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template>

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 import { displayedColumns, ExpenseImportModel } from '../expense-import.model';
 
@@ -14,10 +14,11 @@ export class ExpenseImportGridComponent implements OnInit, OnChanges {
   @Input() referenceOnly = false;
   @Input() importComplete = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('sorter') sort: MatSort;
   @Output() saveAction: EventEmitter<void> = new EventEmitter();
+
   displayedColumns: string[] = displayedColumns;
   dataSource = new MatTableDataSource<ExpenseImportModel>([]);
-  init = false;
   filterErrors = false;
 
   get errorsPresent(): boolean {
@@ -27,7 +28,6 @@ export class ExpenseImportGridComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.setDataSource();
-    this.init = true;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -45,11 +45,13 @@ export class ExpenseImportGridComponent implements OnInit, OnChanges {
   private setDataSource() {
     this.dataSource = new MatTableDataSource<ExpenseImportModel>(this.data);
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   private setDataSourceErrorsOnly() {
     this.dataSource = new MatTableDataSource<ExpenseImportModel>(this.data.filter(e => e.error));
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   saveImportedExpenses() {

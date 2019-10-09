@@ -1,10 +1,10 @@
-import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import { Expense } from "../../../shared/models/expense-model";
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
+import { Expense } from '../../../shared/models/expense-model';
 import { ManageExpenseComponent } from '../../manage-expense/manage-expense.component';
 
 @Component({
@@ -12,9 +12,9 @@ import { ManageExpenseComponent } from '../../manage-expense/manage-expense.comp
   templateUrl: 'table-summary.component.html',
   styleUrls: ['table-summary.component.scss']
 })
-export class TableSummaryComponent implements OnInit, OnChanges {
+export class TableSummaryComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort, {read: true}) sort: MatSort;
+  @ViewChild('sorter') sort: MatSort;
   @Input() data: Expense[] = [];
   @Input() displayColumns: string[] = ['name', 'amount', 'date', 'category', 'type', 'comments'];
 
@@ -26,6 +26,10 @@ export class TableSummaryComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.expensesData = new MatTableDataSource<Expense>(this.data);
     this.expensesData.paginator = this.paginator;
+    this.expensesData.sort = this.sort;
+  }
+
+  ngAfterViewInit() {
     this.expensesData.sort = this.sort;
   }
 
@@ -41,9 +45,8 @@ export class TableSummaryComponent implements OnInit, OnChanges {
     return this.data.length === 0;
   }
 
-  editData(expense: any) {
-    console.log(expense);
-    let dialogRef = this.dialog.open(ManageExpenseComponent, {
+  editData(expense: Expense) {
+    const dialogRef = this.dialog.open(ManageExpenseComponent, {
       data: expense as any,
       hasBackdrop: true,
       disableClose: true,

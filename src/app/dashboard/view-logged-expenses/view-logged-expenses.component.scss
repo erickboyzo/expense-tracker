@@ -1,9 +1,4 @@
 #view-expense {
-  .card-header {
-    background-color: #1565C0;
-    color: #EEEEEE;
-  }
-
   chart {
     width: 100% !important;
     margin: 0 auto;
@@ -14,15 +9,16 @@
     margin-bottom: 20px;
   }
 
-  md-card {
-    margin-bottom: 30px;
-  }
-
   button.fab {
     position: fixed;
     bottom: 10%;
     right: 5%;
     z-index: 100;
+  }
+
+  .month-date-picker{
+    font-size: 14px;
+    width: 40%;
   }
 
   .no-data {

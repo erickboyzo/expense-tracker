@@ -19,7 +19,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges {
       type: 'pie'
     },
     title: {
-      text: 'All expenses up till ' + new Date().toDateString().slice(0, 15)
+      text: null
     },
     legend: {
       align: 'center',

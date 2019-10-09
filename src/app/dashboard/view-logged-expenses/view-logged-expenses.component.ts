@@ -11,13 +11,18 @@ import { LoginService } from '../../services/login.service';
   styleUrls: ['./view-logged-expenses.component.scss']
 })
 export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
-  expenseDataChart: any = [];
+  expenseDataChart: { name: string, y: number, value: number }[] = [];
   expenseDataTable: Expense[] = [];
   metrics: {
     color?: string, value: string | number, metricTitle: string, icon?: string
   }[] = [];
-  isLoadingExpenses = false;
+  isLoadingExpenses = true;
   isDataReady = false;
+  date = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth() - 2,
+    new Date().getDate()
+  );
 
   private expenses: Subscription;
 
@@ -52,6 +57,10 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
         }).catch(e => {
       });
     }
+  }
+
+  checkDate(e: Date) {
+    this.date = e;
   }
 
   getUserCategories() {

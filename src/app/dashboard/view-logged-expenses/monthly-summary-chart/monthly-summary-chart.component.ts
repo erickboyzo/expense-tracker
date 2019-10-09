@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, OnChanges} from '@angular/core';
-import {Router} from "@angular/router";
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Expense } from '../../../shared/models/expense-model';
 
 @Component({
   selector: 'app-monthly-summary-chart',
@@ -8,11 +8,10 @@ import {Router} from "@angular/router";
 })
 export class MonthlySummaryChartComponent implements OnInit, OnChanges {
 
-  @Input() data: any;
-  currentData: any;
-  originalData: any;
-  date: Date = new Date();
-
+  @Input() data: Expense[];
+  @Input() date: Date;
+  currentData: Expense[];
+  originalData: Expense[];
 
   chart: any;
   options = {
@@ -63,20 +62,23 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
   };
 
 
-  constructor(private router: Router) {
-  }
-
   ngOnInit() {
     console.log(this.data);
-    this.originalData = [ ...this.data ];
+    this.originalData = [...this.data];
     this.currentData = this.data;
   }
 
-  ngOnChanges(changes: any) {
-    if (!changes.data.firstChange) {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.data && !changes.data.firstChange) {
       if (this.chart) {
         this.originalData = [...this.data];
         this.currentData = this.data;
+        this.setDataForMonthRange();
+      }
+    }
+
+    if (changes.date && !changes.date.firstChange) {
+      if (this.date) {
         this.setDataForMonthRange();
       }
     }
@@ -113,7 +115,7 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
 
         const currentDate = new Date(expense.date);
         if (month.getMonth() === currentDate.getMonth() && month.getFullYear() === currentDate.getFullYear()) {
-          monthSum += expense.amount;
+          monthSum += expense.amount as number;
           drillDownData.push(expense);
         }
       }
@@ -122,7 +124,7 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
         parsedSum = monthSum.toFixed(2);
       }
       monthSummary.push({
-        name: monthNames[month.getMonth()],
+        name: monthNames[month.getMonth()] + month.getFullYear(),
         y: parseFloat(parsedSum),
         drilldown: monthNames[month.getMonth()]
       });
