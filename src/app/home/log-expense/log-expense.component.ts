@@ -3,7 +3,7 @@ import { LoginService } from '../../services/login.service';
 import { DatabaseService } from '../../services/database.service';
 import { Expense } from '../../shared/models/expense-model'
 import { expense_types } from '../../shared/models/user-model';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({

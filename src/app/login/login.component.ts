@@ -4,7 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { User } from '../shared/models/user-model';
 import { LoginService } from '../services/login.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',

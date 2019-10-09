@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Papa, PapaParseConfig } from 'ngx-papaparse';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ExpenseImportModel, requiredColumns } from './expense-import.model';
 
 @Component({

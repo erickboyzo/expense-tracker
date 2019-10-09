@@ -3,7 +3,8 @@ import { Expense } from '../../shared/models/expense-model';
 import { DatabaseService } from '../../services/database.service';
 import { LoginService } from '../../services/login.service';
 import { expense_types } from '../../shared/models/user-model';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-manage-expense',

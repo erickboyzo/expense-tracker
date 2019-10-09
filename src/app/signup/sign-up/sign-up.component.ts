@@ -3,7 +3,7 @@ import { expense_categories, User } from '../../shared/models/user-model'
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireDatabase } from '@angular/fire/database';
 import * as firebase from 'firebase';
 

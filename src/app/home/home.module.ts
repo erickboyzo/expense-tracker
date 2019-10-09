@@ -15,7 +15,9 @@ import { ExpenseImportModule } from './expense-import/expense-import.module';
 import { HomeComponent } from './home.component';
 import { LogExpenseComponent } from './log-expense/log-expense.component';
 import { RouterModule } from '@angular/router';
-import { MatChipsModule, MatSortModule, MatTableModule } from '@angular/material';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [LogExpenseComponent, HomeComponent],

@@ -4,7 +4,10 @@ import { MatSortModule } from "@angular/material/sort";
 import { ExpenseImportComponent } from './expense-import.component';
 import { PapaParseModule } from 'ngx-papaparse';
 import { ExpenseImportGridComponent } from './expense-import-grid/expense-import-grid.component';
-import { MatButtonModule, MatListModule, MatPaginatorModule, MatTableModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { ExpenseImportGuidanceComponent } from './expense-import-guidance/expense-import-guidance.component';
 
 @NgModule({
