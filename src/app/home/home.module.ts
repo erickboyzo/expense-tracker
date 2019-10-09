@@ -10,7 +10,6 @@ import { MatInputModule } from "@angular/material/input";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatSelectModule } from "@angular/material/select";
 import { MatStepperModule } from "@angular/material/stepper";
-import { Md2ChipsModule, Md2DatepickerModule } from "md2";
 import { CardSpinnerModule } from "../shared/card-spinner/card-spinner.module";
 import { ExpenseImportModule } from "./expense-import/expense-import.module";
 import { HomeComponent } from "./home.component";
@@ -28,12 +27,10 @@ import { MatChipsModule } from '@angular/material';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    Md2DatepickerModule,
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
     MatProgressBarModule,
-    Md2ChipsModule,
     MatStepperModule,
     CardSpinnerModule,
     MatDatepickerModule,

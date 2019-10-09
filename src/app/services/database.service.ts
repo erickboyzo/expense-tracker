@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs';
 import { AngularFireDatabase, SnapshotAction } from '@angular/fire/database';
 import * as firebase from 'firebase';
 
