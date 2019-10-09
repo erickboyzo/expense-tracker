@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatSortModule } from "@angular/material/sort";
+import { MatSortModule } from '@angular/material/sort';
 import { ExpenseImportComponent } from './expense-import.component';
-import { PapaParseModule } from 'ngx-papaparse';
 import { ExpenseImportGridComponent } from './expense-import-grid/expense-import-grid.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
@@ -15,7 +14,6 @@ import { ExpenseImportGuidanceComponent } from './expense-import-guidance/expens
   exports: [ExpenseImportComponent, ExpenseImportGridComponent, ExpenseImportGuidanceComponent],
   imports: [
     CommonModule,
-    PapaParseModule,
     MatTableModule,
     MatPaginatorModule,
     MatListModule,

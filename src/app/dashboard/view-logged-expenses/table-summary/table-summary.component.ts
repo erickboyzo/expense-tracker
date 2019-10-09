@@ -13,8 +13,8 @@ import { ManageExpenseComponent } from '../../manage-expense/manage-expense.comp
   styleUrls: ['table-summary.component.scss']
 })
 export class TableSummaryComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild('sorter') sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild('sorter', {static: true}) sort: MatSort;
   @Input() data: Expense[] = [];
   @Input() displayColumns: string[] = ['name', 'amount', 'date', 'category', 'type', 'comments'];
 

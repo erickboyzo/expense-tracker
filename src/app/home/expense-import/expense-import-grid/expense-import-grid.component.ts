@@ -15,8 +15,8 @@ export class ExpenseImportGridComponent implements OnInit, OnChanges {
   @Input() data: ExpenseImportModel[] = [];
   @Input() referenceOnly = false;
   @Input() importComplete = false;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild('sorter') sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild('sorter', {static: true}) sort: MatSort;
   @Output() saveAction: EventEmitter<void> = new EventEmitter();
 
   displayedColumns: string[] = displayedColumns;

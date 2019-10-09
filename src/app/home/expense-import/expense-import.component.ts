@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Papa, PapaParseConfig } from 'ngx-papaparse';
+import { Papa, ParseConfig } from 'ngx-papaparse';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ExpenseImportModel, requiredColumns } from './expense-import.model';
 
@@ -22,7 +22,7 @@ export class ExpenseImportComponent implements OnInit {
 
   fileChangeListener(event): void {
     const files = event.srcElement.files[0];
-    const options = <PapaParseConfig>{
+    const options = <ParseConfig>{
       complete: (results, file) => {
 
         if (results.data.length > 0) {

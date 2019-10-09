@@ -19,7 +19,7 @@ import { cloneDeep, find, includes, isEqual, transform, pick } from 'lodash';
 export class HomeComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER];
 
-  @ViewChild(MatHorizontalStepper) stepper: MatHorizontalStepper;
+  @ViewChild(MatHorizontalStepper, {static: true}) stepper: MatHorizontalStepper;
 
   user: User = {
     firstName: '',
