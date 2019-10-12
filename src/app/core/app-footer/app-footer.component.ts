@@ -15,7 +15,7 @@ export class AppFooterComponent implements OnInit {
   }
 
   isLoggedIn() {
-    return (this.router.url === '/home' || this.router.url === '/view-expenses' || this.router.url === '/enter-expenses');
+    return (this.router.url === '/home' || this.router.url === '/dashboard');
   }
 
   navigateToCorrectLink(link: string) {
@@ -29,8 +29,8 @@ export class AppFooterComponent implements OnInit {
         url = 'https://github.com/erickboyzo';
         break;
 
-      case 'bitbucket':
-        url = 'https://bitbucket.org/erickby/expenses_log';
+      case 'sourceCode':
+        url = 'https://github.com/erickboyzo/expense-tracker';
         break;
 
       default:

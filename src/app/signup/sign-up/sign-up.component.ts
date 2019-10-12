@@ -60,7 +60,7 @@ export class SignUpComponent implements OnInit {
   }
 
   onSuccessfulSignUp() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/dashboard']);
   }
 
   setUserInformation() {

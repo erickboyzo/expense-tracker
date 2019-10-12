@@ -27,7 +27,6 @@ export class ExpenseImportComponent implements OnInit {
 
         if (results.data.length > 0) {
           if (requiredColumns.every(x => results.meta.fields.includes(x) || results.meta.fields.includes(x.toLowerCase()))) {
-            console.log('all found');
             this.dataExported.emit(results.data);
           } else {
             this.snackBar.open(`Error when processing csv file. Missing columns ${requiredColumns.filter(x => !results.meta.fields.includes(x))}`, null, {duration: 3000});

@@ -23,6 +23,8 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     new Date().getMonth() - 2,
     new Date().getDate()
   );
+  categoryDate = new Date();
+  categories:string[];
 
   private expenses: Subscription;
 
@@ -59,8 +61,8 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkDate(e: Date) {
-    this.date = e;
+  checkDate(e: Date, prop:string) {
+    this[prop] = e;
   }
 
   getUserCategories() {
@@ -112,13 +114,13 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
       {color: 'money-icon', value: totalAmount, metricTitle: 'Total Amount', icon: 'attach_money'},
     ];
 
-    const categories = parsedData
+    this.categories = parsedData
       .map(item => item.category)
       .filter((value, index, self) => self.indexOf(value) === index);
 
     const pieData = [];
 
-    for (const category of categories) {
+    for (const category of this.categories) {
       let categorySum = 0;
       for (const value of parsedData) {
         if (value.category === category) {

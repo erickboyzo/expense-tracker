@@ -1,3 +1,4 @@
-<div>
+<div *ngIf="init">
   <chart [options]="options" (load)="saveInstance($event.context)"></chart>
 </div>
+

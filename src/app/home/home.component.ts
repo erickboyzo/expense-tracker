@@ -86,18 +86,15 @@ export class HomeComponent implements OnInit {
         .then(jsonData => {
           const obj = jsonData.toJSON();
           const key = Object.keys(obj)[0];
-          console.log(key);
           this.loginService.setUserId(key);
           this.user.firstName = obj[key].firstName;
           this.user.lastName = obj[key].lastName;
-          console.log(this.loginService.getUser());
           this.getExpensesInfo();
           this.getUserCategories();
           this.isLoadingUserInformation = false;
         }).catch(e => {
         this.isLoadingUserInformation = false;
-        console.log('failed');
-        console.log(e);
+        this.openSnackBar(e.message);
       })
     }
   }
@@ -118,8 +115,7 @@ export class HomeComponent implements OnInit {
         this.isLoadingCategories = false;
       }).catch(e => {
       this.isLoadingCategories = false;
-      console.log('failed');
-      console.log(e);
+      this.openSnackBar(e.message);
     })
   }
 
@@ -139,7 +135,7 @@ export class HomeComponent implements OnInit {
           this.user.lastLogin = this.loginService.getUser().metadata.lastSignInTime;
           this.user.creationDate = this.loginService.getUser().metadata.creationTime;
         })
-        .catch(e => console.error(e));
+        .catch(e =>   this.openSnackBar(e.message));
     }
   }
 
@@ -186,6 +182,9 @@ export class HomeComponent implements OnInit {
         } else {
           expense.category = matchingCategory.value;
         }
+        if (typeof expense.date !== 'string') {
+          expense.date = new Date(expense.date).toDateString();
+        }
         this.database.saveNewExpense(pick(expense, ['date', 'name', 'amount', 'category', 'type', 'comments']), currentUserKey);
       });
     if (categoriesAdded) {
@@ -223,7 +222,6 @@ export class HomeComponent implements OnInit {
     const mappedExpense = transform(e as {}, (result, val, key: string) => {
       result[key.toLowerCase()] = val;
     }) as ExpenseImportModel;
-    console.log(mappedExpense);
 
     if (!mappedExpense.comments) {
       mappedExpense.comments = '';
@@ -249,6 +247,5 @@ export class HomeComponent implements OnInit {
     return '?';
   }
 
-  onStep(data) {
-  }
+  onStep(data) {}
 }

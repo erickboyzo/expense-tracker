@@ -19,14 +19,15 @@ import { NgxChartsModule, PieChartModule } from '@swimlane/ngx-charts';
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { highchartsFactory } from '../app.highcharts';
+import * as highcharts from 'Highcharts';
 import { ManageExpenseComponent } from './manage-expense/manage-expense.component';
 import { CardSpinnerModule } from '../shared/card-spinner/card-spinner.module';
 import { ChartSummaryComponent } from './view-logged-expenses/chart-summary/chart-summary.component';
 import { MonthlySummaryChartComponent } from './view-logged-expenses/monthly-summary-chart/monthly-summary-chart.component';
 import { NumberCardsComponent } from './view-logged-expenses/number-cards/number-cards.component';
-import { PieGridComponent } from './view-logged-expenses/pie-grid/pie-grid.component';
 import { TableSummaryComponent } from './view-logged-expenses/table-summary/table-summary.component';
 import { ViewLoggedExpensesComponent } from './view-logged-expenses/view-logged-expenses.component';
+import { CategorySummaryChartComponent } from './view-logged-expenses/category-summary-chart/category-summary-chart.component';
 
 @NgModule({
   declarations: [
@@ -34,13 +35,12 @@ import { ViewLoggedExpensesComponent } from './view-logged-expenses/view-logged-
     TableSummaryComponent,
     ManageExpenseComponent,
     MonthlySummaryChartComponent,
-    PieGridComponent,
     NumberCardsComponent,
     ViewLoggedExpensesComponent,
-    ManageExpenseComponent],
+    ManageExpenseComponent,
+    CategorySummaryChartComponent],
   imports: [
     CommonModule,
-    ChartModule,
     MatCardModule,
     MatProgressBarModule,
     CardSpinnerModule,
@@ -59,7 +59,8 @@ import { ViewLoggedExpensesComponent } from './view-logged-expenses/view-logged-
     MatPaginatorModule,
     MatSortModule,
     MatSortModule,
-    NgxChartsModule
+    NgxChartsModule,
+    ChartModule,
   ],
   exports: [
     ViewLoggedExpensesComponent

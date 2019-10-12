@@ -12,8 +12,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./login.component.scss'],
   animations: [
     trigger('visibilityChanged', [
-      state('true', style({ opacity: 1, transform: 'scale(1.0)' })),
-      state('false', style({ opacity: 0, transform: 'scale(0.0)' })),
+      state('true', style({opacity: 1, transform: 'scale(1.0)'})),
+      state('false', style({opacity: 0, transform: 'scale(0.0)'})),
       transition('1 => 0', animate('300ms')),
       transition('0 => 1', animate('900ms'))
     ])
@@ -26,13 +26,13 @@ export class LoginComponent implements OnInit {
   isVisible: true;
 
   constructor(private router: Router,
-    public authService: AuthService,
-    public snackBar: MatSnackBar,
-    public loginService: LoginService) {
+              private authService: AuthService,
+              private snackBar: MatSnackBar,
+              private loginService: LoginService) {
   }
 
   ngOnInit() {
-    setTimeout(() => this.scrollTop(), );
+    setTimeout(() => this.scrollTop(),);
   }
 
 
@@ -45,23 +45,18 @@ export class LoginComponent implements OnInit {
     this.authService.logIn(this.currentUser.email, this.currentUser.password).then((data) => {
       this.loginService.setUser(data.user);
       this.stopLoading();
-      this.announceLogin(data);
-      this.snackBar.open('Login Successful!', '', { duration: 2000 });
+      this.snackBar.open('Login Successful!', '', {duration: 2000});
       this.onSuccessfulLogIn()
 
     }).catch(e => {
       this.stopLoading();
       console.log('Catches object set:' + e.message);
-      this.snackBar.open(e.message, 'ok', { duration: 4000 });
+      this.snackBar.open(e.message, 'ok', {duration: 4000});
     })
   }
 
-  public onSuccessfulLogIn() {
-    this.router.navigate(['/view-expenses']);
-  }
-
-  announceLogin(user: any) {
-    //this.loginService.logIn(user);
+  onSuccessfulLogIn() {
+    this.router.navigate(['/dashboard']);
   }
 
   startLoading() {
@@ -74,7 +69,7 @@ export class LoginComponent implements OnInit {
 
   toggleLogin() {
     this.isVisible = true;
-    setTimeout(() => this.scrollToLogin(), );
+    setTimeout(() => this.scrollToLogin(),);
   }
 
   scrollToLogin() {

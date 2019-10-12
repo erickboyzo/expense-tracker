@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LoginService } from '../../services/login.service';
-import { DatabaseService } from '../../services/database.service';
-import { Expense } from '../../shared/models/expense-model'
-import { expense_types } from '../../shared/models/user-model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { DatabaseService } from '../../services/database.service';
+import { LoginService } from '../../services/login.service';
+import { Expense } from '../../shared/models/expense-model'
+import { expense_types } from '../../shared/models/user-model';
 
 @Component({
   selector: 'app-log-expense',

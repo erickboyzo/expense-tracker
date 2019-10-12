@@ -22,7 +22,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   shouldDisplay() {
-    return (this.router.url === '/home' || this.router.url === '/view-expenses' || this.router.url === '/enter-expenses');
+    return (this.router.url === '/home' || this.router.url === '/dashboard');
   }
 
   logOut() {

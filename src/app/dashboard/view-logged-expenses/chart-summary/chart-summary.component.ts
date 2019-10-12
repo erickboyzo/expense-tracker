@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChartEvent } from "angular2-highcharts/dist/ChartEvent";
 
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 
 export class ChartSummaryComponent implements OnInit, OnChanges {
   @Input() data: any;
-  chart: any;
+  chart:any;
   options = {
     chart: {
       plotBackgroundColor: null,
@@ -25,7 +25,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges {
       align: 'center',
       padding: 10,
       title: {
-        text: 'Click on category to hide/show'
+        text: null
       }
     },
     tooltip: {
@@ -36,9 +36,9 @@ export class ChartSummaryComponent implements OnInit, OnChanges {
         allowPointSelect: true,
         cursor: 'pointer',
         dataLabels: {
-          enabled: false
-        },
-        showInLegend: true
+          enabled: true,
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+        }
       }
     },
     series: [
@@ -50,7 +50,7 @@ export class ChartSummaryComponent implements OnInit, OnChanges {
   };
 
 
-  constructor(private router: Router) {
+  constructor() {
   }
 
   ngOnInit() {
@@ -64,21 +64,8 @@ export class ChartSummaryComponent implements OnInit, OnChanges {
     }
   }
 
-  saveInstance(chartInstance: any) {
+  saveInstance(chartInstance: ChartEvent) {
     this.chart = chartInstance;
     this.chart.series[0].setData(this.data);
   }
-
-  isDataEmpty(): boolean {
-    return this.data.length === 0;
-  }
-
-  chartClicked(e: any): void {
-    console.log(e);
-  }
-
-  chartHovered(e: any): void {
-    console.log(e);
-  }
-
 }

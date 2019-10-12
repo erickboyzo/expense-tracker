@@ -8,6 +8,7 @@ footer.mdl-mini-footer {
   a {
 
   }
+
   a:hover, a:focus {
     color: $hover-background;
     text-decoration: none;
@@ -68,10 +69,6 @@ footer.mdl-mini-footer {
   cursor: pointer;
 }
 
-.mdl-button:hover {
-  background-color: $footer-link-hover;
-}
-
 .bg-circle-outline[_ngcontent-c2] {
   width: 50px;
   height: 50px;
@@ -91,14 +88,6 @@ footer.mdl-mini-footer {
   margin-right: auto;
   padding-right: 15px;
   padding-left: 15px;
-}
-
-.mdl-button {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  font-size: 14px;
-  font-weight: 300;
-  text-transform: none;
-
 }
 
 .app-title {

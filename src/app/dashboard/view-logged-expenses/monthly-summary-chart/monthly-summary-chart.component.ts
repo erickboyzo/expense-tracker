@@ -10,6 +10,7 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
 
   @Input() data: Expense[];
   @Input() date: Date;
+  @Input() categories: string[];
   currentData: Expense[];
   originalData: Expense[];
 
@@ -63,7 +64,6 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
 
 
   ngOnInit() {
-    console.log(this.data);
     this.originalData = [...this.data];
     this.currentData = this.data;
   }
@@ -86,15 +86,6 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
 
   saveInstance(chartInstance: any) {
     this.chart = chartInstance;
-    this.setDataForMonthRange();
-  }
-
-  isDataEmpty(): boolean {
-    return this.data.length === 0;
-  }
-
-  checkDate(e: any) {
-    console.log(this.date);
     this.setDataForMonthRange();
   }
 
@@ -141,10 +132,8 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
   getDrillDownData(data: any) {
 
     const summaryData = [];
-    const categories = data.map(item => item.category)
-      .filter((value, index, self) => self.indexOf(value) === index);
 
-    for (const category of categories) {
+    for (const category of this.categories) {
       let categorySum = 0;
       for (const expense of data) {
         if (category === expense.category) {
@@ -158,14 +147,11 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
 
   getDateRange() {
     const monthRange = [this.date];
-    console.log(monthRange);
     for (let i = 1; i < 6; i++) {
       const month = new Date(this.date.getTime());
-      console.log(month);
       month.setMonth(this.date.getMonth() + i);
       monthRange.push(month);
     }
-    console.log(monthRange);
     return monthRange;
   }
 

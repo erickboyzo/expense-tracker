@@ -31,9 +31,6 @@ export class ManageExpenseComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data);
-    console.log(this.expense);
-    console.log(this.original);
   }
 
   deleteExpense() {
@@ -53,7 +50,6 @@ export class ManageExpenseComponent implements OnInit {
   }
 
   failedDeleted(err: any) {
-    console.log(err, 'You do not have access!');
     this.openSnackBar(err.message)
   }
 

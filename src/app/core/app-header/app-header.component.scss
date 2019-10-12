@@ -21,53 +21,32 @@
   }
 }
 
-.mdl-layout__header {
-  position: fixed;
+.fa {
+  margin-right: 4px;
+}
 
-  mdl-icon {
-    position: fixed;
-
-    .material-icons {
-      color: white !important;
-    }
+::ng-deep .mat-nav-list {
+  a {
+    width: 100%;
+    color: #2196F3 !important;
+    align-content: flex-start;
   }
 }
 
-mdl-layout-drawer {
-  div.mdl-layout__drawer-button {
-    position: fixed;
+.header-container {
+  display: flex;
+  flex-direction: row;
 
-    mdl-icon {
-      position: fixed;
+  .header-nav {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 
-      .material-icons {
-        color: white !important;
+    a {
+      &:hover {
+        text-decoration: none;
       }
     }
   }
-}
-
-.mdl-navigation__link {
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 300;
-
-  &:hover {
-    background-color: #424242;
-  }
-}
-
-.mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
-  font-weight: 300;
-  font-size: 14px;
-  color: rgb(33, 150, 243);
-
-  &:hover {
-    background-color: #E0E0E0;
-  }
-}
-
-.active-link {
-  // add active route styles here
 }
