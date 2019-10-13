@@ -235,7 +235,7 @@ export class HomeComponent implements OnInit {
       mappedExpense.category = 'Unassigned';
     }
 
-    mappedExpense.amount = mappedExpense.amount > 0 ? +e.amount : this.handleMissingCsvData(mappedExpense);
+    mappedExpense.amount = mappedExpense.amount > 0 ? +mappedExpense.amount : this.handleMissingCsvData(mappedExpense);
     mappedExpense.date = new Date(mappedExpense.date) ? new Date(mappedExpense.date).toDateString() : this.handleMissingCsvData(mappedExpense);
     mappedExpense.description = mappedExpense.description || this.handleMissingCsvData(mappedExpense);
     mappedExpense.name = mappedExpense.description;
