@@ -1,0 +1,11 @@
+<label for="txtFileUpload" class="mat-raised-button mat-primary">
+Import Expenses File
+</label>
+
+<input type="file"
+       #fileImportInput
+       name="File Upload"
+       id="txtFileUpload"
+       (click)="fileImportInput.value = null"
+       (change)="fileChangeListener($event)"
+       accept=".csv"/>

@@ -1,0 +1,32 @@
+#login {
+  .mat-input-container {
+    width: 100%;
+  }
+
+  .jumbotron {
+    border-radius: 0;
+    background-color: #ffffff;
+  }
+
+  hr {
+    border-top: 1px solid #2196f3;
+  }
+
+
+  .mat-card:not([class*=mat-elevation-z]) {
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3);
+
+  }
+
+  .login-card {
+    margin-top: 30px;
+  }
+
+  .button--accent.mdl-button--accent.mdl-button--fab {
+    position: fixed;
+    bottom: 75px;
+    right: 25px;
+  }
+}
+
+

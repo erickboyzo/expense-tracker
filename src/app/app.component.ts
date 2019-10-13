@@ -1,50 +1,43 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { AuthService } from './providers/auth.service';
-import { Observable, Subscription } from 'rxjs/Rx';
-import * as firebase from 'firebase';
-import { AngularFireAuth } from 'angularfire2/auth/auth';
-import { LoginService } from './providers/login.service';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
+import * as firebase from 'firebase';
+import { User } from 'firebase';
+import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { LoginService } from './services/login.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.less']
+  styleUrls: ['./app.component.scss']
 })
 
 export class AppComponent implements OnInit, OnDestroy {
-  loggedInUser = false;
   user: Observable<firebase.User>;
-  email: any;
   loggedInSubscription: Subscription;
 
   constructor(private router: Router,
-    public authService: AuthService,
-    public afAuth: AngularFireAuth,
-    public loginService: LoginService) {
+              private afAuth: AngularFireAuth,
+              private loginService: LoginService) {
 
-    this.loggedInSubscription = afAuth.authState.subscribe(authData => {
-      console.log(authData);
-      if (authData.email) {
-        console.log(authData);
-        let uid = authData.email;
-        this.email = uid;
-        console.log(this.email);
+    this.loggedInSubscription = afAuth.authState.subscribe((authData: User) => {
+      if (authData && authData.email) {
+        this.loginService.setUserId(authData.uid);
         this.loginService.setUser(authData);
         this.loginService.announceUserIdCreated('user created!');
-        this.router.navigate(['/home']);
+        this.router.navigate(['/dashboard']);
       } else {
         this.router.navigate(['/login']);
       }
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   ngOnDestroy() {
-
     this.loggedInSubscription.unsubscribe();
-
   }
 }

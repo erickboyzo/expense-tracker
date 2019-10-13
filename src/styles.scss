@@ -1,0 +1,105 @@
+@import 'stylesheets/_variables';
+@import 'stylesheets/theme';
+
+$material-blue: #2196f3;
+
+html {
+  height: 100%;
+
+  body {
+    font-family: Roboto, sans-serif;
+    font-weight: 300;
+    background-color: #EEEEEE;
+
+    #content {
+      margin-top: 5%;
+    }
+
+    .cdk-overlay-pane {
+      margin-bottom: 60px !important;
+    }
+
+    .mat-input-container, .mat-form-field {
+      width: 100%;
+    }
+
+    .z-depth-1 {
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    }
+
+    .z-depth-1-half {
+      box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+    }
+
+    .z-depth-2 {
+      box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    .z-depth-3 {
+      box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    .z-depth-4 {
+      box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.3);
+    }
+
+    .z-depth-5 {
+      box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .mat-select {
+      width: 100%;
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+    .mat-card:not([class*=mat-elevation-z]) {
+      box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+      border-radius: 0;
+    }
+
+    .no-data {
+      .icon {
+        text-align: center;
+      }
+
+      .icon-alert {
+        font-size: 80px;
+      }
+
+      h2, h6 {
+        text-align: center;
+        font-weight: 300;
+      }
+
+      .alert-action {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+    }
+
+    mat-card {
+      margin-bottom: 40px;
+    }
+
+    .button-row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    chart {
+      display: block;
+    }
+
+    .no-data {
+      h2 {
+        text-align: center;
+      }
+    }
+
+  }
+
+}

@@ -1,23 +1,19 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../providers/auth.service';
-import { User } from '../models/user-model';
-import { MdSnackBar } from '@angular/material';
-import { LoginService } from '../providers/login.service';
-import { state, trigger, transition, style, animate } from '@angular/animations';
-import { AngularFireAuth } from 'angularfire2/auth/auth';
-
-declare var Materialize: any;
-
+import { AuthService } from '../services/auth.service';
+import { User } from '../shared/models/user-model';
+import { LoginService } from '../services/login.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.less'],
+  styleUrls: ['./login.component.scss'],
   animations: [
     trigger('visibilityChanged', [
-      state('true', style({ opacity: 1, transform: 'scale(1.0)' })),
-      state('false', style({ opacity: 0, transform: 'scale(0.0)' })),
+      state('true', style({opacity: 1, transform: 'scale(1.0)'})),
+      state('false', style({opacity: 0, transform: 'scale(0.0)'})),
       transition('1 => 0', animate('300ms')),
       transition('0 => 1', animate('900ms'))
     ])
@@ -25,18 +21,18 @@ declare var Materialize: any;
 })
 export class LoginComponent implements OnInit {
 
-  currentUser: User = new User;
+  currentUser: User = {email: '', password: ''};
   isLoading = false;
   isVisible: true;
 
   constructor(private router: Router,
-    public authService: AuthService,
-    public snackBar: MdSnackBar,
-    public loginService: LoginService) {
+              private authService: AuthService,
+              private snackBar: MatSnackBar,
+              private loginService: LoginService) {
   }
 
   ngOnInit() {
-    setTimeout(() => this.scrollTop(), );
+    setTimeout(() => this.scrollTop(),);
   }
 
 
@@ -47,25 +43,20 @@ export class LoginComponent implements OnInit {
   public login() {
     this.startLoading();
     this.authService.logIn(this.currentUser.email, this.currentUser.password).then((data) => {
-      this.loginService.setUser(data);
+      this.loginService.setUser(data.user);
       this.stopLoading();
-      this.announceLogin(data);
-      this.snackBar.open('Login Successful!', '', { duration: 2000 });
+      this.snackBar.open('Login Successful!', '', {duration: 2000});
       this.onSuccessfulLogIn()
 
     }).catch(e => {
       this.stopLoading();
       console.log('Catches object set:' + e.message);
-      this.snackBar.open(e.message, 'ok', { duration: 4000 });
+      this.snackBar.open(e.message, 'ok', {duration: 4000});
     })
   }
 
-  public onSuccessfulLogIn() {
-    this.router.navigate(['/home']);
-  }
-
-  announceLogin(user: any) {
-    //this.loginService.logIn(user);
+  onSuccessfulLogIn() {
+    this.router.navigate(['/dashboard']);
   }
 
   startLoading() {
@@ -78,11 +69,11 @@ export class LoginComponent implements OnInit {
 
   toggleLogin() {
     this.isVisible = true;
-    setTimeout(() => this.scrollToLogin(), );
+    setTimeout(() => this.scrollToLogin(),);
   }
 
   scrollToLogin() {
-    var element = document.getElementById('target');
+    const element = document.getElementById('target');
     element.scrollIntoView();
   }
 
@@ -93,7 +84,7 @@ export class LoginComponent implements OnInit {
   }
 
   scrollTop() {
-    let element = document.getElementById('content');
+    const element = document.getElementById('content');
     element.scrollIntoView();
   }
 

@@ -1,0 +1,143 @@
+<h2 mat-dialog-title>Manage Expense</h2>
+
+<form #f="ngForm" novalidate (ngSubmit)="updateExpense(f.value, f.valid, f)">
+
+  <mat-dialog-content *ngIf="!update">
+
+    <div>
+      <div class="row">
+        <div class="col-sm-6">
+          <label>Name</label>
+          <p>{{expense.name}}</p>
+        </div>
+
+        <div class="col-sm-6">
+          <label>Amount</label>
+          <p>${{expense.amount}}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <label>Date </label>
+          <p>{{expense.date | date:"mediumDate"}}</p>
+        </div>
+
+        <div class="col-sm-4">
+          <label>Category</label>
+          <p>{{expense.category}}</p>
+        </div>
+
+        <div class="col-sm-4">
+          <label>Expense Type</label>
+          <p>{{expense.type}}</p>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <label>Comments </label>
+          <p>{{expense.comments}}</p>
+        </div>
+      </div>
+
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-content *ngIf="update">
+
+
+    <div class="row">
+      <div class="col-sm-6">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Expense name" name="name" type="text" [(ngModel)]="expense.name" #name="ngModel"
+                 required minlength="4">
+        </mat-form-field>
+        <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+          <small>Name is required (minimum 4 characters).</small>
+        </div>
+
+      </div>
+      <div class="col-sm-6">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expense.amount"
+                 (blur)="formatAmount()" #amount="ngModel" required>
+        </mat-form-field>
+        <div *ngIf="amount.errors && (amount.dirty || amount.touched)" class="alert alert-danger">
+          <small>Amount is required (positive amount, max 2 decimal places).</small>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 date-picker">
+        <div>
+          <mat-form-field class="example-full-width">
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="expense.date" name="date"
+                   #date="ngModel" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker touchUi #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div *ngIf="date.errors" class="alert alert-danger">
+          <small>
+            Date is required.
+          </small>
+        </div>
+
+      </div>
+      <div class="col-sm-3">
+        <mat-form-field>
+          <mat-label>Expense category</mat-label>
+          <mat-select [(ngModel)]="expense.category" name="category" #category="ngModel" required>
+            <mat-option *ngFor="let category of categories" [value]="category">
+              {{category}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div *ngIf="category.errors && (category.dirty || category.touched)" class="alert alert-danger">
+          <small>Category is required.</small>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <mat-form-field>
+          <mat-label>Payment type</mat-label>
+          <mat-select [(ngModel)]="expense.type" name="payment" #payment="ngModel" required>
+            <mat-option *ngFor="let type of types " [value]="type">
+              {{type}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div *ngIf="payment.errors && (payment.dirty || payment.touched)" class="alert alert-danger">
+          <small>Payment is required.</small>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <mat-form-field class="example-full-width">
+          <textarea matInput placeholder="Comments" [(ngModel)]="expense.comments" name="comments"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button type="button" mat-button color="primary" mat-dialog-close>Close</button>
+
+    <button type="button" *ngIf="!update" class="delete" mat-button color="warn" (click)="deleteExpense()">Delete
+    </button>
+    <button type="button" *ngIf="!update" mat-raised-button color="primary" (click)="update = true">Edit
+    </button>
+
+    <button type="button" *ngIf="update" class="delete" mat-button color="primary" (click)="reset()">Reset</button>
+    <button *ngIf="update" type="submit" [disabled]="!f.form.valid || isExpenseUntouched()" mat-raised-button
+            color="primary">Update
+    </button>
+
+  </mat-dialog-actions>
+
+</form>

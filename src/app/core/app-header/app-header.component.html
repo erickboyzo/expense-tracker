@@ -1,0 +1,57 @@
+<td-layout [mode]="'over'">
+  <td-navigation-drawer #navDrawer flex sidenavTitle="{{title}}">
+    <mat-nav-list>
+      <ng-container *ngIf="shouldDisplay(); else elseBlock">
+        <a mat-list-item routerLink="/home" routerLinkActive="active-link" (click)="navDrawer.close()">Home</a>
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link" (click)="navDrawer.close()">View
+          expenses</a>
+        <a mat-list-item routerLink="/login" (click)="logOut();navDrawer.close()"
+        >Logout</a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <a mat-list-item *ngIf="router.url === '/login'" routerLink="/signUp"
+           routerLinkActive="active-link" (click)="navDrawer.close()">Signup</a>
+        <a mat-list-item *ngIf="router.url === '/signUp'" routerLink="/login"
+           routerLinkActive="active-link" (click)="navDrawer.close()">Login</a>
+      </ng-template>
+    </mat-nav-list>
+  </td-navigation-drawer>
+  <td-layout-nav>
+    <div td-toolbar-content layout="row" layout-align="start center" flex class="w-100">
+      <div class="w-100 px-0 header-container">
+        <button mat-icon-button td-menu-button tdLayoutToggle>
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>{{title}}</span>
+        <span flex></span>
+
+        <ng-container *ngIf="shouldDisplay(); else elseBlock">
+          <div class="header-nav">
+             <a *ngIf="router.url === '/dashboard'" class="text-white" mat-button routerLink="/home"
+                routerLinkActive="active-link"> <i class="fa fa-1x fa-fw fa-home"></i> Home</a>
+          <a *ngIf="router.url === '/home'" class="text-white" mat-button routerLink="/dashboard"
+             routerLinkActive="active-link"> <i class="fa fa-1x fa-fw fa-bar-chart"></i> View Expenses</a>
+          <a mat-button routerLink="/login" class="text-white" (click)="logOut();navDrawer.close()"
+          ><i class="fa fa-1x fa-fw fa-sign-out"></i> Logout</a>
+          </div>
+
+
+        </ng-container>
+        <ng-template #elseBlock>
+          <div class="header-nav">
+             <a mat-button *ngIf="router.url === '/login'" class="text-white" routerLink="/signUp"
+                routerLinkActive="active-link" (click)="navDrawer.close()"> <i class="fa fa-1x fa-fw fa-user-plus"></i>Signup</a>
+          <a mat-button *ngIf="router.url === '/signUp'" class="text-white" routerLink="/login"
+             routerLinkActive="active-link" (click)="navDrawer.close()"> <i class="fa fa-1x fa-fw fa-user-plus"></i>Login</a>
+          </div>
+        </ng-template>
+
+        <div>
+
+        </div>
+      </div>
+
+    </div>
+    <ng-content select="[app-content]"></ng-content>
+  </td-layout-nav>
+</td-layout>

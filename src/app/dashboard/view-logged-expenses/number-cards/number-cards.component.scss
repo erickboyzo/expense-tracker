@@ -1,0 +1,21 @@
+mat-icon {
+  font-size: 48px;
+}
+
+.data-value {
+  font-size: 40px;
+}
+
+.metric-summary {
+  display: flex;
+  flex-direction: column;
+
+  div > * {
+    margin-bottom: 20px;
+  }
+
+  .money-icon {
+    color: green;
+  }
+
+}

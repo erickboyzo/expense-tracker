@@ -1,0 +1,59 @@
+<div *ngIf="!referenceOnly && !importComplete" class="d-flex justify-content-end mx-2">
+  <div *ngIf="errorsPresent">
+    <button mat-button color="warn"
+            (click)="onErrorButtonClick()">{{filterErrors ? 'View All' : 'View Errors'}}</button>
+    <div *ngIf="filterErrors" class="text-danger"> Expenses with errors will not be saved. Correct csv file and import
+      again before saving.
+    </div>
+  </div>
+
+  <button *ngIf="data.length > 0" class="ml-2" mat-raised-button color="primary"
+          [disabled]="filterErrors" (click)="saveImportedExpenses()">Save
+  </button>
+</div>
+
+<div  >
+  <div class="import-table-container">
+    <table mat-table  [dataSource]="dataSource" matSort #sorter="matSort">
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'column-width'">Date</th>
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.date" [ngClass]="'column-width'"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'column-width'">Description</th>
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.description" [ngClass]="'column-width'"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'column-width'">Amount</th>
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.amount" [ngClass]="'column-width'"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef [ngClass]="'column-width'" mat-sort-header>Category</th>
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.category" [ngClass]="'column-width'"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef [ngClass]="'column-width'">Type</th>
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.type" [ngClass]="'column-width'"> {{element.type}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="comments">
+        <th mat-header-cell *matHeaderCellDef [ngClass]="'column-width'">Comments</th>
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.comments" [ngClass]="'column-width'"></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" [ngClass]="'customWidthClass'"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.error]="row['error']" [ngClass]="'customWidthClass'"></tr>
+    </table>
+
+  </div>
+  <mat-paginator [hidden]="referenceOnly" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+
+
+

@@ -1,4 +1,10 @@
-<!-- ideally we would like to have a header component, routler outlet , and footer component
-    but due to  <mdl-layout-content> structure everything is within the header -->
-
-<app-header></app-header>
+<app-header>
+  <ng-container app-content>
+    <div id="content">
+      <div class="main">
+        <router-outlet></router-outlet>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </ng-container>
+</app-header>

@@ -1,0 +1,17 @@
+
+.table-container {
+  max-height: 500px;
+  overflow: auto;
+
+  table {
+    width: 100%;
+
+    td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+      padding: 15px;
+    }
+  }
+
+  .column-width {
+    flex: 0 0 35%;
+  }
+}

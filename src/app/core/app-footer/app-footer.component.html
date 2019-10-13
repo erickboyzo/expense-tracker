@@ -1,0 +1,46 @@
+<td-layout-footer color="primary">
+  <div>
+    <div class="row">
+      <div class="col-4">
+        <div class="d-inline-flex button-alignment">
+          <ng-container *ngIf="isLoggedIn(); else notLoggedIn">
+            <a class="text-white" *ngIf="router.url === '/view-expenses'" routerLink="/home" mat-button>
+              <i class="fa fa-1x fa-fw fa-home"></i> Home
+            </a>
+            <a class="text-white" *ngIf="router.url === '/home'" routerLink="/dashboard" mat-button>
+              <i class="fa fa-1x fa-fw fa-bar-chart"></i> View Expenses
+            </a>
+          </ng-container>
+          <ng-template #notLoggedIn>
+            <a *ngIf="router.url === '/login'" routerLink="/signUp" class="text-white" mat-button>
+              <i class="fa fa-1x fa-fw fa-user-plus"></i> Sign up
+            </a>
+            <a *ngIf="router.url === '/signUp'" routerLink="/login" class="text-white" mat-button>
+              <i class="fa fa-1x fa-fw fa-user-plus"></i> Login
+            </a>
+          </ng-template>
+        </div>
+      </div>
+      <div class="col-4 d-flex flex-column justify-content-center">
+        <span *ngIf="false" class="font-weight-light d-flex justify-content-center">developed by Erick Boyzo</span>
+      </div>
+      <div class="col-4">
+        <div class="d-inline-flex link-alignment">
+          <div class="bg-circle-outline d-inline-block">
+            <a class="link-text" (click)="navigateToCorrectLink('linkedin')">
+              <i class="fa fa-2x fa-fw fa-linkedin"></i>
+            </a>
+          </div>
+          <div class="bg-circle-outline d-inline-block">
+            <a class="link-text" (click)="navigateToCorrectLink('github')">
+              <i class="fa fa-2x fa-fw fa-github"></i></a>
+          </div>
+          <div class="bg-circle-outline d-inline-block">
+            <a class="link-text" (click)="navigateToCorrectLink('sourceCode')">
+              <i class="fa fa-2x fa-fw fa-file-code-o"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</td-layout-footer>

@@ -1,0 +1,62 @@
+#home {
+  $primary: #2196F3;
+
+  button.fab {
+    position: fixed;
+    bottom: 10%;
+    right: 5%;
+    z-index: 100;
+  }
+
+  .account {
+    font-size: 80px;
+    color: $primary;
+  }
+
+  .loading-progress-bar {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  label {
+    padding-top: 20px;
+    font-weight: bold;
+  }
+
+  .info-alignment {
+    text-align: center;
+  }
+
+  .info-content {
+    font-size: 18px;
+    font-weight: 100;
+  }
+
+  .user-summary {
+
+    .user-summary__section {
+      padding: 0 20px;
+    }
+
+    .divider{
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .mat-icon {
+    width: inherit;
+  }
+
+  ::ng-deep {
+    mat-step-header {
+      .mat-step-header .mat-step-icon-selected {
+        background-color: $primary !important;
+      }
+    }
+
+    .mat-horizontal-content-container {
+      overflow: hidden;
+      padding: 0;
+    }
+  }
+}

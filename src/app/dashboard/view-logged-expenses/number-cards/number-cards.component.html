@@ -1,0 +1,12 @@
+<mat-card class="h-100">
+  <mat-card-content>
+    <div class="metric-summary">
+      <div class="d-flex justify-content-center">
+        <mat-icon [ngClass]="data.color">{{data.icon}}</mat-icon>
+      </div>
+      <div class="data-value d-flex justify-content-center">{{data.value}}</div>
+      <div class="d-flex justify-content-center text-muted">{{data.metricTitle}}</div>
+    </div>
+  </mat-card-content>
+</mat-card>
+

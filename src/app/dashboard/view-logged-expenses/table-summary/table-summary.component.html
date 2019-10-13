@@ -1,0 +1,43 @@
+<div>
+  <div class="table-container">
+    <table mat-table [dataSource]="expensesData" matSort #sorter="matSort">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'column-width'">Name</th>
+        <td mat-cell *matCellDef="let element" [ngClass]="'column-width'"> {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'column-width'">Amount</th>
+        <td mat-cell *matCellDef="let element" [ngClass]="'column-width'"> {{element.amount}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'column-width'">Date</th>
+        <td mat-cell *matCellDef="let element" [ngClass]="'column-width'"> {{element.date}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'column-width'">Category</th>
+        <td mat-cell *matCellDef="let element" [ngClass]="'column-width'"> {{element.category}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'column-width'">Type</th>
+        <td mat-cell *matCellDef="let element" [ngClass]="'column-width'"> {{element.type}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="comments">
+        <th mat-header-cell *matHeaderCellDef [ngClass]="'column-width'">Comments</th>
+        <td mat-cell *matCellDef="let element" [ngClass]="'column-width'"> {{element.comments}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayColumns; sticky: true" [ngClass]="'column-width'"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayColumns;" (click)="editData(row)"
+          [ngClass]="'column-width'"></tr>
+    </table>
+  </div>
+  <mat-paginator [pageSizeOptions]="[5,10, 20, 50]" showFirstLastButtons></mat-paginator>
+</div>

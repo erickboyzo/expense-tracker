@@ -1,0 +1,104 @@
+<div class="container-fluid">
+  <div class="row" *ngIf="isLoading">
+    <div class="col-sm-6 offset-sm-3">
+      <mat-progress-bar color="primary"></mat-progress-bar>
+    </div>
+
+  </div>
+  <form #f="ngForm" novalidate (ngSubmit)="checkForm(f.value, f.valid, f)">
+    <div class="row" id="signUp">
+      <div class="col-sm-6 offset-sm-3">
+        <mat-card>
+          <mat-card-title>Sign Up</mat-card-title>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <input matInput
+                         placeholder="First Name"
+                         type="text"
+                         name="fName"
+                         #fName="ngModel"
+                         [(ngModel)]="currentUser.firstName"
+                         required minlength="2">
+                </mat-form-field>
+
+                <div *ngIf="fName.errors && (fName.dirty || fName.touched)"
+                     class="alert alert-danger">
+                  <small>First Name is required (minimum 2 characters).</small>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <input matInput
+                         placeholder="Last Name"
+                         name="lName"
+                         #lName="ngModel"
+                         type="text" [(ngModel)]="currentUser.lastName"
+                         required minlength="1">
+                </mat-form-field>
+
+                <div *ngIf="lName.errors && (lName.dirty || lName.touched)"
+                     class="alert alert-danger">
+                  <small>Last Name is required (minimum 1 characters).</small>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <input matInput
+                         placeholder="email"
+                         type="email"
+                         name="formEmail"
+                         #formEmail="ngModel"
+                         [(ngModel)]="currentUser.email"
+                         [email]="true"
+                         required >
+                </mat-form-field>
+
+                <div *ngIf="formEmail.errors && (formEmail.dirty || formEmail.touched)"
+                     class="alert alert-danger">
+                  <small>Valid email is required.</small>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <input matInput
+                         placeholder="password"
+                         type="password"
+                         name="pswd"
+                         #pswd="ngModel"
+                         [(ngModel)]="currentUser.password" required minlength="6">
+                </mat-form-field>
+
+                <div *ngIf="pswd.errors && (pswd.dirty || pswd.touched)"
+                     class="alert alert-danger">
+                  <small>Password length must be 6 characters.</small>
+                </div>
+              </div>
+            </div>
+
+          </mat-card-content>
+          <mat-card-actions>
+            <div class="col-sm-12">
+              <button class="col-sm-12" type="submit" mat-raised-button color="primary"
+                      [disabled]="!f.form.valid">Register
+              </button>
+            </div>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </form>
+</div>

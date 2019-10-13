@@ -1,0 +1,105 @@
+<div id="enter-expense">
+  <form #f="ngForm" novalidate (ngSubmit)="save(f.value, f.valid, f)">
+    <div *ngIf="isLoading">
+      <mat-progress-bar color="primary"></mat-progress-bar>
+    </div>
+    <mat-card>
+      <mat-card-title>Enter Expense</mat-card-title>
+      <mat-card-header>
+        <mat-card-subtitle>
+          Enter required fields to save a new expense
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Expense name" name="name" type="text" [(ngModel)]="expenseObj.name"
+                     #name="ngModel" required minlength="4">
+            </mat-form-field>
+            <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+              <small>Name is required (minimum 4 characters).</small>
+            </div>
+
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Amount" type="number" min="1" name="amount" [(ngModel)]="expenseObj.amount"
+                     (blur)="formatAmount()" #amount="ngModel" required>
+            </mat-form-field>
+            <div *ngIf="amount.errors && (amount.dirty || amount.touched)" class="alert alert-danger">
+              <small>Amount is required (positive amount, max 2 decimal places).</small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div>
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Expense date" [(ngModel)]="expenseObj.date"
+                       name="date" #date="ngModel" (dateChange)="checkDate($event)" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div *ngIf="dateError" class="alert alert-danger">
+              <small>
+                Date is required.
+              </small>
+            </div>
+
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field>
+              <mat-label>Expense category</mat-label>
+              <mat-select [(ngModel)]="expenseObj.category" name="category" #category="ngModel" required>
+                <mat-option *ngFor="let category of categories" [value]="category">
+                  {{category}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="category.errors && (category.dirty || category.touched)" class="alert alert-danger">
+              <small>Category is required.</small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+
+            <mat-form-field>
+              <mat-label>Payment type</mat-label>
+              <mat-select [(ngModel)]="expenseObj.type" name="payment" #payment="ngModel" required>
+                <mat-option *ngFor="let type of types " [value]="type">
+                  {{type}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="payment.errors && (payment.dirty || payment.touched)" class="alert alert-danger">
+              <small>Payment is required.</small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <mat-form-field class="example-full-width">
+              <textarea matInput placeholder="Comments" [(ngModel)]="expenseObj.comments" name="comments"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="d-flex justify-content-end">
+            <button type="button" mat-button color="primary" (click)="clearForm(f)">
+              Reset
+            </button>
+            <button type="submit" mat-raised-button color="primary"
+                    [disabled]="!f.form.valid">
+              <mat-icon>save</mat-icon>
+              Save
+            </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

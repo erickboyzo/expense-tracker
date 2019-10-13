@@ -1,0 +1,138 @@
+<div class="container-fluid" id="view-expense">
+
+  <ng-container *ngIf="!isLoadingExpenses && expenseDataChart.length !==0; else noData">
+    <div class="row">
+      <div class="col-md-3 col-sm-12 mb-5" *ngFor="let item of metrics">
+        <app-number-cards [data]="item"></app-number-cards>
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-5 col-md-6 col-sm-12">
+        <mat-card class="h-100">
+          <mat-card-title>Category summary
+          </mat-card-title>
+          <mat-card-header>
+          </mat-card-header>
+          <mat-card-content>
+            <app-chart-summary [data]="expenseDataChart"></app-chart-summary>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <div class="mb-5 col-md-6 col-sm-12">
+        <mat-card class="h-100 ">
+          <mat-card-title>
+            <div class="d-flex justify-content-between">
+
+              <div>Monthly summary</div>
+              <div class="month-date-picker">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="date">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker touchUi #picker [startView]="'year'"
+                                  (monthSelected)="checkDate($event,'date'); picker.close();"></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+
+            </div>
+          </mat-card-title>
+          <mat-card-header>
+          </mat-card-header>
+          <mat-card-content>
+            <app-monthly-summary-chart [data]="expenseDataTable"
+                                       [date]="date"
+                                       [categories]="categories"></app-monthly-summary-chart>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <div class="mb-5 col-md-12 col-sm-12">
+        <mat-card class=" h-100 ">
+          <mat-card-title>
+            <div class="d-flex justify-content-between">
+
+              <div>Category monthly summary</div>
+              <div class="month-date-picker">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="cPicker" placeholder="Choose a date" [(ngModel)]="categoryDate">
+                  <mat-datepicker-toggle matSuffix [for]="cPicker"></mat-datepicker-toggle>
+                  <mat-datepicker touchUi #cPicker [startView]="'multi-year'"
+                                  (yearSelected)="checkDate($event,'categoryDate'); cPicker.close();"></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+
+            </div>
+
+          </mat-card-title>
+          <mat-card-header>
+          </mat-card-header>
+          <mat-card-content>
+           <app-category-summary-chart [data]="expenseDataTable"
+                                       [date]="categoryDate"
+                                       [categories]="categories"></app-category-summary-chart>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-12">
+        <mat-card>
+          <mat-card-title>Detail summary
+          </mat-card-title>
+          <mat-card-header>
+            <mat-card-subtitle>Click on row to edit expense</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <app-table-summary [data]="expenseDataTable"></app-table-summary>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+
+  </ng-container>
+
+  <ng-template #noData>
+
+    <ng-container *ngTemplateOutlet="isLoadingExpenses ? loading: noData"></ng-container>
+
+    <ng-template #loading>
+      <app-card-spinner></app-card-spinner>
+    </ng-template>
+    <ng-template #noData>
+      <div class="no-data">
+        <div class="col-12 justify-content-center">
+          <div class="icon justify-content-center">
+            <mat-icon class="icon-alert">assessment</mat-icon>
+          </div>
+          <div><h2>No expense data</h2> <h6>Please enter an expense.</h6>
+            <div class="alert-action">
+              <button mat-raised-button color="primary" routerLink="/home">Enter
+                expense
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+  </ng-template>
+
+  <button mat-fab class="fab" routerLink="/home">
+    <mat-icon>note_add</mat-icon>
+  </button>
+</div>
+
+

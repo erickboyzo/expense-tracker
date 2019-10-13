@@ -1,0 +1,23 @@
+::ng-deep {
+  .import-table-container {
+    max-height: 500px;
+    overflow: auto;
+
+    table {
+      width: 850px;
+
+      td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+        padding: 15px;
+      }
+    }
+
+    .column-width {
+      flex: 0 0 200px;
+    }
+  }
+
+  .error {
+    background-color: #FFCDD2;
+    font-weight: bold;
+  }
+}
