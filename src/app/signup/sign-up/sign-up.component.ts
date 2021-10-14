@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { expense_categories, User } from '../../shared/models/user-model'
+import { Form } from '@angular/forms';
+import { expense_categories } from '../../shared/constants/expense-constants';
+import {  User } from '../../shared/interfaces/user-model'
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
@@ -29,7 +31,6 @@ export class SignUpComponent implements OnInit {
     private router: Router,
     public db: AngularFireDatabase,
     private loginService: LoginService) {
-    this.user = this.db.database.ref('users/');
   }
 
   ngOnInit() {
@@ -41,13 +42,13 @@ export class SignUpComponent implements OnInit {
     this.authService.signUp(this.currentUser.email, this.currentUser.password).then((data) => {
       this.isLoading = false;
       this.loginService.setUser(data.user);
-      this.setUserInformation();
+      this.loginService.setUserId(data.user.uid);
+      this.setUserInformation(data.user.uid);
       this.openSnackBarSuccess();
       this.onSuccessfulSignUp();
     }).catch(e => {
       this.isLoading = false;
       this.openSnackBarError(e.message);
-      console.log('Catch object set:' + e.message);
     })
   }
 
@@ -60,21 +61,22 @@ export class SignUpComponent implements OnInit {
   }
 
   onSuccessfulSignUp() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard']).then();
   }
 
-  setUserInformation() {
-    this.user.push({
+  setUserInformation(userId: string) {
+    this.user = this.db.database.ref(`users/${userId}`);
+    this.user.set({
       firstName: this.currentUser.firstName,
       lastName: this.currentUser.lastName,
       email: this.currentUser.email,
       categories: this.defaultExpenses,
       expenses: []
     }).then((snap) => {
-    });
+    }).catch(error => console.log(error));
   }
 
-  checkForm(value: any, valid: any, form: any) {
+  checkForm(value: string, valid: boolean, form: Form) {
     if (valid) {
       this.signUp();
     }
