@@ -68,7 +68,7 @@ import { CategorySummaryChartComponent } from './view-logged-expenses/category-s
   entryComponents: [
     ManageExpenseComponent,
   ],
-  providers:[{
+  providers: [{
     provide: HighchartsStatic,
     useFactory: highchartsFactory
   }]

@@ -7,7 +7,7 @@ import { User } from 'firebase';
   providedIn: 'root',
 })
 export class LoginService {
-  private currentUser: any;
+  private currentUser: User;
   private userId: string;
   private categories: string[];
   private userIdSet = new Subject<string>();

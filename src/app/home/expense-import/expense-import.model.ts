@@ -1,4 +1,4 @@
-import { Expense } from '../../shared/models/expense-model';
+import { Expense } from '../../shared/interfaces/expense-model';
 
 export interface ExpenseImportModel extends Expense {
   error?: boolean;

@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Expense } from '../../shared/models/expense-model';
+import { expense_types } from '../../shared/constants/expense-constants';
+import { Expense } from '../../shared/interfaces/expense-model';
 import { DatabaseService } from '../../services/database.service';
 import { LoginService } from '../../services/login.service';
-import { expense_types } from '../../shared/models/user-model';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -20,11 +21,11 @@ export class ManageExpenseComponent implements OnInit {
   categories: string[] = this.loginService.getCurrentCategories();
   types: string[] = expense_types;
 
-  constructor( @Inject(MAT_DIALOG_DATA) public data: Expense,
-    private dialogRef: MatDialogRef<ManageExpenseComponent>,
-    private database: DatabaseService,
-    private loginService: LoginService,
-    private snackBar: MatSnackBar) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Expense,
+              private dialogRef: MatDialogRef<ManageExpenseComponent>,
+              private database: DatabaseService,
+              private loginService: LoginService,
+              private snackBar: MatSnackBar) {
 
     this.expense = {...this.data, ...{date: new Date(this.data.date)}};
     this.original = {...this.data, ...{date: new Date(this.data.date)}};
@@ -40,8 +41,8 @@ export class ManageExpenseComponent implements OnInit {
       .catch(err => this.failedDeleted(err));
   }
 
-  openSnackBar(message) {
-    this.snackBar.open(message, '', { duration: 3000 });
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {duration: 3000});
   }
 
   successfulDelete() {
@@ -56,7 +57,7 @@ export class ManageExpenseComponent implements OnInit {
   pushUpdate() {
     const userId = this.loginService.getUserId();
     const key = this.expense.id;
-    const expenseObj = { ...this.expense };
+    const expenseObj = {...this.expense};
     delete expenseObj.id;
     this.database.updateExpense(userId, key, expenseObj)
       .then(_ => this.successfulUpdate())
@@ -89,7 +90,7 @@ export class ManageExpenseComponent implements OnInit {
   }
 
   reset() {
-    this.expense = { ...this.original };
+    this.expense = {...this.original};
   }
 
   isExpenseUntouched(): boolean {

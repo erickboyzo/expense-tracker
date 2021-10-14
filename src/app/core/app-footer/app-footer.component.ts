@@ -14,7 +14,7 @@ export class AppFooterComponent implements OnInit {
   ngOnInit() {
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return (this.router.url === '/home' || this.router.url === '/dashboard');
   }
 

@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { Expense } from '../../../shared/models/expense-model';
+import { Expense } from '../../../shared/interfaces/expense-model';
 import { ManageExpenseComponent } from '../../manage-expense/manage-expense.component';
 
 @Component({

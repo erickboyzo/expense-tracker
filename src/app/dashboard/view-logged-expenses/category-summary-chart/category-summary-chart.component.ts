@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ChartEvent } from 'angular2-highcharts/dist/ChartEvent';
-import { Expense } from '../../../shared/models/expense-model';
+import { Expense } from '../../../shared/interfaces/expense-model';
 
 @Component({
   selector: 'app-category-summary-chart',
@@ -12,7 +12,7 @@ export class CategorySummaryChartComponent implements OnInit, OnChanges {
   @Input() date: Date;
   @Input() categories: string[];
 
-  init= false;
+  init = false;
   chart: any;
   options = {
     title: {
@@ -62,13 +62,13 @@ export class CategorySummaryChartComponent implements OnInit, OnChanges {
     }
   }
 
-  setCategoriesData(update:boolean = false) {
+  setCategoriesData(update: boolean = false) {
     const totals = [];
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
     for (const category of this.categories) {
-      let categorySumByMonth = monthNames.map(e => 0);
+      const categorySumByMonth = monthNames.map(e => 0);
       const matchingExpenses = this.data.filter(c => c.category === category);
       matchingExpenses.forEach(e => {
         const expenseDate = new Date(e.date);
@@ -76,12 +76,12 @@ export class CategorySummaryChartComponent implements OnInit, OnChanges {
           categorySumByMonth[expenseDate.getMonth()] = categorySumByMonth[expenseDate.getMonth()] + <number>e.amount;
         }
       });
-      const dataObj = {name: category, data: categorySumByMonth, type:'line'};
+      const dataObj = {name: category, data: categorySumByMonth, type: 'line'};
       totals.push(dataObj);
     }
     this.options.series = totals;
     this.options.xAxis.categories = monthNames.map(m => `${m} ${this.date.getFullYear()}`);
-    if(update){
+    if (update) {
       this.chart.update(this.options);
     }
   }

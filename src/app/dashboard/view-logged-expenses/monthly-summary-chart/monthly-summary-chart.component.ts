@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Expense } from '../../../shared/models/expense-model';
+import { Expense } from '../../../shared/interfaces/expense-model';
 
 @Component({
   selector: 'app-monthly-summary-chart',

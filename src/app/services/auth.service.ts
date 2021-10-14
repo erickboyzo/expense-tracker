@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'firebase';
-import UserCredential = firebase.auth.UserCredential;
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 
@@ -11,10 +10,9 @@ import * as firebase from 'firebase';
 })
 export class AuthService {
 
- private user: User;
+  private user: User;
 
-  constructor(private af: AngularFireAuth,
-              private router: Router) {
+  constructor(private af: AngularFireAuth) {
   }
 
   signUp(email: string, pw: string): Promise<firebase.auth.UserCredential> {
@@ -23,14 +21,6 @@ export class AuthService {
 
   logIn(email: string, pw: string): Promise<firebase.auth.UserCredential> {
     return this.af.auth.signInWithEmailAndPassword(email, pw);
-  }
-
-  setLoggedInUser(data: any) {
-    this.user = data;
-  }
-
-  getLoggedInUser(): User {
-    return this.user;
   }
 
   signOut(): Promise<void> {

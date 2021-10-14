@@ -3,8 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { DatabaseService } from '../../services/database.service';
 import { LoginService } from '../../services/login.service';
-import { Expense } from '../../shared/models/expense-model'
-import { expense_types } from '../../shared/models/user-model';
+import { expense_types } from '../../shared/constants/expense-constants';
+import { Expense } from '../../shared/interfaces/expense-model'
+
 
 @Component({
   selector: 'app-log-expense',

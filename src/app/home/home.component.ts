@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
-import { expense_categories, User } from '../shared/models/user-model';
+import { expense_categories } from '../shared/constants/expense-constants';
+import { User } from '../shared/interfaces/user-model';
 import { DatabaseService } from '../services/database.service';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -135,7 +136,7 @@ export class HomeComponent implements OnInit {
           this.user.lastLogin = this.loginService.getUser().metadata.lastSignInTime;
           this.user.creationDate = this.loginService.getUser().metadata.creationTime;
         })
-        .catch(e =>   this.openSnackBar(e.message));
+        .catch(e => this.openSnackBar(e.message));
     }
   }
 
@@ -236,7 +237,9 @@ export class HomeComponent implements OnInit {
     }
 
     mappedExpense.amount = mappedExpense.amount > 0 ? +mappedExpense.amount : this.handleMissingCsvData(mappedExpense);
-    mappedExpense.date = new Date(mappedExpense.date) ? new Date(mappedExpense.date).toDateString() : this.handleMissingCsvData(mappedExpense);
+    mappedExpense.date = new Date(mappedExpense.date)
+      ? new Date(mappedExpense.date).toDateString()
+      : this.handleMissingCsvData(mappedExpense);
     mappedExpense.description = mappedExpense.description || this.handleMissingCsvData(mappedExpense);
     mappedExpense.name = mappedExpense.description;
     return mappedExpense;
@@ -247,5 +250,6 @@ export class HomeComponent implements OnInit {
     return '?';
   }
 
-  onStep(data) {}
+  onStep(data) {
+  }
 }

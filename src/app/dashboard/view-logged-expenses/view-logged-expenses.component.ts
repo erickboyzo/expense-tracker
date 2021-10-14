@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { Expense } from '../../shared/models/expense-model';
+import { Expense } from '../../shared/interfaces/expense-model';
 import { DatabaseService } from '../../services/database.service';
 import { LoginService } from '../../services/login.service';
 
@@ -24,7 +24,7 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     new Date().getDate()
   );
   categoryDate = new Date();
-  categories:string[];
+  categories: string[];
 
   private expenses: Subscription;
 
@@ -61,7 +61,7 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkDate(e: Date, prop:string) {
+  checkDate(e: Date, prop: string) {
     this[prop] = e;
   }
 

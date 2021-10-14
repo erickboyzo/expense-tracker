@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { ChartEvent } from "angular2-highcharts/dist/ChartEvent";
+import { ChartEvent } from 'angular2-highcharts/dist/ChartEvent';
 
 
 @Component({
@@ -10,7 +10,7 @@ import { ChartEvent } from "angular2-highcharts/dist/ChartEvent";
 
 export class ChartSummaryComponent implements OnInit, OnChanges {
   @Input() data: any;
-  chart:any;
+  chart: any;
   options = {
     chart: {
       plotBackgroundColor: null,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { User } from '../shared/models/user-model';
+import { User } from '../shared/interfaces/user-model';
 import { LoginService } from '../services/login.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
 
   currentUser: User = {email: '', password: ''};
   isLoading = false;
-  isVisible: true;
+  isVisible = true;
 
   constructor(private router: Router,
               private authService: AuthService,
@@ -32,15 +32,15 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(() => this.scrollTop(),);
+    setTimeout(() => this.scrollTop());
   }
 
 
-  public signUp() {
-    this.router.navigate(['/signUp']);
+  signUp() {
+    this.router.navigate(['/signUp']).then();
   }
 
-  public login() {
+  login() {
     this.startLoading();
     this.authService.logIn(this.currentUser.email, this.currentUser.password).then((data) => {
       this.loginService.setUser(data.user);
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSuccessfulLogIn() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard']).then();
   }
 
   startLoading() {
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
 
   toggleLogin() {
     this.isVisible = true;
-    setTimeout(() => this.scrollToLogin(),);
+    setTimeout(() => this.scrollToLogin());
   }
 
   scrollToLogin() {

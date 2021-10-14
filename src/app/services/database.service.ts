@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { AngularFireDatabase, SnapshotAction } from '@angular/fire/database';
 import * as firebase from 'firebase';
 
-import { Expense } from '../shared/models/expense-model'
+import { Expense } from '../shared/interfaces/expense-model'
 import { ExpenseImportModel } from '../home/expense-import/expense-import.model';
 
 @Injectable({
@@ -21,16 +21,13 @@ export class DatabaseService {
   constructor(public db: AngularFireDatabase) {
   }
 
-
-  announceExpenseCreated(mission: string) {
-    this.expenseAddedSource.next(mission);
+  announceExpenseCreated(message: string) {
+    this.expenseAddedSource.next(message);
   }
 
-
-  announceCategoriesAdded(mission: string) {
-    this.categoriesAddedSource.next(mission);
+  announceCategoriesAdded(message: string) {
+    this.categoriesAddedSource.next(message);
   }
-
 
   saveNewExpense(expense: Expense | ExpenseImportModel, userId: string) {
     return this.db.database.ref('users/' + userId + '/expenses').push(
@@ -48,11 +45,11 @@ export class DatabaseService {
     );
   }
 
-  getUserDetails(currentUser): Promise<firebase.database.DataSnapshot> {
+  getUserDetails(currentUser: string): Promise<firebase.database.DataSnapshot> {
     return this.db.database.ref('users/').orderByChild('email').equalTo(currentUser).once('value');
   }
 
-  getCurrentCategories(userId): Promise<firebase.database.DataSnapshot> {
+  getCurrentCategories(userId: string): Promise<firebase.database.DataSnapshot> {
     return this.db.database.ref('users/' + userId + '/categories').once('value');
   }
 
