@@ -27,9 +27,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.loginService.setUserId(authData.uid);
         this.loginService.setUser(authData);
         this.loginService.announceUserIdCreated('user created!');
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard']).then();
       } else {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login']).then();
       }
     });
   }
