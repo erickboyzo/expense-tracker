@@ -34,7 +34,7 @@
     "firebase": "^7.1.0",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "ngx-papaparse": "^4.0.4",
     "roboto-fontface": "^0.10.0",
     "rxjs": "^6.5.3",
