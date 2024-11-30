@@ -24,7 +24,7 @@
     "@angular/platform-browser": "^8.2.14",
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
-    "@covalent/core": "^2.1.1",
+    "@covalent/core": "^3.1.2",
     "@swimlane/ngx-charts": "^12.0.1",
     "@uirouter/angular": "^5.0.0",
     "angular2-highcharts": "^0.5.5",
