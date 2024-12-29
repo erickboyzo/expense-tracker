@@ -1,50 +1,82 @@
 # About Expense Tracker
 
-This was app was build with the intention of providing a clean and simple responsive web app for entering and managing expenses. The app was build while keeping material design guidlines in mind. Feel free to reach out with any feedback. 
+This was app was build with the intention of providing a clean and simple responsive web app for entering and managing expenses. The app was build while keeping material design guidlines in mind. Feel free to reach out with any feedback.
 
+## Features implemented and in scope of future development
+- [ ] Login/ Registration
+- [ ] Interactive Dashboard
+- [ ] Update app for zoneless
+- [ ] Import expenses
+- [ ] Configurable metadata for expenses.
 
 ## Find app live here
 
 https://expense-tracker-e0028.firebaseapp.com/
 
-# Expense Tracker
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.1.
-
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+To start a local development server, run:
+
+```bash
+ng serve
+```
+
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-## Build
+```bash
+ng generate component component-name
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+
+```bash
+ng generate --help
+```
+
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+
+```bash
+ng test
+```
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+For end-to-end (e2e) testing, run:
 
-## Further help
+```bash
+ng e2e
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
+## Additional Resources
 
-# Steps to build to firebase hosting 
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+# Steps to build to firebase hosting
 `ng build --prod`
 
-Make sure you have firebase tools installed 
+Make sure you have firebase tools installed
 `npm install -g firebase-tools`
 
-If firebase is not initialized 
+If firebase is not initialized
 `firebase init`
 
-Last but not least deploy it to firebase 
+Last but not least deploy it to firebase
 `firebase deploy`
