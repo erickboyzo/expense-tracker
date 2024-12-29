@@ -1,12 +1,13 @@
 # About Expense Tracker
 
-This was app was build with the intention of providing a clean and simple responsive web app for entering and managing expenses. The app was build while keeping material design guidlines in mind. Feel free to reach out with any feedback.
+This was app was build with the intention of providing a clean and simple responsive web app for entering and managing expenses. The app was build while keeping material design guidelines in mind. Feel free to reach out with any feedback.
 
 ## Features implemented and in scope of future development
-- [ ] Login/ Registration
-- [ ] Interactive Dashboard
+- [X] Update to Material Design 3
+- [X] Redesign Login/ Registration Page
+- [ ] Update Interactive Dashboard
 - [ ] Update app for zoneless
-- [ ] Import expenses
+- [ ] Import expenses redesign
 - [ ] Configurable metadata for expenses.
 
 ## Find app live here
