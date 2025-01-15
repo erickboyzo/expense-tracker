@@ -1,10 +1,6 @@
-::ng-deep.card__spinner {
-
+:host ::ng-deep.card__spinner {
+  height: 100%;
   .mat-spinner {
     margin: 0 auto;
-  }
-
-  .mat-progress-spinner circle, .mat-spinner circle {
-    stroke: #2196f3;
   }
 }

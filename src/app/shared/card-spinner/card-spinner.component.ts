@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-card-spinner',
   templateUrl: './card-spinner.component.html',
-  styleUrls: ['./card-spinner.component.scss']
+  imports: [MatProgressSpinner],
+  styleUrls: ['./card-spinner.component.scss'],
 })
 export class CardSpinnerComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

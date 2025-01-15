@@ -8,9 +8,8 @@ describe('MonthlySummaryChartComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MonthlySummaryChartComponent ]
-    })
-    .compileComponents();
+      declarations: [MonthlySummaryChartComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

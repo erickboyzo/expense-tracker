@@ -8,9 +8,8 @@ describe('CardSpinnerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CardSpinnerComponent ]
-    })
-    .compileComponents();
+      declarations: [CardSpinnerComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

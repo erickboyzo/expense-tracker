@@ -1,0 +1,27 @@
+@if (expenses().length) {
+  <div class="d-flex flex-row flex-wrap">
+    <mat-slide-toggle class="me-2 mb-2 mt-1" [(ngModel)]="dateRangeEnabled">Timeframe</mat-slide-toggle>
+    <button *ngIf="dateRangeEnabled"
+      class="me-2 mb-2"
+      mat-stroked-button
+      [disabled]="!dateRangeEnabled"
+      (click)="picker.open(); click()"
+      (blur)="picker.close()">
+      <mat-icon class="me-2">date_range</mat-icon>
+      {{ range.value.start | date: 'MMM. d, y' }} - {{ range.value.end | date: 'MMM. d, y' }}
+    </button>
+    <mat-date-range-input class="mb-2" [hidden]="true" [formGroup]="range" [rangePicker]="picker" [max]="today">
+      <input matStartDate formControlName="start" placeholder="Start date" />
+      <input matEndDate formControlName="end" placeholder="End date" />
+    </mat-date-range-input>
+    <mat-date-range-picker touchUi #picker></mat-date-range-picker>
+    <button mat-button class="me-2">
+      <mat-icon class="me-2">download</mat-icon>
+      Export Data
+    </button>
+    <button class="me-2" mat-button>
+      <mat-icon>filter_list</mat-icon>
+      Filters
+    </button>
+  </div>
+}

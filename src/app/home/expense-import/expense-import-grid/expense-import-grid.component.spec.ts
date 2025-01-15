@@ -8,9 +8,8 @@ describe('ExpenseImportGridComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExpenseImportGridComponent ]
-    })
-    .compileComponents();
+      declarations: [ExpenseImportGridComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

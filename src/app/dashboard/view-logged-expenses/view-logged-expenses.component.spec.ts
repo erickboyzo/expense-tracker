@@ -8,9 +8,8 @@ describe('ViewLoggedExpensesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewLoggedExpensesComponent ]
-    })
-    .compileComponents();
+      declarations: [ViewLoggedExpensesComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

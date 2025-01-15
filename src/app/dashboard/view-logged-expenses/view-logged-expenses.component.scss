@@ -11,18 +11,18 @@
 
   button.fab {
     position: fixed;
-    bottom: 10%;
+    bottom: 3%;
     right: 5%;
     z-index: 100;
   }
 
-  .month-date-picker{
+  .month-date-picker {
     font-size: 14px;
     width: 40%;
   }
 
   .no-data {
-
+    height: 50vh;
     .mat-icon {
       width: auto;
     }
@@ -31,5 +31,8 @@
       text-align: center;
     }
   }
+}
 
+.icon-alert {
+  transform: scale(3);
 }

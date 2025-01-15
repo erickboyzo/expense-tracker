@@ -1,71 +1,75 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { ChartEvent } from 'angular2-highcharts/dist/ChartEvent';
-
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import * as Highcharts from 'highcharts';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { ChartData } from '../../interfaces/chart-data';
 
 @Component({
   selector: 'app-chart-summary',
   templateUrl: 'chart-summary.component.html',
-  styleUrls: ['chart-summary.component.scss']
+  imports: [HighchartsChartModule],
+  styleUrls: ['chart-summary.component.scss'],
 })
-
 export class ChartSummaryComponent implements OnInit, OnChanges {
-  @Input() data: any;
-  chart: any;
-  options = {
+  @Input() data!: ChartData[];
+  Highcharts: typeof Highcharts = Highcharts;
+  updateFlag = false;
+  chartOptions: Highcharts.Options = {
     chart: {
-      plotBackgroundColor: null,
-      plotBorderWidth: null,
       plotShadow: false,
-      type: 'pie'
+      type: 'pie',
+      backgroundColor: 'transparent',
     },
     title: {
-      text: null
+      text: '',
     },
     legend: {
       align: 'center',
       padding: 10,
       title: {
-        text: null
-      }
+        text: '',
+      },
     },
     tooltip: {
-      pointFormat: '{series.name}: <b>{point.percentage:.1f}% (${point.y:.2f})</b>'
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}% (${point.y:.2f})</b>',
     },
+    series: [],
     plotOptions: {
-      pie: {
+      series: {
         allowPointSelect: true,
         cursor: 'pointer',
-        dataLabels: {
-          enabled: true,
-          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-        }
-      }
+        dataLabels: [
+          {
+            enabled: true,
+            format: '{point.name} - {point.percentage:.0f}%',
+          },
+          {
+            enabled: false,
+            format: '{point.percentage:.0f}%',
+          },
+        ],
+        showInLegend: true,
+      },
     },
-    series: [
-      {
-        name: 'Category',
-        colorByPoint: true,
-        data: this.data
-      }]
   };
 
-
-  constructor() {
-  }
-
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: any) {
-    if (!changes.data.firstChange) {
-      if (this.chart) {
-        this.chart.series[0].setData(changes.data.currentValue);
-      }
+    if (this.chartOptions.series) {
+      this.chartOptions.series[0] = {
+        type: 'pie',
+        data: this.data,
+      };
     }
   }
 
-  saveInstance(chartInstance: ChartEvent) {
-    this.chart = chartInstance;
-    this.chart.series[0].setData(this.data);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['data'] && !changes['data'].firstChange) {
+      if (this.chartOptions.series) {
+        this.chartOptions.series[0] = {
+          type: 'pie',
+          data: changes['data'].currentValue,
+        };
+        this.updateFlag = true;
+      }
+    }
   }
 }

@@ -1,9 +1,9 @@
 #home {
-  $primary: #2196F3;
+  $primary: #2196f3;
 
   button.fab {
     position: fixed;
-    bottom: 10%;
+    bottom: 3%;
     right: 5%;
     z-index: 100;
   }
@@ -33,12 +33,11 @@
   }
 
   .user-summary {
-
     .user-summary__section {
       padding: 0 20px;
     }
 
-    .divider{
+    .divider {
       border-left: 1px solid rgba(0, 0, 0, 0.1);
     }
   }

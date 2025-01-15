@@ -36,13 +36,21 @@ export const routes: Routes = [
     pathMatch: 'full',
     loadComponent: () => import('./home/home.component').then((m) => m.HomeComponent),
     canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectUnauthorizedToLogin, title: 'Settings' },
+    data: { authGuardPipe: redirectUnauthorizedToLogin, title: 'Settings', pageActions: CloseAndRedirectComponent, fixedContainer: true },
   },
   {
     path: 'new-expense',
     pathMatch: 'full',
-    loadComponent: () => import('./home/log-expense/log-expense.component').then((m) => m.LogExpenseComponent),
+    loadComponent: () => import('./log-expense/log-expense.component').then((m) => m.LogExpenseComponent),
     canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectUnauthorizedToLogin, title: 'New Expense', pageActions: CloseAndRedirectComponent },
+    data: { authGuardPipe: redirectUnauthorizedToLogin, title: 'New Expense', pageActions: CloseAndRedirectComponent, fixedContainer: true },
+  },
+
+  {
+    path: 'import-expenses',
+    pathMatch: 'full',
+    loadComponent: () => import('./import-expenses/import-expenses.component').then((m) => m.ImportExpensesComponent),
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin, title: 'Import Expenses', pageActions: CloseAndRedirectComponent },
   },
 ];

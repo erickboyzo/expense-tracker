@@ -8,9 +8,8 @@ describe('ExpenseImportGuidanceComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExpenseImportGuidanceComponent ]
-    })
-    .compileComponents();
+      declarations: [ExpenseImportGuidanceComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

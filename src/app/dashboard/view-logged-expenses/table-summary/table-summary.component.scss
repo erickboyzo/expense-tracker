@@ -1,12 +1,17 @@
-
-.table-container {
+:host ::ng-deep.table-container {
   max-height: 500px;
   overflow: auto;
+
+  .mat-row:nth-child(even) {
+    background-color: red;
+  }
 
   table {
     width: 100%;
 
-    td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+    td.mat-cell,
+    td.mat-footer-cell,
+    th.mat-header-cell {
       padding: 15px;
     }
   }

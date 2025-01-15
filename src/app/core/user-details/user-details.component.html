@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Account</h2>
+
+<mat-dialog-content class="mat-typography">
+  <div class="d-flex flex-row mt-2">
+    <div class="mat-mdc-card-avatar me-3">{{ abbreviatedDisplay | uppercase }}</div>
+    <div class="d-flex flex-column justify-content-center full-width">
+      <div class="fs-4 fw-normal mb-3">{{ fullName }}</div>
+      <div class="d-flex flex-md-row flex-sm-column justify-content-between">
+        <div class="mb-2">
+          <span class="fw-bold">Creation Date</span>
+          <div class="info-content">{{ user?.metadata?.creationTime | date: 'MMMM dd, yyyy' }}</div>
+        </div>
+        <div class="mb-2">
+          <span class="fw-bold">Last Login</span>
+          <div class="info-content">{{ user?.metadata?.lastSignInTime | date: 'MMMM dd, yyyy' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="fw-lighter fs-6">General</h3>
+
+  <form [formGroup]="userNameForm">
+    <mat-form-field class="my-2 full-width" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Email" type="email" name="formEmail" [value]="loginService.email()" disabled />
+      <mat-icon matPrefix>mail</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width my-2">
+      <mat-label>First Name</mat-label>
+      <input matInput name="firstName" type="text" formControlName="firstName" />
+      <mat-icon matPrefix>person</mat-icon>
+      <mat-error *ngIf="userNameForm.get('firstName')?.errors">
+        First Name is required (minimum 2 characters).
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width my-2">
+      <mat-label>Last Name</mat-label>
+      <input matInput name="lastName" type="text" formControlName="lastName" />
+      <mat-icon matPrefix>person</mat-icon>
+      <mat-error *ngIf="userNameForm.get('lastName')?.errors">Last Name is required (minimum 1 character).</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+  <button mat-button [disabled]="userNameForm.invalid" (click)="updateDetails()">Update</button>
+</mat-dialog-actions>

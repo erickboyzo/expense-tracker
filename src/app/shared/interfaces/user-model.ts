@@ -17,4 +17,3 @@ export interface ExpensesInfo {
   firstExpenseDate?: string;
   lastExpenseDate?: string;
 }
-

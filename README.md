@@ -3,10 +3,10 @@
 This was app was build with the intention of providing a clean and simple responsive web app for entering and managing expenses. The app was build while keeping material design guidelines in mind. Feel free to reach out with any feedback.
 
 ## Features implemented and in scope of future development
-- [X] Update to Material Design 3
-- [X] Redesign Login/ Registration Page
+
+- [x] Update to Material Design 3
+- [x] Redesign Login/ Registration Page
 - [ ] Update Interactive Dashboard
-- [ ] Update app for zoneless
 - [ ] Import expenses redesign
 - [ ] Configurable metadata for expenses.
 
@@ -71,6 +71,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
 # Steps to build to firebase hosting
+
 `ng build --prod`
 
 Make sure you have firebase tools installed

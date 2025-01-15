@@ -1,255 +1,156 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoginService } from '../services/login.service';
-import { expense_categories } from '../shared/constants/expense-constants';
-import { User } from '../shared/interfaces/user-model';
-import { DatabaseService } from '../services/database.service';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatHorizontalStepper } from '@angular/material/stepper';
-import { ExpenseImportModel } from './expense-import/expense-import.model';
-import { ENTER } from '@angular/cdk/keycodes';
-import { cloneDeep, find, includes, isEqual, transform, pick } from 'lodash';
+import { MatStepperModule } from '@angular/material/stepper';
+import { Router, RouterLink } from '@angular/router';
+import { cloneDeep, includes } from 'lodash';
+import { DatabaseService } from '../core/services/database.service';
+import { LoginService } from '../core/services/login.service';
+import { defaultExpenseCategories, defaultExpenseTypes } from '../shared/constants/expense-constants';
+import { ChipOption } from '../shared/interfaces/chip-option';
+import { ExpenseDataService } from '../shared/services/expense-data.service';
+import { ManageOptionsComponent } from './manage-options/manage-options.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  imports: [
+    MatCardModule,
+    MatStepperModule,
+    MatIcon,
+    RouterLink,
+    MatChipsModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    ManageOptionsComponent,
+  ],
+  styleUrls: ['./home.component.scss'],
 })
-
 export class HomeComponent implements OnInit {
-  readonly separatorKeysCodes: number[] = [ENTER];
+  readonly expenseDataService: ExpenseDataService = inject(ExpenseDataService);
+  readonly categoriesSignal = signal<ChipOption[]>([]);
+  readonly copyCategoriesSignal = signal<ChipOption[]>([]);
 
-  @ViewChild(MatHorizontalStepper, {static: true}) stepper: MatHorizontalStepper;
+  readonly sourceTypeSignal = signal<ChipOption[]>([]);
+  readonly sourceTypeSignalOriginal = signal<ChipOption[]>([]);
 
-  user: User = {
-    firstName: '',
-    lastName: '',
-    expensesEntered: 0,
-    creationDate: '',
-    lastLogin: ''
-  };
-  categories: { value: string, removable: boolean }[] = expense_categories.map(ec => {
-    return {value: ec, removable: false}
-  });
-  originalCategories: { value: string, removable: boolean }[] = cloneDeep(this.categories);
-  isLoadingUserInformation = false;
-  isLoadingCategories = false;
-  importedExpenses: ExpenseImportModel[] = [];
-  step = 0;
-  importComplete = false;
-
-  get categoriesUpdated(): boolean {
-    return !isEqual(this.categories, this.originalCategories);
-  }
+  isLoadingUserInformation = signal(false);
+  isLoadingUserCategories = signal(false);
+  isUpdatingCategories = signal(false);
+  isUpdatingSourceTypes = signal(false);
 
   constructor(
     private router: Router,
     private loginService: LoginService,
     private database: DatabaseService,
-    private snackBar: MatSnackBar) {
-
-    database.expenseAddedAnnounced$.subscribe(
-      category => {
-        this.onExpenseAdded(category);
-      });
-
-    loginService.userIdSetAnnounced$.subscribe(
-      category => {
-        this.getAllUserDetails();
-      });
-  }
-
-
-  ngOnInit() {
-    this.getAllUserDetails();
-    setTimeout(() => this.scrollTop());
-  }
-
-  scrollTop() {
-    const element = document.getElementById('content');
-    element.scrollIntoView();
-  }
-
-  scrollToEnterExpense() {
-    const element = document.getElementById('enter-expense');
-    element.scrollIntoView();
-  }
-
-  onExpenseAdded(expense) {
-    this.getExpensesInfo();
-  }
-
-  getAllUserDetails() {
-    if (this.loginService.getUser()) {
-      this.isLoadingUserInformation = true;
-      this.database.getUserDetails(this.loginService.getUser().email)
-        .then(jsonData => {
-          const obj = jsonData.toJSON();
-          const key = Object.keys(obj)[0];
-          this.loginService.setUserId(key);
-          this.user.firstName = obj[key].firstName;
-          this.user.lastName = obj[key].lastName;
-          this.getExpensesInfo();
-          this.getUserCategories();
-          this.isLoadingUserInformation = false;
-        }).catch(e => {
-        this.isLoadingUserInformation = false;
-        this.openSnackBar(e.message);
-      })
-    }
-  }
-
-  getUserCategories() {
-    this.isLoadingCategories = true;
-    const currentUser: string = this.loginService.getUserId();
-    this.database.getCurrentCategories(currentUser)
-      .then(jsonData => {
-        const obj = jsonData.toJSON();
-        const categoriesArr = Object.keys(obj).map((key) => obj[key]);
-        this.categories = categoriesArr.map(c => {
-          return {value: c, removable: !includes(expense_categories, c)}
-        });
-        this.originalCategories = cloneDeep(this.categories);
-        this.loginService.setCategories(categoriesArr);
-        this.onUpdateToCategories();
-        this.isLoadingCategories = false;
-      }).catch(e => {
-      this.isLoadingCategories = false;
-      this.openSnackBar(e.message);
-    })
-  }
-
-  onUpdateToCategories() {
-    this.database.announceCategoriesAdded('Categories Added');
-  }
-
-  getExpensesInfo() {
-    if (this.loginService.getUserId()) {
-      this.database.getExpensesOnce(this.loginService.getUserId())
-        .then(jsonData => {
-          const object = jsonData.toJSON();
-          if (object !== null) {
-            const expenses = Object.keys(object).map((key) => object[key]);
-            this.user.expensesEntered = expenses.length;
-          }
-          this.user.lastLogin = this.loginService.getUser().metadata.lastSignInTime;
-          this.user.creationDate = this.loginService.getUser().metadata.creationTime;
-        })
-        .catch(e => this.openSnackBar(e.message));
-    }
-  }
-
-
-  onCategoryEntered(data: MatChipInputEvent) {
-    const valueTrimmed = data.value.trim();
-    const matchingCategory = find(this.categories, c => c.value === valueTrimmed || c.value.toLowerCase() === valueTrimmed.toLowerCase());
-    if (!matchingCategory) {
-      this.categories.push({value: data.value, removable: true});
-      data.input.value = null;
-    }
-  }
-
-  removeCategory(data: string, index: number) {
-    this.categories.splice(index, 1);
-  }
-
-  saveCategories() {
-    this.isLoadingCategories = true;
-    const currentUser = this.loginService.getUserId();
-    this.database.saveNewCategories(this.categories.map(category => category.value), currentUser).then(jsonData => {
-      this.originalCategories = {...this.categories};
-      this.loginService.setCategories(this.categories.map(category => category.value));
-      this.openSnackBar('Categories saved!');
-      this.onUpdateToCategories();
-      this.isLoadingCategories = false;
-    }).catch(e => {
-      this.openSnackBar(e.message);
-      this.isLoadingCategories = false;
-    })
-  }
-
-  saveImportedExpenses() {
-    let categoriesAdded = false;
-    const currentUserKey = this.loginService.getUserId();
-    this.importedExpenses
-      .filter(e => !e.error)
-      .forEach(expense => {
-        const matchingCategory = find(this.categories, e => e.value === expense.category.trim() ||
-          e.value.toLowerCase() === expense.category.trim().toLowerCase());
-        if (!matchingCategory) {
-          this.categories.push({value: expense.category, removable: true});
-          categoriesAdded = true;
-        } else {
-          expense.category = matchingCategory.value;
-        }
-        if (typeof expense.date !== 'string') {
-          expense.date = new Date(expense.date).toDateString();
-        }
-        this.database.saveNewExpense(pick(expense, ['date', 'name', 'amount', 'category', 'type', 'comments']), currentUserKey);
-      });
-    if (categoriesAdded) {
-      this.saveCategories();
-    }
-    this.getExpensesInfo();
-    this.step = 3;
-    this.importComplete = true;
-    this.openSnackBar('Import Successful!');
-    this.moveToNextStep();
-  }
-
-  resetCategories() {
-    this.categories = cloneDeep(this.originalCategories);
-  }
-
-  openSnackBar(message) {
-    this.snackBar.open(message, '', {duration: 2000});
-  }
-
-  dataExported(data) {
-    this.importedExpenses = data.map(e => this.validateImportedData(e));
-    this.step = 1;
-    this.importComplete = false;
-    this.moveToNextStep();
-  }
-
-  private moveToNextStep() {
-    setTimeout(() => {
-      this.stepper.next();
+    private snackBar: MatSnackBar,
+  ) {
+    loginService.userIdSetAnnounced$.subscribe(() => {
+      this.getAllUserDetails();
     });
   }
 
-  validateImportedData(e: ExpenseImportModel): ExpenseImportModel {
-    const mappedExpense = transform(e as {}, (result, val, key: string) => {
-      result[key.toLowerCase()] = val;
-    }) as ExpenseImportModel;
-
-    if (!mappedExpense.comments) {
-      mappedExpense.comments = '';
-    }
-
-    if (!mappedExpense.type) {
-      mappedExpense.type = 'Debit';
-    }
-
-    if (!mappedExpense.category) {
-      mappedExpense.category = 'Unassigned';
-    }
-
-    mappedExpense.amount = mappedExpense.amount > 0 ? +mappedExpense.amount : this.handleMissingCsvData(mappedExpense);
-    mappedExpense.date = new Date(mappedExpense.date)
-      ? new Date(mappedExpense.date).toDateString()
-      : this.handleMissingCsvData(mappedExpense);
-    mappedExpense.description = mappedExpense.description || this.handleMissingCsvData(mappedExpense);
-    mappedExpense.name = mappedExpense.description;
-    return mappedExpense;
+  ngOnInit() {
+    this.getAllUserDetails();
   }
 
-  private handleMissingCsvData(expense: ExpenseImportModel): string {
-    expense.error = true;
-    return '?';
+  saveCategories() {
+    this.isUpdatingCategories.set(true);
+    const currentUser = this.loginService.getUserId();
+    this.database
+      .saveNewCategories(
+        this.categoriesSignal().map((category) => category.value),
+        currentUser,
+      )
+      .then(() => {
+        this.expenseDataService.setCategoriesSignal(this.categoriesSignal().map((category) => category.value));
+        this.copyCategoriesSignal.set(cloneDeep(this.categoriesSignal()));
+        this.openSnackBar('Categories saved!');
+        this.onUpdateToCategories();
+        this.isUpdatingCategories.set(false);
+      })
+      .catch((e) => {
+        this.openSnackBar(e.message);
+        this.isUpdatingCategories.set(false);
+      });
   }
 
-  onStep(data) {
+  saveTypes() {
+    this.isUpdatingSourceTypes.set(true);
+    const currentUser = this.loginService.getUserId();
+    this.database
+      .saveNewExpenseSourceTypes(
+        this.sourceTypeSignal().map((category) => category.value),
+        currentUser,
+      )
+      .then(() => {
+        this.sourceTypeSignalOriginal.set(cloneDeep(this.sourceTypeSignal()));
+        this.expenseDataService.setExpenseSourcesData([...this.sourceTypeSignal().map((category) => category.value)]);
+        this.openSnackBar('Expense Source Types saved!');
+        this.isUpdatingSourceTypes.set(false);
+      })
+      .catch((e) => {
+        this.openSnackBar(e.message);
+        this.isUpdatingSourceTypes.set(false);
+      });
+  }
+
+  private getAllUserDetails() {
+    if (this.loginService.getUser()) {
+      this.isLoadingUserInformation.set(true);
+      this.isLoadingUserCategories.set(true);
+      this.database
+        .getUserDetails(this.loginService.getUser()?.email ?? '')
+        .then((jsonData) => {
+          const obj: Record<string, any> = jsonData.toJSON() ?? {};
+          const key = Object.keys(obj)[0];
+          this.loginService.setUserId(key);
+          const categories = obj[key]['categories'] ?? {};
+          const sourceTypes = obj[key]['types'] ?? {};
+          const categoriesList = Object.keys(categories).map((key) => categories[key]);
+          const sourceTypesList = Object.keys(sourceTypes).map((key) => sourceTypes[key]);
+          this.setCategoriesOptions(categoriesList.length ? categoriesList : [...defaultExpenseCategories]);
+          this.setSourceTypeOptions(sourceTypesList.length ? sourceTypesList : [...defaultExpenseTypes]);
+          this.isLoadingUserInformation.set(false);
+        })
+        .catch((e) => {
+          this.isLoadingUserInformation.set(false);
+          this.openSnackBar(`Error! ${e.message}.`);
+        });
+    }
+  }
+
+  private setCategoriesOptions(categoriesArr: string[]) {
+    const categories = categoriesArr.map((category) => ({
+      value: category,
+      removable: !includes(defaultExpenseCategories, category),
+    }));
+    this.categoriesSignal.set([...categories]);
+    this.copyCategoriesSignal.set([...categories]);
+    this.expenseDataService.setCategoriesSignal(categoriesArr);
+    this.onUpdateToCategories();
+  }
+
+  private setSourceTypeOptions(sourceTypes: string[]) {
+    const expenseSourceTypes = sourceTypes.map((type) => ({
+      value: type,
+      removable: !includes(defaultExpenseTypes, type),
+    }));
+    this.sourceTypeSignal.set([...expenseSourceTypes]);
+    this.sourceTypeSignalOriginal.set([...expenseSourceTypes]);
+  }
+
+  private onUpdateToCategories() {
+    this.database.announceCategoriesAdded('Categories Added');
+  }
+
+  private openSnackBar(message: string) {
+    this.snackBar.open(message, '', { duration: 2000 });
   }
 }

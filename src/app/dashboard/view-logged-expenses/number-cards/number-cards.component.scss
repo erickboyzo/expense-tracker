@@ -1,5 +1,5 @@
-mat-icon {
-  font-size: 48px;
+:host ::ng-deep mat-icon {
+  transform: scale(2);
 }
 
 .data-value {
@@ -17,5 +17,4 @@ mat-icon {
   .money-icon {
     color: green;
   }
-
 }

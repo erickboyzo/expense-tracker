@@ -1,97 +1,125 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { SeriesOptionsType } from 'highcharts';
+import * as Highcharts from 'highcharts';
+import { HighchartsChartComponent, HighchartsChartModule } from 'highcharts-angular';
 import { Expense } from '../../../shared/interfaces/expense-model';
 
 @Component({
   selector: 'app-monthly-summary-chart',
   templateUrl: './monthly-summary-chart.component.html',
-  styleUrls: ['./monthly-summary-chart.component.scss']
+  styleUrls: ['./monthly-summary-chart.component.scss'],
+  imports: [HighchartsChartModule],
 })
 export class MonthlySummaryChartComponent implements OnInit, OnChanges {
+  @Input() data!: Expense[];
+  @Input() date!: Date;
+  @Input() categories!: string[];
+  @ViewChild('chart') chart!: HighchartsChartComponent;
 
-  @Input() data: Expense[];
-  @Input() date: Date;
-  @Input() categories: string[];
-  currentData: Expense[];
-  originalData: Expense[];
+  currentData: Expense[] = [];
+  originalData: Expense[] = [];
 
-  chart: any;
-  options = {
+  Highcharts: typeof Highcharts = Highcharts;
+  updateFlag = false;
+  chartOptions: Highcharts.Options = {
     chart: {
-      type: 'column'
+      plotShadow: false,
+      type: 'column',
+      backgroundColor: 'transparent',
     },
     title: {
-      text: ''
+      text: '',
     },
-    subtitle: {
-      text: 'Click the columns to view month details'
+    accessibility: {
+      announceNewData: {
+        enabled: true,
+      },
     },
     xAxis: {
-      type: 'category'
+      type: 'category',
     },
     yAxis: {
       title: {
-        text: 'Total monthly expense amount'
-      }
-
+        text: 'Total monthly expense amount',
+      },
     },
     legend: {
-      enabled: false
+      enabled: false,
     },
     plotOptions: {
       series: {
         borderWidth: 0,
         dataLabels: {
           enabled: true,
-          format: '${point.y:.2f}'
-        }
-      }
+          format: '${point.y:.1f}',
+        },
+      },
     },
 
     tooltip: {
       headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-      pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>${point.y:.2f}</b> <br/>'
+      pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>${point.y:.2f}</b> <br/>',
     },
 
-    series: [{
-      name: 'Months',
-      colorByPoint: true,
-      data: []
-    }],
+    series: [
+      {
+        type: 'column',
+        data: [],
+      },
+    ],
     drilldown: {
-      series: []
-    }
+      breadcrumbs: {
+        position: {
+          align: 'right',
+        },
+      },
+      series: [
+        {
+          name: 'Browsers',
+          colorByPoint: true,
+          type: 'column',
+          data: [],
+        },
+      ],
+    },
   };
-
 
   ngOnInit() {
     this.originalData = [...this.data];
     this.currentData = this.data;
+    this.setDataForMonthRange();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.data && !changes.data.firstChange) {
-      if (this.chart) {
+    if (changes['data'] && !changes['data'].firstChange) {
+      if (this.chartOptions) {
         this.originalData = [...this.data];
         this.currentData = this.data;
         this.setDataForMonthRange();
       }
     }
 
-    if (changes.date && !changes.date.firstChange) {
+    if (changes['date'] && !changes['date'].firstChange) {
       if (this.date) {
         this.setDataForMonthRange();
       }
     }
   }
 
-  saveInstance(chartInstance: any) {
-    this.chart = chartInstance;
-    this.setDataForMonthRange();
-  }
-
   setDataForMonthRange() {
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+    const monthNames = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
 
     const monthRange = this.getDateRange();
@@ -103,10 +131,9 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
       const drillDownData = [];
 
       for (const expense of this.currentData) {
-
         const currentDate = new Date(expense.date);
         if (month.getMonth() === currentDate.getMonth() && month.getFullYear() === currentDate.getFullYear()) {
-          monthSum += expense.amount as number;
+          monthSum += +expense.amount as number;
           drillDownData.push(expense);
         }
       }
@@ -116,28 +143,37 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
       }
       monthSummary.push({
         name: monthNames[month.getMonth()] + month.getFullYear(),
-        y: parseFloat(parsedSum),
-        drilldown: monthNames[month.getMonth()]
+        y: parseFloat(parsedSum ?? ''),
+        drilldown: monthNames[month.getMonth()],
       });
       drillDown.push({
         name: monthNames[month.getMonth()],
         id: monthNames[month.getMonth()],
-        data: this.getDrillDownData(drillDownData)
+        data: this.getDrillDownData(drillDownData),
       });
     }
-    this.chart.series[0].setData(monthSummary);
-    this.chart.options.drilldown.series = drillDown;
+    if (this.chartOptions.series?.length) {
+      console.log(monthSummary);
+      this.chartOptions.series[0] = {
+        type: 'column',
+        data: monthSummary,
+      };
+    }
+
+    if (this.chartOptions.drilldown?.series?.length) {
+      this.chartOptions.drilldown.series = drillDown as SeriesOptionsType[];
+    }
+    this.updateFlag = true;
   }
 
-  getDrillDownData(data: any) {
-
-    const summaryData = [];
+  getDrillDownData(data: Expense[]): [string, number][] {
+    const summaryData: [string, number][] = [];
 
     for (const category of this.categories) {
       let categorySum = 0;
       for (const expense of data) {
         if (category === expense.category) {
-          categorySum += expense.amount;
+          categorySum += +expense.amount;
         }
       }
       summaryData.push([category, categorySum]);
@@ -145,15 +181,13 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
     return summaryData;
   }
 
-  getDateRange() {
+  getDateRange(): Date[] {
     const monthRange = [this.date];
-    for (let i = 1; i < 6; i++) {
+    for (let i = 1; i < 12; i++) {
       const month = new Date(this.date.getTime());
       month.setMonth(this.date.getMonth() + i);
       monthRange.push(month);
     }
     return monthRange;
   }
-
-
 }

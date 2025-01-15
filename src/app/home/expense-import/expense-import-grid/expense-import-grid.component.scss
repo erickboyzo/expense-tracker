@@ -6,7 +6,9 @@
     table {
       width: 850px;
 
-      td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+      td.mat-cell,
+      td.mat-footer-cell,
+      th.mat-header-cell {
         padding: 15px;
       }
     }
@@ -17,7 +19,7 @@
   }
 
   .error {
-    background-color: #FFCDD2;
+    background-color: #ffcdd2;
     font-weight: bold;
   }
 }
