@@ -1,4 +1,4 @@
-<div id="home">
+<div class="home-page-container">
   <div class="row mb-4">
     <div class="col-12">
       <app-manage-options
@@ -15,7 +15,7 @@
   </div>
 
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 page-bottom">
       <app-manage-options
         title="Manage Expense Source Types"
         subtitle="Add/Remove Expense Source Types. Use source types to help differentiate between different expense sources."
@@ -28,7 +28,11 @@
         (saveOptionsEvent)="saveTypes()"></app-manage-options>
     </div>
   </div>
-  <button mat-fab extended class="fab" routerLink="/new-expense">
+  <button
+    mat-fab
+    extended
+    class="fab"
+    routerLink="/new-expense">
     <mat-icon prefix>post_add</mat-icon>
     Add Expense
   </button>

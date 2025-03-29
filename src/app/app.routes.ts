@@ -51,6 +51,6 @@ export const routes: Routes = [
     pathMatch: 'full',
     loadComponent: () => import('./import-expenses/import-expenses.component').then((m) => m.ImportExpensesComponent),
     canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectUnauthorizedToLogin, title: 'Import Expenses', pageActions: CloseAndRedirectComponent },
+    data: { authGuardPipe: redirectUnauthorizedToLogin, title: 'Import Expenses', pageActions: CloseAndRedirectComponent,  fixedContainer: true },
   },
 ];

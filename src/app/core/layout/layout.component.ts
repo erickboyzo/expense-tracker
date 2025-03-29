@@ -99,7 +99,7 @@ export class LayoutComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getAllUserDetails();
-        this.snackBar.open('Profile updates saved successfully!', '', { duration: 2000 });
+        this.snackBar.open('Profile update saved successfully!', '', { duration: 2000 });
       }
     });
   }

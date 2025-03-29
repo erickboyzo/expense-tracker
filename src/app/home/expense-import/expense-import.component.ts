@@ -21,7 +21,7 @@ export class ExpenseImportComponent implements OnInit {
 
   fileChangeListener(event: any): void {
     const files = event.srcElement.files[0];
-    const options = <ParseConfig>{
+    const options = {
       complete: (results, file) => {
         if (results.data.length > 0) {
           if (
@@ -44,7 +44,7 @@ export class ExpenseImportComponent implements OnInit {
       },
       header: true,
       skipEmptyLines: true,
-    };
+    } as ParseConfig;
     this.papa.parse(files, options);
   }
 }

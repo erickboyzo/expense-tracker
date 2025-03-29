@@ -2,7 +2,7 @@ import { NgClass, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 import { displayedColumns, ExpenseImportModel } from '../expense-import.model';
 
@@ -18,7 +18,7 @@ export class ExpenseImportGridComponent implements OnInit, OnChanges {
   @Input() importComplete = false;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild('sorter', { static: true }) sort!: MatSort;
-  @Output() saveAction: EventEmitter<void> = new EventEmitter();
+  @Output() saveAction: EventEmitter<void> = new EventEmitter<void>();
 
   displayedColumns: string[] = displayedColumns;
   dataSource = new MatTableDataSource<ExpenseImportModel>([]);

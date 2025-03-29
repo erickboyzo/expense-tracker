@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
 import { AngularFireDatabase, SnapshotAction } from '@angular/fire/compat/database';
 import firebase from 'firebase/compat/app';
-import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
 
 import { Expense } from '../../shared/interfaces/expense-model';
 import { ExpenseImportModel } from '../../home/expense-import/expense-import.model';
@@ -16,6 +16,8 @@ export class DatabaseService {
 
   expenseAddedAnnounced$ = this.expenseAddedSource.asObservable();
   categoriesAddedAnnounced$ = this.categoriesAddedSource.asObservable();
+
+  private injectionContext = inject(EnvironmentInjector);
 
   constructor(public db: AngularFireDatabase) {}
 
@@ -32,7 +34,15 @@ export class DatabaseService {
   }
 
   getUserExpenses(userId: string): Observable<SnapshotAction<unknown>[]> {
-    return this.db.list('users/' + userId + '/expenses').snapshotChanges();
+    return runInInjectionContext(this.injectionContext, () => {
+      return this.db
+        .list('users/' + userId + '/expenses')
+        .snapshotChanges()
+        .pipe(
+          debounceTime(500),
+          distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
+        );
+    });
   }
 
   saveNewCategories(categories: string[], userId: string): Promise<void> {
@@ -64,7 +74,9 @@ export class DatabaseService {
   }
 
   updateExpense(userId: string, key: string, expense: Expense): Promise<void> {
-    return this.db.list('users/' + userId + '/expenses').update(key, expense);
+    return runInInjectionContext(this.injectionContext, () => {
+      return this.db.list('users/' + userId + '/expenses').update(key, expense);
+    });
   }
 
   updateUserDetails(userId: string, userDetails: UserDetails): Promise<void> {
@@ -72,6 +84,14 @@ export class DatabaseService {
   }
 
   deleteExpense(userId: string, key: string): Promise<void> {
-    return this.db.list('users/' + userId + '/expenses').remove(key);
+    return runInInjectionContext(this.injectionContext, () => {
+      return this.db.list('users/' + userId + '/expenses').remove(key);
+    });
+  }
+
+  batchUpdateExpenses(updates: Record<string, Expense> | Record<string, null>): Promise<void> {
+    return runInInjectionContext(this.injectionContext, () => {
+      return this.db.database.ref().update(updates);
+    });
   }
 }

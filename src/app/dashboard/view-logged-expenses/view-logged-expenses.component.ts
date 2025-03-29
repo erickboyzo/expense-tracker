@@ -1,5 +1,5 @@
 import { CurrencyPipe, NgForOf, NgTemplateOutlet } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SnapshotAction } from '@angular/fire/compat/database';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { RouterLink, RouterModule } from '@angular/router';
 import firebase from 'firebase/compat/app';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { DatabaseService } from '../../core/services/database.service';
 import { LoginService } from '../../core/services/login.service';
 import { CardSpinnerComponent } from '../../shared/card-spinner/card-spinner.component';
@@ -34,12 +34,10 @@ import { TableSummaryComponent } from './table-summary/table-summary.component';
   imports: [
     MatCardModule,
     NumberCardsComponent,
-    NgForOf,
     MonthlySummaryChartComponent,
     MatIcon,
     RouterLink,
     CardSpinnerComponent,
-    NgTemplateOutlet,
     TableSummaryComponent,
     CategorySummaryChartComponent,
     MatFormField,
@@ -53,17 +51,22 @@ import { TableSummaryComponent } from './table-summary/table-summary.component';
     MatButtonToggle,
     MatFabButton,
     RouterModule,
+    NgForOf,
+    NgTemplateOutlet,
   ],
   styleUrls: ['./view-logged-expenses.component.scss'],
   providers: [provideNativeDateAdapter()],
 })
 export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
+  readonly expenseDataService = inject(ExpenseDataService);
+
   expenseDataChart: ChartData[] = [];
   expenseSourceData: ChartData[] = [];
   expenseDataTable: Expense[] = [];
   metrics: ExpenseSummary[] = [];
   isLoadingExpenses = true;
   isDataReady = false;
+  isFirstLoad = true;
   date = new Date(
     new Date().getFullYear(),
     new Date().getMonth() - 3 >= 0 ? new Date().getMonth() - 3 : 0,
@@ -72,17 +75,31 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
   categoryDate = new Date();
   categories: string[] = [];
   categoryMonthlyChartType: 'line' | 'column' = 'line';
+  expenses = this.expenseDataService.expensesSignal;
 
-  private expenses?: Subscription;
-  private expenseDataService: ExpenseDataService = inject(ExpenseDataService);
+  private expenses$: Subscription = new Subscription();
+
+  private expenseDataEffect = effect(() => {
+    const filteredExpenses = this.expenseDataService.filteredExpenses();
+    if (!this.isFirstLoad) {
+      this.processExpenseData(filteredExpenses);
+    }
+  });
 
   constructor(
     private database: DatabaseService,
     private loginService: LoginService,
   ) {
-    this.loginService.userIdSetAnnounced$.pipe(takeUntilDestroyed()).subscribe(() => {
-      this.getUserExpenses();
-    });
+    this.loginService.userIdSetAnnounced$
+      .pipe(
+        takeUntilDestroyed(),
+        filter((res) => !!res),
+      )
+      .subscribe((res) => {
+        console.log(res);
+        console.log('userIdSetAnnounced$');
+        // this.subscribeToExpensesChange();
+      });
   }
 
   ngOnInit() {
@@ -101,14 +118,15 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     }
   }
 
-
   private subscribeToExpensesChange() {
     const userId = this.loginService.getUserId();
     this.isLoadingExpenses = true;
     if (userId) {
-      this.expenses = this.database
-        .getUserExpenses(userId)
-        .subscribe((snapshots) => this.filterData(snapshots as SnapshotAction<Expense>[]));
+      this.expenses$.add(
+        this.database
+          .getUserExpenses(userId)
+          .subscribe((snapshots) => this.setData(snapshots as SnapshotAction<Expense>[])),
+      );
     } else {
       this.isLoadingExpenses = false;
     }
@@ -124,16 +142,27 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     return data;
   }
 
-  private filterData(snapshots: SnapshotAction<Expense>[]) {
-    this.isLoadingExpenses = false;
+  private setData(snapshots: SnapshotAction<Expense>[]) {
     const parsedData: Expense[] = this.parseData(snapshots);
+    this.isFirstLoad = false;
     this.expenseDataService.setExpensesData(parsedData);
+  }
 
-    const dates = parsedData.map((e) => new Date(e.date));
+  private processExpenseData(expenses: Expense[]): void {
+    if (expenses.length === 0) {
+      this.isLoadingExpenses = false;
+      this.isDataReady = true;
+      this.metrics = [];
+      this.expenseDataChart = [];
+      this.expenseSourceData = [];
+      this.expenseDataTable = [];
+      return;
+    }
+    const dates = expenses.map((e) => new Date(e.date));
     const firstDate = dates.reduce((minDate, date) => (date < minDate ? date : minDate), dates[0]);
     const lastDate = dates.reduce((minDate, date) => (date > minDate ? date : minDate), dates[0]);
-    const numOfEntries = parsedData.length;
-    const totalAmount = this.getTotal(parsedData);
+    const numOfEntries = expenses.length;
+    const totalAmount = this.getTotal(expenses);
 
     this.metrics = [
       {
@@ -152,15 +181,15 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
       { color: undefined, value: totalAmount, metricTitle: 'Total Expenses Amount', icon: 'payments' },
     ];
 
-    this.categories = parsedData
+    this.categories = expenses
       .map((item) => item.category)
       .filter((value, index, self) => self.indexOf(value) === index);
 
-    const expenseSources = Array.from(new Set(parsedData.map((expense) => expense.type)));
+    const expenseSources = Array.from(new Set(expenses.map((expense) => expense.type)));
 
-    this.expenseDataChart = this.getSourceTotal(this.categories, parsedData, 'category');
-    this.expenseSourceData = this.getSourceTotal(expenseSources, parsedData, 'type');
-    this.expenseDataTable = parsedData;
+    this.expenseDataChart = this.getSourceTotal(this.categories, expenses, 'category');
+    this.expenseSourceData = this.getSourceTotal(expenseSources, expenses, 'type');
+    this.expenseDataTable = expenses;
 
     this.isDataReady = true;
     this.isLoadingExpenses = false;
@@ -188,28 +217,7 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     return new CurrencyPipe('en-US').transform(categorySum, 'USD') as string;
   }
 
-  getCategoryTotals(expenses: Expense[]) {
-    const categories = expenses
-      .map((item) => item.category)
-      .filter((value, index, self) => self.indexOf(value) === index);
-
-    const totals = [];
-    for (const category of categories) {
-      let categorySum = 0;
-      for (const value of expenses) {
-        if (value.category === category) {
-          categorySum += value.amount as number;
-        }
-      }
-      const dataObj = { name: category, amount: categorySum.toFixed(2) };
-      totals.push(dataObj);
-    }
-    return totals.toString();
-  }
-
   ngOnDestroy() {
-    if (this.expenses) {
-      this.expenses.unsubscribe();
-    }
+    this.expenses$.unsubscribe();
   }
 }

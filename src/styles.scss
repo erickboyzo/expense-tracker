@@ -1,8 +1,7 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-@use './_theme-colors' as my-theme; // location of generated file
-@include mat.core();
+@use './theme-colors' as my-theme;
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 .full-width {
@@ -50,10 +49,15 @@ $angular-material-3-theme: mat.define-theme(
 
 html {
   color-scheme: light dark;
+  @include mat.theme($angular-material-3-theme);
   @include mat.system-level-colors($angular-material-3-theme);
   @include mat.all-component-themes($angular-material-3-theme);
   @include layout-theme($angular-material-3-theme);
+  @media (prefers-contrast: more) {
+    @include my-theme.high-contrast-overrides(color-scheme);
+  }
 }
+
 
 html,
 body {
@@ -61,6 +65,10 @@ body {
 }
 
 body {
+  &.dark-mode {
+    color-scheme: dark;
+  }
+
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 

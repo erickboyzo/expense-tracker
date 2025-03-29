@@ -7,9 +7,9 @@
         <mat-icon>edit_note</mat-icon>
       </button>
       <mat-menu #bulkEdit="matMenu">
-        <button mat-menu-item>Edit Category</button>
-        <button mat-menu-item>Edit Type</button>
-        <button mat-menu-item>Delete</button>
+        <button mat-menu-item (click)="openBulkEditDialog('category')">Edit Category</button>
+        <button mat-menu-item (click)="openBulkEditDialog('type')">Edit Type</button>
+        <button mat-menu-item (click)="openBulkEditDialog('delete')">Delete</button>
       </mat-menu>
     </div>
     <div>
@@ -45,7 +45,7 @@
 
       <ng-container matColumnDef="amount">
         <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'column-width'">Amount</th>
-        <td mat-cell *matCellDef="let element" [ngClass]="'column-width'">{{ element.amount }}</td>
+        <td mat-cell *matCellDef="let element" [ngClass]="'column-width'">{{ element.amount | currency }}</td>
       </ng-container>
 
       <ng-container matColumnDef="date">
@@ -61,7 +61,7 @@
       </ng-container>
 
       <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'column-width'">Type</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'column-width'">Payment Type</th>
         <td mat-cell *matCellDef="let element" [ngClass]="'column-width'">{{ element.type }}</td>
       </ng-container>
 

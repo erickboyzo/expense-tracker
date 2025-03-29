@@ -3,7 +3,7 @@
 
   @if (shouldShowDashboard) {
     <div class="row">
-      <div class="col-lg-3 col-sm-12 mb-5" *ngFor="let item of metrics">
+      <div *ngFor="let item of metrics" class="col-lg-3 col-sm-12 mb-5">
         <app-number-cards [data]="item"></app-number-cards>
       </div>
     </div>
@@ -103,7 +103,7 @@
         </mat-card>
       </div>
     </div>
-    <div class="row">
+    <div class="row mb-5">
       <div class="col-12">
         <mat-card appearance="outlined">
           <mat-card-header>
@@ -134,7 +134,11 @@
           </div>
           <div>
             <h2 class="fw-lighter">No expense data.</h2>
-            <p>Enter expenses to view and interact with your dashboard.</p>
+            @if (expenses().length) {
+              <p>Update filters to view and interact with your dashboard.</p>
+            } @else {
+              <p>Enter expenses to view and interact with your dashboard.</p>
+            }
           </div>
         </div>
       </div>

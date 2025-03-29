@@ -12,7 +12,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatabaseService } from '../../core/services/database.service';
 import { LoginService } from '../../core/services/login.service';
-import { defaultExpenseTypes } from '../../shared/constants/expense-constants';
 import { Expense } from '../../shared/interfaces/expense-model';
 import { ExpenseDataService } from '../../shared/services/expense-data.service';
 
@@ -43,10 +42,10 @@ export class ManageExpenseComponent implements OnInit {
 
   private dataService: ExpenseDataService = inject(ExpenseDataService);
 
-  private expenseDataUpdate  = effect(()=> {
+  private expenseDataUpdate = effect(() => {
     this.categories = this.dataService.categoriesSignal();
     this.types = this.dataService.expenseSourcesSignal();
-  })
+  });
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Expense,
@@ -65,7 +64,7 @@ export class ManageExpenseComponent implements OnInit {
     const userId = this.loginService.getUserId();
     this.database
       .deleteExpense(userId, this.expense.id as string)
-      .then((_) => this.successfulDelete())
+      .then(() => this.successfulDelete())
       .catch((err) => this.failedDeleted(err));
   }
 
@@ -89,7 +88,7 @@ export class ManageExpenseComponent implements OnInit {
     delete expenseObj.id;
     this.database
       .updateExpense(userId, key as string, expenseObj)
-      .then((_) => this.successfulUpdate())
+      .then(() => this.successfulUpdate())
       .catch((err) => this.failedUpdate(err));
   }
 

@@ -1,6 +1,6 @@
 <div id="login" class="row">
   @if (isHandset$ | async) {
-    <mat-toolbar>Test</mat-toolbar>
+    <mat-toolbar></mat-toolbar>
   }
   <div
     class="heading rounded-end-4 p-5 mb-2 mb-lg-0 col-12 col-lg-7 flex-column justify-content-center align-content-center">
@@ -62,7 +62,7 @@
               }
             </button>
             <p class="fs-6 text-center">
-              New to expense tracker? <button mat-button (click)="needsToRegister['set'](true)">Register here</button>
+              New to expense tracker? <button mat-button (click)="toggle()">Register here</button>
             </p>
           </div>
         </form>

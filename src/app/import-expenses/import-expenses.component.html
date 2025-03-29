@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-12 mb-5">
+  <app-upload-file (filesUploaded)="files = $event"></app-upload-file>
+  </div>
+
+  <div class="col-12 col-lg-6">
+
+    @if (files.length){
+      <app-files-imported [files]="files"></app-files-imported>
+    }@else{
+      <div class="full-width h-100 d-flex flex-column justify-content-center align-items-center p-3">
+        <div class="mb-4">
+          <mat-icon class="no-file">file_copy</mat-icon>
+        </div>
+
+        <div>
+          <h3>No Files Uploaded.</h3>
+        </div>
+      </div>
+
+    }
+
+
+  </div>
+</div>
+
+<mat-card *ngIf="false">
+  <mat-card-title>Import CSV Expenses</mat-card-title>
+  <mat-card-content>
+    <div class="my-5">
+      <mat-horizontal-stepper linear>
+        <mat-step label="Import">
+          <app-expense-import-guidance></app-expense-import-guidance>
+        </mat-step>
+        <mat-step label="Review Expenses Imported">
+          <app-expense-import-grid
+            [data]="importedExpenses"
+            (saveAction)="saveImportedExpenses()"></app-expense-import-grid>
+        </mat-step>
+        <mat-step label="All Done" [completed]="importComplete">
+          <div class="d-flex flex-column">
+            <div class="d-flex justify-content-center">
+              <h2>
+                <mat-icon>check_circle_outline</mat-icon>
+                Expenses Saved.
+              </h2>
+            </div>
+            <div class="d-flex justify-content-center">
+              <button mat-raised-button color="primary" routerLink="/dashboard">
+                <mat-icon>insert_chart</mat-icon>
+                View Expenses Dashboard
+              </button>
+            </div>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <div class="row button-row">
+      <div class="col-12">
+        <div class="float-right">
+          <app-expense-import (dataExported)="dataExported($event)"></app-expense-import>
+        </div>
+      </div>
+    </div>
+  </mat-card-actions>
+</mat-card>

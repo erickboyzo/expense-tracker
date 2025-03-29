@@ -90,6 +90,7 @@ export class LoginComponent {
   }
   toggle() {
     this.needsToRegister.set(!this.needsToRegister());
+    this.loginForm.reset();
   }
 
   private onSuccessfulLogIn() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
@@ -7,8 +7,4 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   imports: [MatProgressSpinner],
   styleUrls: ['./card-spinner.component.scss'],
 })
-export class CardSpinnerComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class CardSpinnerComponent {}

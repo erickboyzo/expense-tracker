@@ -22,6 +22,39 @@ export class ChartSummaryComponent implements OnInit, OnChanges {
     title: {
       text: '',
     },
+    responsive: {
+      rules: [
+        {
+          condition: {
+            maxWidth: 576,
+          },
+          chartOptions: {
+            legend: {
+              enabled: true,
+            },
+            plotOptions: {
+              series: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: [
+                  {
+                    enabled: false,
+                    format: '{point.name}',
+                  },
+                  {
+                    enabled: false,
+                    format: '{point.percentage:.0f}%',
+                  },
+                ],
+                showInLegend: true,
+              },
+            },
+          },
+
+
+        },
+      ],
+    },
     legend: {
       align: 'center',
       padding: 10,
