@@ -2,13 +2,54 @@
 
 This was app was build with the intention of providing a clean and simple responsive web app for entering and managing expenses. The app was build while keeping material design guidelines in mind. Feel free to reach out with any feedback.
 
-## Features implemented and in scope of future development
+## Key Features
+
+* Authentication & Authorization
+  - User registration and login functionality
+  - Firebase authentication integration
+  - Protected routes with auth guards
+* Dashboard Features
+  - Interactive dashboard with expense summaries
+  - Monthly summary charts
+  - Category summary charts
+  - Year-based data filtering
+  - Bulk editing capabilities for expenses
+  - Tabular view of expenses
+
+* Expense Management
+  - Add new expenses with details:
+  - Edit existing expenses
+  - Delete expenses
+  - Categorize expenses
+  - Track expense sources/payment types
+
+* Settings Management
+  - Customize expense categories
+  - Manage expense source types
+  - User-specific settings persistence
+  - Default categories and types for new users
+
+* Data Import Capabilities
+  - CSV file import functionality
+  - Data validation for imports
+  - Review imported expenses before saving
+  - Bulk import support
+
+* Technical Features
+  - Firebase integration for data storage
+  - Real-time data updates
+  - Responsive Material Design 3 UI
+  - Progressive Web App capabilities
+  - Client-side routing
+  - Lazy-loaded components
+
+## Roadmap for future updates
 
 - [x] Update to Material Design 3
 - [x] Redesign Login/ Registration Page
-- [ ] Update Interactive Dashboard
+- [x] Configurable metadata for expenses.
+- [x] Update Interactive Dashboard with filtering capabilities
 - [ ] Import expenses redesign
-- [ ] Configurable metadata for expenses.
 
 ## Find app live here
 
@@ -70,7 +111,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
-# Steps to build to firebase hosting
+# Steps for deploying to firebase hosting
 
 `ng build --prod`
 
