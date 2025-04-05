@@ -1,6 +1,22 @@
 # About Expense Tracker
 
-This was app was build with the intention of providing a clean and simple responsive web app for entering and managing expenses. The app was build while keeping material design guidelines in mind. Feel free to reach out with any feedback.
+Expense Tracker is a clean and simple responsive web application designed for efficient expense management. Originally developed with Angular 4, the application has been continuously modernized to leverage the latest Angular features and capabilities.
+
+Built following Material Design guidelines, this application provides an intuitive and user-friendly interface for managing personal or business expenses. Feel free to reach out with any feedback.
+
+## Find app live here
+
+https://expense-tracker-e0028.firebaseapp.com/
+
+## Technologies Used
+
+* Angular 19
+* Firebase
+* AngularFire
+* Angular Material
+* Material Design 3
+* Highcharts
+* Bootstrap Grid System & Utilities Classes
 
 ## Key Features
 
@@ -12,12 +28,12 @@ This was app was build with the intention of providing a clean and simple respon
   - Interactive dashboard with expense summaries
   - Monthly summary charts
   - Category summary charts
-  - Year-based data filtering
+  - Data filtering
   - Bulk editing capabilities for expenses
   - Tabular view of expenses
 
 * Expense Management
-  - Add new expenses with details:
+  - Add new expenses
   - Edit existing expenses
   - Delete expenses
   - Categorize expenses
@@ -51,9 +67,6 @@ This was app was build with the intention of providing a clean and simple respon
 - [x] Update Interactive Dashboard with filtering capabilities
 - [ ] Import expenses redesign
 
-## Find app live here
-
-https://expense-tracker-e0028.firebaseapp.com/
 
 ## Development server
 
