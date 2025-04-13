@@ -4,10 +4,11 @@
       #drawer
       class="sidenav"
       fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
-      <mat-toolbar class="sidenav-toolbar">{{ (isHandset$ | async) ? 'Menu' : 'Expense Tracker' }}</mat-toolbar>
+      [attr.role]="isHandset() ? 'dialog' : 'navigation'"
+      [mode]="isHandset() ? 'over' : 'side'"
+      [opened]="!isHandset()">
+      <mat-toolbar class="sidenav-toolbar">{{ isHandset() ? 'Menu' : 'Expense Tracker' }}</mat-toolbar>
+      <div></div>
       <mat-nav-list>
         <a class="mb-1" mat-list-item routerLink="dashboard" routerLinkActive="active" (click)="menuClick(drawer)">
           <div class="d-flex">
@@ -40,18 +41,22 @@
           </div>
         </a>
       </mat-nav-list>
+
+      <div class="position-fixed bottom-0 ms-3 p-3">
+        <app-footer-links></app-footer-links>
+      </div>
     </mat-sidenav>
     <mat-sidenav-content>
       <mat-toolbar class="d-flex flex-row app-toolbar">
-        @if (isHandset$ | async) {
-          <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+        @if (isHandset()) {
+          <button class="me-2" type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
           </button>
           <h1 class="fw-light h2">Expense Tracker</h1>
         }
         <button class="ms-auto" mat-button [matMenuTriggerFor]="menu">
           <mat-icon class="user-icon me-3">account_circle</mat-icon>
-          {{ loginService.fullName() }}
+          {{ userService.fullName() }}
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="openUserDetails()">

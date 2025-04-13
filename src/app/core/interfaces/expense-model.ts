@@ -6,4 +6,6 @@ export interface Expense {
   type: string;
   amount: number | string;
   comments?: string;
+  importedOn?: Date;
+  importedFrom?: string;
 }

@@ -3,9 +3,8 @@ import { AngularFireDatabase, SnapshotAction } from '@angular/fire/compat/databa
 import firebase from 'firebase/compat/app';
 import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
 
-import { Expense } from '../../shared/interfaces/expense-model';
-import { ExpenseImportModel } from '../../home/expense-import/expense-import.model';
-import { UserDetails } from '../../shared/interfaces/user-details';
+import { Expense } from '../interfaces/expense-model';
+import { UserDetails } from '../interfaces/user-details';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +12,6 @@ import { UserDetails } from '../../shared/interfaces/user-details';
 export class DatabaseService {
   private expenseAddedSource = new Subject<string>();
   private categoriesAddedSource = new Subject<string>();
-
-  expenseAddedAnnounced$ = this.expenseAddedSource.asObservable();
-  categoriesAddedAnnounced$ = this.categoriesAddedSource.asObservable();
-
   private injectionContext = inject(EnvironmentInjector);
 
   constructor(public db: AngularFireDatabase) {}
@@ -29,7 +24,7 @@ export class DatabaseService {
     this.categoriesAddedSource.next(message);
   }
 
-  saveNewExpense(expense: Expense | ExpenseImportModel, userId: string) {
+  saveNewExpense(expense: Expense, userId: string) {
     return this.db.database.ref('users/' + userId + '/expenses').push(expense);
   }
 
@@ -57,20 +52,8 @@ export class DatabaseService {
     return this.db.database.ref('users').orderByChild('email').equalTo(currentUser).once('value');
   }
 
-  getCurrentCategories(userId: string): Promise<firebase.database.DataSnapshot> {
-    return this.db.database.ref('users/' + userId + '/categories').once('value');
-  }
-
-  getSourceTypes(userId: string): Promise<firebase.database.DataSnapshot> {
-    return this.db.database.ref('users/' + userId + '/types').once('value');
-  }
-
   getUserDetailsById(userId: string): Promise<firebase.database.DataSnapshot> {
     return this.db.database.ref('users/' + userId).once('value');
-  }
-
-  getExpensesOnce(userId: string): Promise<firebase.database.DataSnapshot> {
-    return this.db.database.ref('users/' + userId + '/expenses').once('value');
   }
 
   updateExpense(userId: string, key: string, expense: Expense): Promise<void> {
@@ -86,6 +69,12 @@ export class DatabaseService {
   deleteExpense(userId: string, key: string): Promise<void> {
     return runInInjectionContext(this.injectionContext, () => {
       return this.db.list('users/' + userId + '/expenses').remove(key);
+    });
+  }
+
+  addExpense(userId: string, expense: Expense): firebase.database.ThenableReference {
+    return runInInjectionContext(this.injectionContext, () => {
+      return this.db.list('users/' + userId + '/expenses').push(expense);
     });
   }
 

@@ -7,13 +7,13 @@ import {
   MatDialogClose,
   MatDialogContent,
   MatDialogRef,
-  MatDialogTitle
+  MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import { DatabaseService } from '../services/database.service';
-import { LoginService } from '../services/login.service';
+import { DatabaseService } from '../../services/database.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-user-details',
@@ -37,29 +37,26 @@ import { LoginService } from '../services/login.service';
   styleUrl: './user-details.component.scss',
 })
 export class UserDetailsComponent {
-  readonly loginService: LoginService = inject(LoginService);
+  readonly userService: UserService = inject(UserService);
   readonly databaseService: DatabaseService = inject(DatabaseService);
-  user = this.loginService.currentUser();
-  fullName = this.loginService.fullName();
-  abbreviatedDisplay = this.loginService.abbreviatedDisplay();
+  user = this.userService.currentUser();
+  fullName = this.userService.fullName();
+  abbreviatedDisplay = this.userService.abbreviatedDisplay();
   userNameForm: FormGroup = new FormGroup({
-    firstName: new FormControl(this.loginService.userDetails()?.firstName, [
+    firstName: new FormControl(this.userService.userDetails()?.firstName, [
       Validators.required,
       Validators.minLength(2),
     ]),
-    lastName: new FormControl(this.loginService.userDetails()?.lastName, [
-      Validators.required,
-      Validators.minLength(1),
-    ]),
+    lastName: new FormControl(this.userService.userDetails()?.lastName, [Validators.required, Validators.minLength(1)]),
   });
 
   readonly dialogRef = inject(MatDialogRef<UserDetailsComponent>);
 
   updateDetails() {
     if (this.userNameForm.valid) {
-      this.databaseService.updateUserDetails(this.loginService.getUserId(), this.userNameForm.value).then(
-        ()=> this.dialogRef.close(true)
-      );
+      this.databaseService
+        .updateUserDetails(this.userService.getUserId(), this.userNameForm.value)
+        .then(() => this.dialogRef.close(true));
     }
   }
 }

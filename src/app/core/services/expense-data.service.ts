@@ -1,6 +1,6 @@
 import { computed, Injectable, signal, WritableSignal } from '@angular/core';
 import { endOfDay, isWithinInterval, startOfDay } from 'date-fns';
-import { TimeFrameFilter } from '../../core/interfaces/time-frame-filter';
+import { TimeFrameFilter } from '../interfaces/time-frame-filter';
 import { Expense } from '../interfaces/expense-model';
 
 @Injectable({
@@ -12,6 +12,7 @@ export class ExpenseDataService {
   private readonly _sourceTypesSignal = signal<string[]>([]);
   private readonly _categoriesSignal = signal<string[]>([]);
   private readonly _timeFrameFilter = signal<TimeFrameFilter | undefined>(undefined);
+  private readonly _filesImported = signal<string[]>([]);
 
   readonly filteredExpenses = computed(() => {
     const expenses = this._expensesSignal();
@@ -81,6 +82,10 @@ export class ExpenseDataService {
     return this._timeFrameFilter;
   }
 
+  get filesImportedSignal(): WritableSignal<string[]> {
+    return this._filesImported;
+  }
+
   setExpensesData(expenses: Expense[]) {
     this._expensesSignal.set(expenses);
   }
@@ -95,5 +100,9 @@ export class ExpenseDataService {
 
   setTimeFrameFilter(timeFrameFilter: TimeFrameFilter | undefined) {
     this._timeFrameFilter.set(timeFrameFilter);
+  }
+
+  setFilesImported(files: string[]) {
+    this._filesImported.set(files);
   }
 }

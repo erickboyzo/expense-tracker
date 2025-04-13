@@ -2,12 +2,12 @@ import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/c
 import { Subject } from 'rxjs';
 
 import firebase from 'firebase/compat/app';
-import { UserDetails } from '../../shared/interfaces/user-details';
+import { UserDetails } from '../interfaces/user-details';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LoginService {
+export class UserService {
   currentUser: WritableSignal<firebase.User | undefined> = signal(undefined);
   userDetails: WritableSignal<UserDetails | undefined> = signal(undefined);
   fullName: Signal<string> = computed(() => {

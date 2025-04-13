@@ -5,12 +5,12 @@
     <div class="mat-mdc-card-avatar me-3">{{ abbreviatedDisplay | uppercase }}</div>
     <div class="d-flex flex-column justify-content-center full-width">
       <div class="fs-4 fw-normal mb-3">{{ fullName }}</div>
-      <div class="d-flex flex-md-row flex-sm-column justify-content-between">
+      <div class="d-flex flex-md-row flex-column justify-content-start">
         <div class="mb-2">
           <span class="fw-bold">Creation Date</span>
           <div class="info-content">{{ user?.metadata?.creationTime | date: 'MMMM dd, yyyy' }}</div>
         </div>
-        <div class="mb-2">
+        <div class="mb-2 ms-md-5">
           <span class="fw-bold">Last Login</span>
           <div class="info-content">{{ user?.metadata?.lastSignInTime | date: 'MMMM dd, yyyy' }}</div>
         </div>
@@ -23,7 +23,7 @@
   <form [formGroup]="userNameForm">
     <mat-form-field class="my-2 full-width" appearance="outline">
       <mat-label>Email</mat-label>
-      <input matInput placeholder="Email" type="email" name="formEmail" [value]="loginService.email()" disabled />
+      <input matInput placeholder="Email" type="email" name="formEmail" [value]="userService.email()" disabled />
       <mat-icon matPrefix>mail</mat-icon>
     </mat-form-field>
 

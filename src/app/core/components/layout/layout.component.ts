@@ -1,5 +1,4 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, DestroyRef, effect, inject, OnInit, Type } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,14 +11,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import firebase from 'firebase/compat/app';
-import { filter, map, Observable, shareReplay, switchMap, take } from 'rxjs';
-import { defaultExpenseCategories, defaultExpenseTypes } from '../../shared/constants/expense-constants';
-import { UserDetails } from '../../shared/interfaces/user-details';
-import { ExpenseDataService } from '../../shared/services/expense-data.service';
+import { filter, switchMap } from 'rxjs';
+import { defaultExpenseCategories, defaultExpenseTypes } from '@shared/constants/expense-constants';
+import { ResponsiveService } from '@shared/services/responsive.service';
+import { UserDataRecord } from '../../interfaces/user-data-record';
+import { UserDetails } from '../../interfaces/user-details';
+import { AuthService } from '../../services/auth.service';
+import { DatabaseService } from '../../services/database.service';
+import { ExpenseDataService } from '../../services/expense-data.service';
+import { UserService } from '../../services/user.service';
+import { FooterLinksComponent } from '../footer-links/footer-links.component';
 import { PageHeaderComponent } from '../page-header/page-header.component';
-import { AuthService } from '../services/auth.service';
-import { DatabaseService } from '../services/database.service';
-import { LoginService } from '../services/login.service';
 import { UserDetailsComponent } from '../user-details/user-details.component';
 
 @Component({
@@ -33,7 +35,6 @@ import { UserDetailsComponent } from '../user-details/user-details.component';
     MatSidenavModule,
     MatListModule,
     MatIconModule,
-    AsyncPipe,
     NgTemplateOutlet,
     RouterLinkActive,
     RouterLink,
@@ -41,26 +42,24 @@ import { UserDetailsComponent } from '../user-details/user-details.component';
     MatMenu,
     MatMenuTrigger,
     MatMenuItem,
+    FooterLinksComponent,
   ],
 })
 export class LayoutComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
-  loginService: LoginService = inject(LoginService);
-  user = this.loginService.currentUser;
+  userService: UserService = inject(UserService);
+  user = this.userService.currentUser;
   name: UserDetails | undefined;
-  breakpointObserver = inject(BreakpointObserver);
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map((result) => result.matches),
-    shareReplay(),
-  );
+  breakpointObserver = inject(ResponsiveService);
+  isHandset = this.breakpointObserver.isHandset;
   fixedContainer = false;
 
   private authService: AuthService = inject(AuthService);
   private databaseService: DatabaseService = inject(DatabaseService);
   private dataService: ExpenseDataService = inject(ExpenseDataService);
   private userEffect = effect(() => {
-    if (this.loginService.getUser()) {
+    if (this.userService.getUser()) {
       this.getAllUserDetails();
     }
   });
@@ -82,15 +81,17 @@ export class LayoutComponent implements OnInit {
   }
 
   logout() {
-    this.authService.signOut().then(() => this.loginService.setUser(undefined));
+    this.authService.signOut().then(() => {
+      this.userService.setUser(undefined);
+      this.dataService.setExpensesData([]);
+      this.dataService.setTimeFrameFilter(undefined);
+    });
   }
 
   menuClick(drawer: MatSidenav) {
-    this.isHandset$.pipe(take(1)).subscribe((isHandset) => {
-      if (isHandset) {
-        drawer.toggle();
-      }
-    });
+    if (this.isHandset()) {
+      drawer.toggle();
+    }
   }
 
   openUserDetails() {
@@ -106,18 +107,20 @@ export class LayoutComponent implements OnInit {
 
   private getAllUserDetails() {
     this.databaseService
-      .getUserDetails(this.loginService.getUser()?.email ?? '')
+      .getUserDetails(this.userService.getUser()?.email ?? '')
       .then((jsonData: firebase.database.DataSnapshot) => {
-        const data: Record<string, any> = jsonData.toJSON() ?? {};
+        const data = (jsonData.toJSON() ?? {}) as Record<string, UserDataRecord>;
         const userId = Object.keys(data)[0];
-        this.loginService.setUserId(userId);
-        this.loginService.setUserDetails({ firstName: data[userId]['firstName'], lastName: data[userId]['lastName'] });
+        this.userService.setUserId(userId);
+        this.userService.setUserDetails({ firstName: data[userId]['firstName'], lastName: data[userId]['lastName'] });
         const categories = data[userId]['categories'] ?? {};
         const sourceTypes = data[userId]['types'] ?? {};
         const categoriesList = Object.keys(categories).map((key) => categories[key]);
         const sourceTypesList = Object.keys(sourceTypes).map((key) => sourceTypes[key]);
+        const filesImported = Object.keys(data[userId]['types'] ?? {}).map((key) => sourceTypes[key]);
         this.dataService.setCategoriesSignal(categoriesList.length ? categoriesList : [...defaultExpenseCategories]);
         this.dataService.setExpenseSourcesData(sourceTypesList.length ? sourceTypesList : [...defaultExpenseTypes]);
+        this.dataService.setFilesImported(filesImported ?? []);
       });
   }
 }

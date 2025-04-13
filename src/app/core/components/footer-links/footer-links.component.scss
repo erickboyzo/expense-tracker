@@ -1,0 +1,32 @@
+.bg-circle-outline {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #666;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #666;
+    .footer-icon {
+      color: white;
+    }
+  }
+}
+
+.footer-icon {
+  color: #666;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  transition: all 0.2s ease-in-out;
+}
+
+.link-alignment {
+  justify-content: center;
+  padding: 16px 0;
+}

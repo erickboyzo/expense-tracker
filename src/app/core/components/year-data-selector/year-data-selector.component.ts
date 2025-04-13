@@ -9,8 +9,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
-import { ExpenseDataService } from '../../shared/services/expense-data.service';
-import { TimeFrameFilter } from '../interfaces/time-frame-filter';
+import { ExpenseDataService } from '../../services/expense-data.service';
+import { TimeFrameFilter } from '../../interfaces/time-frame-filter';
 
 @Component({
   selector: 'app-year-data-selector',
