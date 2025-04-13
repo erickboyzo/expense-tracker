@@ -7,8 +7,8 @@ import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { cloneDeep, find, findIndex, isEqual } from 'lodash';
-import { CardSpinnerComponent } from '../../shared/card-spinner/card-spinner.component';
-import { ChipOption } from '../../shared/interfaces/chip-option';
+import { CardSpinnerComponent } from '../../../shared/components/card-spinner/card-spinner.component';
+import { ChipOption } from '../../interfaces/chip-option';
 
 @Component({
   selector: 'app-manage-options',
@@ -55,9 +55,12 @@ export class ManageOptionsComponent {
 
   onOptionEntered(data: MatChipInputEvent) {
     const valueTrimmed = data.value.trim();
+    if (!valueTrimmed) {
+      return;
+    }
     const matchingCategory = find(
       this.options(),
-      (c) => c.value === valueTrimmed || c.value.toLowerCase() === valueTrimmed.toLowerCase(),
+      (c) => c.value.trim() === valueTrimmed || c.value.trim().toLowerCase() === valueTrimmed.toLowerCase(),
     );
     if (!matchingCategory) {
       this.options.update((categories: ChipOption[]) => {

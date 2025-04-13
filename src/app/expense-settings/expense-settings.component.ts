@@ -7,18 +7,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { cloneDeep, includes } from 'lodash';
+import { UserDataRecord } from '../core/interfaces/user-data-record';
 import { DatabaseService } from '../core/services/database.service';
-import { LoginService } from '../core/services/login.service';
+import { ExpenseDataService } from '../core/services/expense-data.service';
+import { UserService } from '../core/services/user.service';
 import { defaultExpenseCategories, defaultExpenseTypes } from '../shared/constants/expense-constants';
-import { ChipOption } from '../shared/interfaces/chip-option';
-import { ExpenseDataService } from '../shared/services/expense-data.service';
-import { ManageOptionsComponent } from './manage-options/manage-options.component';
+import { ManageOptionsComponent } from './components/manage-options/manage-options.component';
+import { ChipOption } from './interfaces/chip-option';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
+  selector: 'app-expense-settings',
   imports: [
     MatCardModule,
     MatStepperModule,
@@ -30,9 +30,10 @@ import { ManageOptionsComponent } from './manage-options/manage-options.componen
     MatFormFieldModule,
     ManageOptionsComponent,
   ],
-  styleUrls: ['./home.component.scss'],
+  templateUrl: './expense-settings.component.html',
+  styleUrl: './expense-settings.component.scss',
 })
-export class HomeComponent implements OnInit {
+export class ExpenseSettingsComponent implements OnInit {
   readonly expenseDataService: ExpenseDataService = inject(ExpenseDataService);
   readonly categoriesSignal = signal<ChipOption[]>([]);
   readonly copyCategoriesSignal = signal<ChipOption[]>([]);
@@ -46,12 +47,11 @@ export class HomeComponent implements OnInit {
   isUpdatingSourceTypes = signal(false);
 
   constructor(
-    private router: Router,
-    private loginService: LoginService,
+    private userService: UserService,
     private database: DatabaseService,
     private snackBar: MatSnackBar,
   ) {
-    loginService.userIdSetAnnounced$.subscribe(() => {
+    userService.userIdSetAnnounced$.subscribe(() => {
       this.getAllUserDetails();
     });
   }
@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
 
   saveCategories() {
     this.isUpdatingCategories.set(true);
-    const currentUser = this.loginService.getUserId();
+    const currentUser = this.userService.getUserId();
     this.database
       .saveNewCategories(
         this.categoriesSignal().map((category) => category.value),
@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit {
 
   saveTypes() {
     this.isUpdatingSourceTypes.set(true);
-    const currentUser = this.loginService.getUserId();
+    const currentUser = this.userService.getUserId();
     this.database
       .saveNewExpenseSourceTypes(
         this.sourceTypeSignal().map((category) => category.value),
@@ -102,15 +102,15 @@ export class HomeComponent implements OnInit {
   }
 
   private getAllUserDetails() {
-    if (this.loginService.getUser()) {
+    if (this.userService.getUser()) {
       this.isLoadingUserInformation.set(true);
       this.isLoadingUserCategories.set(true);
       this.database
-        .getUserDetails(this.loginService.getUser()?.email ?? '')
+        .getUserDetails(this.userService.getUser()?.email ?? '')
         .then((jsonData) => {
-          const obj: Record<string, any> = jsonData.toJSON() ?? {};
-          const key = Object.keys(obj)[0];
-          this.loginService.setUserId(key);
+          const obj: Record<string, UserDataRecord> = (jsonData.toJSON() ?? {}) as Record<string, UserDataRecord>;
+          const key = Object.keys(obj)[0] as string;
+          this.userService.setUserId(key);
           const categories = obj[key]['categories'] ?? {};
           const sourceTypes = obj[key]['types'] ?? {};
           const categoriesList = Object.keys(categories).map((key) => categories[key]);
