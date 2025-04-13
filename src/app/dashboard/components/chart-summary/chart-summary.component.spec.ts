@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
 import { ChartSummaryComponent } from './chart-summary.component';
 
@@ -6,7 +6,7 @@ describe('ChartSummaryComponent', () => {
   let component: ChartSummaryComponent;
   let fixture: ComponentFixture<ChartSummaryComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ChartSummaryComponent],
     }).compileComponents();

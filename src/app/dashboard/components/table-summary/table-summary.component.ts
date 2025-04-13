@@ -1,6 +1,16 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CurrencyPipe, DatePipe, NgClass } from '@angular/common';
-import { AfterViewInit, Component, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -13,10 +23,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-import { Expense } from '../../../shared/interfaces/expense-model';
+import { Expense } from '../../../core/interfaces/expense-model';
+import { BulkEditModalComponent } from '../../../shared/components/bulk-edit-modal/bulk-edit-modal.component';
+import { ManageExpenseComponent } from '../../../shared/components/manage-expense/manage-expense.component';
 import { BulkEditDialogResult } from '../../interfaces/bulk-edit-dialog-data';
-import { ManageExpenseComponent } from '../../manage-expense/manage-expense.component';
-import { BulkEditModalComponent } from '../../bulk-edit-modal/bulk-edit-modal.component';
 
 @Component({
   selector: 'app-table-summary',
@@ -37,6 +47,7 @@ import { BulkEditModalComponent } from '../../bulk-edit-modal/bulk-edit-modal.co
     MatPaginatorModule,
     CurrencyPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['table-summary.component.scss'],
 })
 export class TableSummaryComponent implements OnInit, OnChanges, AfterViewInit {
@@ -101,7 +112,7 @@ export class TableSummaryComponent implements OnInit, OnChanges, AfterViewInit {
 
   editData(expense: Expense) {
     const dialogRef = this.dialog.open(ManageExpenseComponent, {
-      data: expense,
+      data: { expense },
       hasBackdrop: true,
       disableClose: true,
     });

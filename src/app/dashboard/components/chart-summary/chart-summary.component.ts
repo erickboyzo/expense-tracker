@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { ChartData } from '../../interfaces/chart-data';
@@ -7,6 +7,7 @@ import { ChartData } from '../../interfaces/chart-data';
   selector: 'app-chart-summary',
   templateUrl: 'chart-summary.component.html',
   imports: [HighchartsChartModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['chart-summary.component.scss'],
 })
 export class ChartSummaryComponent implements OnInit, OnChanges {
@@ -50,8 +51,6 @@ export class ChartSummaryComponent implements OnInit, OnChanges {
               },
             },
           },
-
-
         },
       ],
     },

@@ -38,7 +38,7 @@
             <mat-card-title>Monthly Amount Summary</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="full-width d-flex justify-content-end">
+            <div class="full-width d-flex justify-content-end mt-3">
               <mat-form-field appearance="outline">
                 <input
                   matInput
@@ -65,8 +65,8 @@
             <mat-card-title>Category Monthly Summary</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div class="full-width d-flex justify-content-end align-content-center">
-              <div class="me-3 mt-2">
+            <div class="d-flex flex-lg-row flex-column justify-content-end align-content-center">
+              <div class="me-3 mt-2 mb-2">
                 <mat-button-toggle-group
                   [(ngModel)]="categoryMonthlyChartType"
                   [hideSingleSelectionIndicator]="true"
@@ -82,7 +82,7 @@
                 </mat-button-toggle-group>
               </div>
 
-              <mat-form-field appearance="outline">
+              <mat-form-field appearance="outline" class="mt-2">
                 <input
                   matInput
                   [matDatepicker]="categoryPicker"
@@ -133,7 +133,7 @@
             <mat-icon class="icon-alert">assessment</mat-icon>
           </div>
           <div>
-            <h2 class="fw-lighter">No expense data.</h2>
+            <h2 class="fw-lighter">No expense data {{ expenses().length ? 'for filtered time frame' : 'found' }}.</h2>
             @if (expenses().length) {
               <p>Update filters to view and interact with your dashboard.</p>
             } @else {

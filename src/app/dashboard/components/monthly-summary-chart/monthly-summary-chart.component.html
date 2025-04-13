@@ -5,4 +5,10 @@
     [(update)]="updateFlag"
     style="width: 100%; height: 100%; display: block">
   </highcharts-chart>
+  @if (isHandset()) {
+    <div class="text-center">
+      <mat-icon>swipe</mat-icon>
+      <span class="font-monospace fs-6">Swipe on chart to view more data</span>
+    </div>
+  }
 </div>

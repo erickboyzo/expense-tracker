@@ -1,16 +1,31 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+  ChangeDetectionStrategy,
+  inject,
+} from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 import { SeriesOptionsType } from 'highcharts';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartComponent, HighchartsChartModule } from 'highcharts-angular';
-import { Expense } from '../../../shared/interfaces/expense-model';
+import { ResponsiveService } from '../../../shared/services/responsive.service';
+import { Expense } from '../../../core/interfaces/expense-model';
 
 @Component({
   selector: 'app-monthly-summary-chart',
   templateUrl: './monthly-summary-chart.component.html',
   styleUrls: ['./monthly-summary-chart.component.scss'],
-  imports: [HighchartsChartModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [HighchartsChartModule, MatIcon],
 })
 export class MonthlySummaryChartComponent implements OnInit, OnChanges {
+  readonly responsiveService = inject(ResponsiveService);
+  readonly isHandset = this.responsiveService.isHandset;
+
   @Input() data!: Expense[];
   @Input() date!: Date;
   @Input() categories!: string[];
@@ -26,6 +41,10 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
       plotShadow: false,
       type: 'column',
       backgroundColor: 'transparent',
+      scrollablePlotArea: {
+        minWidth: this.isHandset() ? 800 : undefined,
+        scrollPositionX: 0,
+      },
     },
     title: {
       text: '',
@@ -37,6 +56,12 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
     },
     xAxis: {
       type: 'category',
+      labels: {
+        rotation: this.isHandset() ? -45 : 0,
+        style: {
+          fontSize: this.isHandset() ? '8px' : '12px',
+        },
+      },
     },
     yAxis: {
       title: {
@@ -141,6 +166,7 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
       if (monthSum !== 0) {
         parsedSum = monthSum.toFixed(2);
       }
+
       monthSummary.push({
         name: monthNames[month.getMonth()] + month.getFullYear(),
         y: parseFloat(parsedSum ?? ''),

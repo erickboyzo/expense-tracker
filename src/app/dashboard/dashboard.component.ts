@@ -1,6 +1,5 @@
 import { CurrencyPipe, NgForOf, NgTemplateOutlet } from '@angular/common';
 import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SnapshotAction } from '@angular/fire/compat/database';
 import { FormsModule } from '@angular/forms';
 import { MatFabButton } from '@angular/material/button';
@@ -13,24 +12,23 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { RouterLink, RouterModule } from '@angular/router';
 import firebase from 'firebase/compat/app';
-import { filter, Subscription } from 'rxjs';
-import { DatabaseService } from '../../core/services/database.service';
-import { LoginService } from '../../core/services/login.service';
-import { CardSpinnerComponent } from '../../shared/card-spinner/card-spinner.component';
-
-import { Expense } from '../../shared/interfaces/expense-model';
-import { ExpenseDataService } from '../../shared/services/expense-data.service';
-import { ChartData } from '../interfaces/chart-data';
-import { ExpenseSummary } from '../interfaces/expense-summary';
-import { CategorySummaryChartComponent } from './category-summary-chart/category-summary-chart.component';
-import { ChartSummaryComponent } from './chart-summary/chart-summary.component';
-import { MonthlySummaryChartComponent } from './monthly-summary-chart/monthly-summary-chart.component';
-import { NumberCardsComponent } from './number-cards/number-cards.component';
-import { TableSummaryComponent } from './table-summary/table-summary.component';
+import { Subscription } from 'rxjs';
+import { Expense } from '../core/interfaces/expense-model';
+import { DatabaseService } from '../core/services/database.service';
+import { ExpenseDataService } from '../core/services/expense-data.service';
+import { UserService } from '../core/services/user.service';
+import { CardSpinnerComponent } from '../shared/components/card-spinner/card-spinner.component';
+import { ResponsiveService } from '../shared/services/responsive.service';
+import { CategorySummaryChartComponent } from './components/category-summary-chart/category-summary-chart.component';
+import { ChartSummaryComponent } from './components/chart-summary/chart-summary.component';
+import { MonthlySummaryChartComponent } from './components/monthly-summary-chart/monthly-summary-chart.component';
+import { NumberCardsComponent } from './components/number-cards/number-cards.component';
+import { TableSummaryComponent } from './components/table-summary/table-summary.component';
+import { ChartData } from './interfaces/chart-data';
+import { ExpenseSummary } from './interfaces/expense-summary';
 
 @Component({
-  selector: 'app-view-logged-expenses',
-  templateUrl: './view-logged-expenses.component.html',
+  selector: 'app-dashboard',
   imports: [
     MatCardModule,
     NumberCardsComponent,
@@ -54,11 +52,13 @@ import { TableSummaryComponent } from './table-summary/table-summary.component';
     NgForOf,
     NgTemplateOutlet,
   ],
-  styleUrls: ['./view-logged-expenses.component.scss'],
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss',
   providers: [provideNativeDateAdapter()],
 })
-export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy {
   readonly expenseDataService = inject(ExpenseDataService);
+  readonly responsiveService = inject(ResponsiveService);
 
   expenseDataChart: ChartData[] = [];
   expenseSourceData: ChartData[] = [];
@@ -76,6 +76,7 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
   categories: string[] = [];
   categoryMonthlyChartType: 'line' | 'column' = 'line';
   expenses = this.expenseDataService.expensesSignal;
+  isMobile = this.responsiveService.isHandset;
 
   private expenses$: Subscription = new Subscription();
 
@@ -88,38 +89,31 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
 
   constructor(
     private database: DatabaseService,
-    private loginService: LoginService,
-  ) {
-    this.loginService.userIdSetAnnounced$
-      .pipe(
-        takeUntilDestroyed(),
-        filter((res) => !!res),
-      )
-      .subscribe((res) => {
-        console.log(res);
-        console.log('userIdSetAnnounced$');
-        // this.subscribeToExpensesChange();
-      });
-  }
+    private userService: UserService,
+  ) {}
 
   ngOnInit() {
     this.getUserExpenses();
   }
 
+  ngOnDestroy() {
+    this.expenses$.unsubscribe();
+  }
+
   private getUserExpenses() {
-    const userId = this.loginService.getUser()?.email;
+    const userId = this.userService.getUser()?.email;
     if (userId) {
       this.database.getUserDetails(userId).then((snapshot: firebase.database.DataSnapshot) => {
         const obj = snapshot.toJSON() ?? {};
         const key = Object.keys(obj)[0];
-        this.loginService.setUserId(key);
+        this.userService.setUserId(key);
         this.subscribeToExpensesChange();
       });
     }
   }
 
   private subscribeToExpensesChange() {
-    const userId = this.loginService.getUserId();
+    const userId = this.userService.getUserId();
     this.isLoadingExpenses = true;
     if (userId) {
       this.expenses$.add(
@@ -132,7 +126,7 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     }
   }
 
-  private parseData(snapsShots: SnapshotAction<Expense>[]) {
+  private parseData(snapsShots: SnapshotAction<Expense>[]): Expense[] {
     const data: Expense[] = [];
     snapsShots.forEach((snapshot) => {
       const expense = snapshot.payload.exportVal();
@@ -215,9 +209,5 @@ export class ViewLoggedExpensesComponent implements OnInit, OnDestroy {
     let categorySum = 0;
     expenses.forEach((expense) => (categorySum += +expense.amount));
     return new CurrencyPipe('en-US').transform(categorySum, 'USD') as string;
-  }
-
-  ngOnDestroy() {
-    this.expenses$.unsubscribe();
   }
 }

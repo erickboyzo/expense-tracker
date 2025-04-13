@@ -1,38 +1,49 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 import Highcharts, { AxisOptions, SeriesOptionsType } from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
-import { Expense } from '../../../shared/interfaces/expense-model';
+import { ResponsiveService } from '@shared/services/responsive.service';
+import { Expense } from '@core/interfaces/expense-model';
 
 @Component({
   selector: 'app-category-summary-chart',
   templateUrl: './category-summary-chart.component.html',
-  imports: [HighchartsChartModule],
+  imports: [HighchartsChartModule, MatIcon],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./category-summary-chart.component.scss'],
 })
 export class CategorySummaryChartComponent implements OnInit, OnChanges {
+  readonly responsiveService = inject(ResponsiveService);
+  readonly isHandset = this.responsiveService.isHandset;
+
   @Input() data!: Expense[];
   @Input() date!: Date;
   @Input() categories!: string[];
   @Input() chartType: 'line' | 'column' = 'column';
-  Highcharts: typeof Highcharts = Highcharts;
-  updateFlag = false;
 
+  updateFlag = false;
+  Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {
     chart: {
       plotShadow: false,
       type: this.chartType,
       backgroundColor: 'transparent',
+      scrollablePlotArea: {
+        minWidth: this.isHandset() ? 800 : undefined,
+        scrollPositionX: 0,
+      },
     },
     title: {
       text: '',
     },
     plotOptions: {
-      // column: {
-      //   stacking: 'normal',
-      //   dataLabels: {
-      //     enabled: true
-      //   }
-      // }
+      series: {
+        states: {
+          hover: {
+            enabled: !this.isHandset(),
+          },
+        },
+      },
     },
     yAxis: {
       title: {
@@ -54,19 +65,25 @@ export class CategorySummaryChartComponent implements OnInit, OnChanges {
         'November',
         'December',
       ],
+      labels: {
+        rotation: this.isHandset() ? -45 : 0,
+        style: {
+          fontSize: this.isHandset() ? '8px' : '12px',
+        },
+      },
     },
-    // tooltip: {
-    //   pointFormat: '{series.name}: <b>{point.y:,.2f}</b><br/>',
-    //   shared: true,
-    // },
     tooltip: {
       headerFormat: '<b>{category}</b><br/>',
-      pointFormat: '{series.name}: ${point.y:.2f}<br/>Total: ${point.stackTotal:.2f}'
+      pointFormat: '{series.name}: ${point.y:.2f}<br/>Total: ${point.stackTotal:.2f}',
     },
     legend: {
-      layout: 'horizontal',
-      align: 'center',
-      verticalAlign: 'bottom',
+      layout: this.isHandset() ? 'horizontal' : 'vertical',
+      align: this.isHandset() ? 'center' : 'right',
+      verticalAlign: this.isHandset() ? 'bottom' : 'middle',
+      enabled: true,
+      itemStyle: {
+        fontSize: this.isHandset() ? '8px' : '12px',
+      },
     },
     series: [
       {
