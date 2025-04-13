@@ -13,22 +13,22 @@
 }
 
 $angular-material-3-theme: mat.define-theme(
-    (
-      color: (
-        primary: my-theme.$primary-palette,
-        tertiary: my-theme.$tertiary-palette,
-      ),
-      typography: (
-        plain-family: Roboto,
-        brand-family: Open Sans,
-        bold-weight: 900,
-        medium-weight: 500,
-        regular-weight: 300,
-      ),
-      density: (
-        scale: 0,
-      ),
-    )
+  (
+    color: (
+      primary: my-theme.$primary-palette,
+      tertiary: my-theme.$tertiary-palette,
+    ),
+    typography: (
+      plain-family: Roboto,
+      brand-family: Open Sans,
+      bold-weight: 900,
+      medium-weight: 500,
+      regular-weight: 300,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
 );
 
 @mixin layout-theme($theme) {
@@ -58,7 +58,6 @@ html {
   }
 }
 
-
 html,
 body {
   height: 100%;
@@ -74,4 +73,63 @@ body {
 
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
+}
+
+.mat-mdc-table {
+  // Basic striping
+  .mat-mdc-row:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.025);
+  }
+
+  .mat-mdc-row:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    transition: background-color 0.2s ease;
+  }
+
+  .mat-mdc-cell,
+  .mat-mdc-header-cell {
+    padding: 8px !important;
+  }
+
+  // Header styling
+  .mat-mdc-header-row {
+    background-color: var(--mat-sys-surface-container-high);
+  }
+
+  // Optional: style for selected rows
+  .mat-mdc-row.selected {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+}
+
+// Optional: Scrollable table container
+.table-container {
+  max-height: 500px;
+  overflow: auto;
+
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+
+    &:hover {
+      background: #555;
+    }
+  }
+}
+
+// Optional: Responsive table container
+.responsive-table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
 }
