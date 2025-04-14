@@ -44,6 +44,10 @@ export class DatabaseService {
     return this.db.database.ref('users/' + userId + '/categories').set(categories);
   }
 
+  saveNewImportedFiles(files: string[], userId: string): Promise<void> {
+    return this.db.database.ref('users/' + userId + '/filesImported').set(files);
+  }
+
   saveNewExpenseSourceTypes(types: string[], userId: string): Promise<void> {
     return this.db.database.ref('users/' + userId + '/types').set(types);
   }
@@ -80,6 +84,21 @@ export class DatabaseService {
 
   batchUpdateExpenses(updates: Record<string, Expense> | Record<string, null>): Promise<void> {
     return runInInjectionContext(this.injectionContext, () => {
+      return this.db.database.ref().update(updates);
+    });
+  }
+
+  batchPushExpensesWithBatch(expenses: Expense[], userId: string): Promise<void> {
+    return runInInjectionContext(this.injectionContext, () => {
+      const updates: Record<string, Expense> = {};
+
+      expenses.forEach((expense) => {
+        const newKey = this.db.database.ref(`users/${userId}/expenses`).push().key;
+        if (newKey) {
+          updates[`users/${userId}/expenses/${newKey}`] = expense;
+        }
+      });
+
       return this.db.database.ref().update(updates);
     });
   }
