@@ -10,12 +10,13 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Expense } from '../core/interfaces/expense-model';
+import { UserDataRecord } from '../core/interfaces/user-data-record';
 
 import { DatabaseService } from '../core/services/database.service';
-import { LoginService } from '../core/services/login.service';
+import { ExpenseDataService } from '../core/services/expense-data.service';
+import { UserService } from '../core/services/user.service';
 import { defaultExpenseCategories, defaultExpenseTypes } from '../shared/constants/expense-constants';
-import { Expense } from '../shared/interfaces/expense-model';
-import { ExpenseDataService } from '../shared/services/expense-data.service';
 
 @Component({
   selector: 'app-log-expense',
@@ -50,31 +51,30 @@ export class LogExpenseComponent implements OnInit {
   dateError = false;
   maxDate: Date = new Date();
 
-  private expenseDataService: ExpenseDataService = inject(ExpenseDataService)
-  private expenseDataUpdate  = effect(()=> {
+  private expenseDataService: ExpenseDataService = inject(ExpenseDataService);
+  private expenseDataUpdate = effect(() => {
     this.categories = this.expenseDataService.categoriesSignal();
     this.types = this.expenseDataService.expenseSourcesSignal();
-  })
+  });
 
   constructor(
-    private loginService: LoginService,
+    private userService: UserService,
     private snackBar: MatSnackBar,
     private database: DatabaseService,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getAllUserDetails();
   }
 
   private getAllUserDetails() {
-    if (this.loginService.getUser()) {
-      this.database.getUserDetailsById(this.loginService.getUserId()).then((jsonData) => {
-        const obj: Record<string, any> = jsonData.toJSON() ?? {};
+    if (this.userService.getUser()) {
+      this.database.getUserDetailsById(this.userService.getUserId()).then((jsonData) => {
+        const obj: UserDataRecord = (jsonData.toJSON() ?? {}) as UserDataRecord;
         const { categories = {}, types = {} } = obj;
 
-        const categoriesList = Object.keys(categories).map((key) => categories[key]);
-        const sourceTypesList = Object.keys(types).map((key) => types[key]);
+        const categoriesList: string[] = Object.keys(categories).map((key) => categories[key]) as string[];
+        const sourceTypesList: string[] = Object.keys(types).map((key) => types[key]) as string[];
 
         this.categories = categoriesList.length ? categoriesList : [...defaultExpenseCategories];
         this.types = sourceTypesList.length ? sourceTypesList : [...defaultExpenseTypes];
@@ -88,7 +88,7 @@ export class LogExpenseComponent implements OnInit {
       this.expenseObj.date = this.expenseObj.date.toDateString();
     }
     this.database
-      .saveNewExpense(this.expenseObj, this.loginService.getUserId())
+      .saveNewExpense(this.expenseObj, this.userService.getUserId())
       .then(() => {
         this.isLoading = false;
         expenseForm.resetForm();
