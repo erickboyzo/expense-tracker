@@ -1,10 +1,9 @@
 .upload-container {
   border: dashed 2px var(--mat-sys-outline-variant);
   display: flex;
-  mat-icon{
+  mat-icon {
     transform: scale(3);
   }
-
 }
 
 .file-over {

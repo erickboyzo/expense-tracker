@@ -15,19 +15,21 @@
     <mat-icon>upload_file</mat-icon>
   </div>
   <div class="my-2">
-    <h3>
-      Drag and Drop your files here. <br />
-      (.csv)
-    </h3>
-    <h3>or</h3>
-  </div>
-  <div class="col-12 d-flex justify-content-center">
-    <button
-      class="col-3 py-4"
-      mat-stroked-button
-      (click)="fileDropRef.click()">
-      Upload File
-    </button>
+    @if (isHandset()) {
+      <h3>
+        Select files to upload. <br />
+        (.csv)
+      </h3>
+    } @else {
+      <h3>
+        Drag and Drop your files here. <br />
+        (.csv)
+      </h3>
+      <h3>or</h3>
+    }
   </div>
 
+  <div class="col-12 d-flex justify-content-center">
+    <button class="col-lg-4 col-12 py-4" mat-stroked-button (click)="fileDropRef.click()">Upload File</button>
+  </div>
 </div>

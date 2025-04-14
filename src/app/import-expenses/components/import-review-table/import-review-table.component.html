@@ -1,0 +1,95 @@
+<div>
+  <div class="d-flex flex-row justify-content-between flex-wrap px-4 my-3">
+    <div>
+      <span class="border-end p-2">{{ selection.selected.length }} selected</span>
+      <button mat-button class="ms-1" [disabled]="!selection.selected.length" [matMenuTriggerFor]="bulkEdit">
+        Modify
+        <mat-icon>edit_note</mat-icon>
+      </button>
+      <mat-menu #bulkEdit="matMenu">
+        <button mat-menu-item (click)="openBulkEditDialog('category')">Edit Category</button>
+        <button mat-menu-item (click)="openBulkEditDialog('type')">Edit Type</button>
+        <button mat-menu-item (click)="openBulkEditDialog('delete')">Delete</button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="expensesDataSource" matSort #expensesSort="matSort">
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox
+              (change)="$event ? toggleHeaderCheckbox() : null"
+              [checked]="selection.hasValue() && isAllSelected"
+              [indeterminate]="selection.hasValue() && !isAllSelected">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox
+              (click)="$event.stopPropagation()"
+              (change)="$event ? toggleSelection(element) : null"
+              [checked]="selection.isSelected(element)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+          <td mat-cell *matCellDef="let row">{{ row.date | date }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+        </ng-container>
+
+        <!-- Amount Column -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+          <td mat-cell *matCellDef="let row">{{ row.amount | currency }}</td>
+        </ng-container>
+
+        <!-- Category Column -->
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let row">{{ row.category }}</td>
+        </ng-container>
+
+        <!-- Type Column -->
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+          <td mat-cell *matCellDef="let row">{{ row.type }}</td>
+        </ng-container>
+
+        <!-- Comments Column -->
+        <ng-container matColumnDef="comments">
+          <th mat-header-cell *matHeaderCellDef>Comments</th>
+          <td mat-cell *matCellDef="let row">{{ row.comments }}</td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let row">
+            <div class="d-flex justify-content-center">
+              <button mat-icon-button color="primary" (click)="editRow(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteRow(row)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </div>
+  <mat-paginator #expensesPaginator [pageSizeOptions]="[10, 25, 50, 100]" aria-label="Select page of expenses">
+  </mat-paginator>
+</div>

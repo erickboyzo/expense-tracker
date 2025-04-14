@@ -8,9 +8,8 @@ describe('FileImportMapperComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FileImportMapperComponent]
-    })
-    .compileComponents();
+      imports: [FileImportMapperComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FileImportMapperComponent);
     component = fixture.componentInstance;

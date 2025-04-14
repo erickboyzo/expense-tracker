@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-12 py-2">
+    <form [formGroup]="mappingForm">
+      @for (prop of expenseProperties; track prop.key) {
+        <mat-form-field appearance="outline" class="col-12 col-md-6 mb-3 mx-2">
+          <mat-label>Map {{ prop.label }}</mat-label>
+          <mat-select [formControlName]="prop.key">
+            @for (header of csvHeaders; track header) {
+              <mat-option [value]="header">
+                {{ header }}
+              </mat-option>
+            }
+          </mat-select>
+          @if (mappingForm.get(prop.key)?.errors?.['required']) {
+            <mat-error> Please select a column for {{ prop.label }}</mat-error>
+          }
+          @if (mappingForm.get(prop.key)?.errors?.['duplicateMapping']) {
+            <mat-error>
+              {{ mappingForm.get(prop.key)?.errors?.['duplicateMapping'].message }}
+            </mat-error>
+          }
+        </mat-form-field>
+      }
+
+      <div class="d-flex flex-column">
+        <label for="negative-radio-group" class="mdc-floating-label--required">How to handle negative amounts?</label>
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          class="d-flex flex-column justify-content-end"
+          required
+          id="negative-radio-group"
+          formControlName="handleNegativeAmounts">
+          @for (option of negativeAmountOptions; track option.value) {
+            <mat-radio-button class="ms-2" [value]="option.value">{{ option.label }}</mat-radio-button>
+          }
+        </mat-radio-group>
+      </div>
+    </form>
+  </div>
+</div>

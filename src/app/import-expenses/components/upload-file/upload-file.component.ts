@@ -2,7 +2,8 @@ import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DragAndDropDirective } from '../directives/drag-and-drop.directive';
+import { ResponsiveService } from '../../../shared/services/responsive.service';
+import { DragAndDropDirective } from '../../directives/drag-and-drop.directive';
 
 @Component({
   selector: 'app-upload-file',
@@ -11,26 +12,25 @@ import { DragAndDropDirective } from '../directives/drag-and-drop.directive';
   styleUrl: './upload-file.component.scss',
 })
 export class UploadFileComponent {
+  @Output() filesUploaded = new EventEmitter<File[]>();
+
+  breakpointObserver = inject(ResponsiveService);
+  isHandset = this.breakpointObserver.isHandset;
+
   private files: File[] = [];
   private snackBar: MatSnackBar = inject(MatSnackBar);
-
-  @Output() filesUploaded = new EventEmitter<File[]>();
 
   onFileDropped(files: FileList) {
     const filesList = Array.from(files);
     if (!filesList.every((file) => file.type === 'text/csv')) {
-      this.openSnackBar('Only .csv files can be upload' +
-        'ed. Please upload a CSV file.');
+      this.openSnackBar('Only .csv files can be upload' + 'ed. Please upload a CSV file.');
     } else {
       this.files = [...filesList];
-      this.filesUploaded.emit(this.files)
+      this.filesUploaded.emit(this.files);
       this.clearFiles();
     }
   }
 
-  /**
-   * handle file from browsing
-   */
   fileBrowseHandler(event: Event) {
     const input = event.target as HTMLInputElement;
     const fileList = input.files;
@@ -43,7 +43,7 @@ export class UploadFileComponent {
         this.files.push(item);
       }
       this.filesUploaded.emit(this.files);
-      this.clearFiles()
+      this.clearFiles();
     } else {
       this.openSnackBar('No Files Uploaded.');
     }

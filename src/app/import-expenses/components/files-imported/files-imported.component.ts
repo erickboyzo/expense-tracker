@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { FileImportMapperComponent } from '../file-import-mapper/file-import-mapper.component';
+import { FileImportStepsComponent } from '../file-import-steps/file-import-steps.component';
 
 @Component({
   selector: 'app-files-imported',
-  imports: [FileImportMapperComponent],
+  imports: [FileImportStepsComponent],
   templateUrl: './files-imported.component.html',
   styleUrl: './files-imported.component.scss',
 })
