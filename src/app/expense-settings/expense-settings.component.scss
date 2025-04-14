@@ -1,0 +1,23 @@
+.settings-page-container {
+  @media (max-width: 575.98px) {
+    .page-bottom {
+      margin-bottom: 100px;
+    }
+  }
+
+  button.fab {
+    position: fixed;
+    bottom: 3%;
+    right: 5%;
+    z-index: 100;
+  }
+
+  .loading-progress-bar {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .mat-icon {
+    width: inherit;
+  }
+}

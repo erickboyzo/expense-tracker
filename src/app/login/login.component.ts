@@ -1,91 +1,99 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { User } from '../shared/interfaces/user-model';
-import { LoginService } from '../services/login.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { NgIf } from '@angular/common';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatError, MatFormField, MatLabel, MatPrefix } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatToolbar } from '@angular/material/toolbar';
+import { Router } from '@angular/router';
+import { AuthService } from '@core/services/auth.service';
+import { UserService } from '@core/services/user.service';
+import { ResponsiveService } from '@shared/services/responsive.service';
+import firebase from 'firebase/compat/app';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  imports: [
+    MatButton,
+    MatCardModule,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    NgIf,
+    MatInput,
+    MatProgressSpinner,
+    ReactiveFormsModule,
+    MatError,
+    MatIcon,
+    MatPrefix,
+    SignUpComponent,
+    MatToolbar,
+  ],
   animations: [
     trigger('visibilityChanged', [
-      state('true', style({opacity: 1, transform: 'scale(1.0)'})),
-      state('false', style({opacity: 0, transform: 'scale(0.0)'})),
+      state('true', style({ opacity: 1, transform: 'scale(1.0)' })),
+      state('false', style({ opacity: 0, transform: 'scale(0.0)' })),
       transition('1 => 0', animate('300ms')),
-      transition('0 => 1', animate('900ms'))
-    ])
-  ]
+      transition('0 => 1', animate('900ms')),
+    ]),
+  ],
 })
-export class LoginComponent implements OnInit {
-
-  currentUser: User = {email: '', password: ''};
+export class LoginComponent {
+  loginForm: FormGroup = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+  });
   isLoading = false;
-  isVisible = true;
+  needsToRegister: WritableSignal<boolean> = signal(false);
+  breakpointObserver = inject(ResponsiveService);
+  isHandset = this.breakpointObserver.isHandset;
 
-  constructor(private router: Router,
-              private authService: AuthService,
-              private snackBar: MatSnackBar,
-              private loginService: LoginService) {
-  }
-
-  ngOnInit() {
-    setTimeout(() => this.scrollTop());
-  }
-
-
-  signUp() {
-    this.router.navigate(['/signUp']).then();
-  }
+  private router: Router = inject(Router);
+  private authService: AuthService = inject(AuthService);
+  private snackBar: MatSnackBar = inject(MatSnackBar);
+  private userService: UserService = inject(UserService);
 
   login() {
+    if (this.loginForm.invalid) return;
     this.startLoading();
-    this.authService.logIn(this.currentUser.email, this.currentUser.password).then((data) => {
-      this.loginService.setUser(data.user);
-      this.stopLoading();
-      this.snackBar.open('Login Successful!', '', {duration: 2000});
-      this.onSuccessfulLogIn()
-
-    }).catch(e => {
-      this.stopLoading();
-      console.log('Catches object set:' + e.message);
-      this.snackBar.open(e.message, 'ok', {duration: 4000});
-    })
+    const { email, password } = this.loginForm.value;
+    this.authService
+      .logIn(email, password)
+      .then((data) => {
+        this.userService.setUser(data.user as firebase.User);
+        this.stopLoading();
+        this.snackBar.open('Login Successful!', '', { duration: 2000 });
+        this.onSuccessfulLogin();
+      })
+      .catch((e) => {
+        this.stopLoading();
+        console.warn('Catches object set:' + e.message);
+        this.snackBar.open(e.message, 'ok', { duration: 4000 });
+      });
   }
 
-  onSuccessfulLogIn() {
+  toggle() {
+    this.needsToRegister.set(!this.needsToRegister());
+    this.loginForm.reset();
+  }
+
+  private onSuccessfulLogin() {
     this.router.navigate(['/dashboard']).then();
   }
 
-  startLoading() {
+  private startLoading() {
     this.isLoading = true;
   }
 
-  stopLoading() {
+  private stopLoading() {
     this.isLoading = false;
   }
-
-  toggleLogin() {
-    this.isVisible = true;
-    setTimeout(() => this.scrollToLogin());
-  }
-
-  scrollToLogin() {
-    const element = document.getElementById('target');
-    element.scrollIntoView();
-  }
-
-  checkLogin(value: any, valid: any, form: any) {
-    if (valid) {
-      this.login();
-    }
-  }
-
-  scrollTop() {
-    const element = document.getElementById('content');
-    element.scrollIntoView();
-  }
-
 }

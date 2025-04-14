@@ -1,0 +1,70 @@
+<mat-card appearance="outlined">
+  <mat-card-header class="flex-column">
+    <div class="d-flex align-items-center mb-3 ms-3">
+      <div class="text-truncate fs-4 w-100">{{ file.name }}</div>
+      <button mat-icon-button (click)="fileRemoved.emit()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (isLoading) {
+      <app-card-spinner></app-card-spinner>
+    } @else if (parseError) {
+      <p class="fw-bold">{{ parseError }}</p>
+    } @else {
+      <mat-stepper linear #stepper>
+        <mat-step [completed]="isFormValid()" [editable]="true" label="Map Columns">
+          <app-file-import-mapper
+            [file]="file"
+            [csvData]="csvData"
+            [csvHeaders]="csvHeaders"
+            [previewData]="previewData"
+            [isFormValid]="isFormValid"></app-file-import-mapper>
+          <mat-divider class="my-3"></mat-divider>
+          <div class="d-flex justify-content-end">
+            <button mat-stroked-button [disabled]="!isFormValid() && !previewData().length" (click)="stepper.next()">
+              Review Expenses
+            </button>
+          </div>
+        </mat-step>
+        <mat-step label="Review Expenses" [editable]="false" [completed]="expensesImported()">
+          <app-file-import-review
+            [expenses]="previewData"
+            [reviewedExpensesToSave]="reviewedExpensesToSave"></app-file-import-review>
+          <mat-divider class="my-3"></mat-divider>
+          <div class="d-flex justify-content-end">
+            <button
+              mat-stroked-button
+              [disabled]="!hasReviewedExpenses() || importInProgress()"
+              (click)="saveExpenses()">
+              @if (importInProgress()) {
+                <mat-spinner diameter="20"></mat-spinner>
+              } @else {
+                Save Expenses
+              }
+            </button>
+          </div>
+        </mat-step>
+        <mat-step [editable]="false">
+          <ng-template matStepLabel>Import Summary</ng-template>
+
+          <div class="text-center mt-5">
+            <div class="mb-4">
+              <mat-icon class="import-complete-icon">check_circle</mat-icon>
+            </div>
+
+            <p class="fs-4">{{ file.name }} has been imported.</p>
+
+            <div class="d-flex flex-column gap-2 mb-3">
+              @for (summaryItem of importSummary(); track summaryItem) {
+                <div>{{ summaryItem }}</div>
+              }
+            </div>
+          </div>
+        </mat-step>
+      </mat-stepper>
+    }
+  </mat-card-content>
+</mat-card>

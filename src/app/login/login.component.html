@@ -1,62 +1,72 @@
-<div class="container-fluid" id="login">
-  <div class="container col-sm-12">
-    <h1 class="display-3 text-center">Expense Tracker</h1>
-    <p class="lead text-center">Expense tracker is a simple application to help you keep track of your daily expenses.
-      Charts and tables help you better track spending behaviors.</p>
-    <hr class="my-4">
+<div id="login" class="row">
+  @if (isHandset()) {
+    <mat-toolbar></mat-toolbar>
+  }
+  <div
+    class="heading rounded-end-4 p-5 mb-2 mb-lg-0 col-12 col-lg-7 flex-column justify-content-center align-content-center">
+    <h1 class="display-4 text-center mb-5">Expense Tracker</h1>
+    <p class="lead text-center">
+      Expense tracker helps you take control of your finances by logging and organizing daily expenses. Visual tools
+      such as charts, graphs, and detailed summaries to help better analyze spending patterns, spot trends, and
+      establish budgets.
+    </p>
+    <hr class="my-4" />
     <div class="col-sm-5 offset-sm-4">
-      <small></small>
-      <p class="lead"></p>
-
+      <p class="lead text-center fw-lighter">Start tracking your expenses today.</p>
     </div>
     <div class="d-flex justify-content-center">
-      <button mat-stroked-button color="primary" (click)="toggleLogin()">Login</button>
-      <button class="ml-2" mat-stroked-button color="primary" (click)="signUp()">Get Started</button>
+      <button class="ms-2" mat-stroked-button color="primary" (click)="toggle()">
+        @if (!needsToRegister()) {
+          Get Started
+        } @else {
+          Login
+        }
+      </button>
     </div>
   </div>
 
-
-  <div id="target" class="login-card" [hidden]="!isVisible">
-    <form #f="ngForm" novalidate (ngSubmit)="checkLogin(f.value, f.valid, f)">
-      <div class="row" *ngIf="isLoading">
-        <div class="col-sm-6 offset-sm-3">
-          <mat-progress-bar color="primary"></mat-progress-bar>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6 offset-sm-3">
-          <mat-card class="z-depth-5">
-            <mat-card-title>Login</mat-card-title>
-            <mat-card-content>
-              <div class="col-sm-12">
-                <mat-form-field appearance="outline" class="example-full-width">
-                  <input matInput placeholder="Email" name="email" #email="ngModel" type="text"
-                         [(ngModel)]="currentUser.email" [email]="true" required>
-                </mat-form-field>
-                <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
-                  <small>Please enter valid email.</small>
-                </div>
-              </div>
-              <div class="col-sm-12">
-                <mat-form-field appearance="outline" class="example-full-width">
-                  <input matInput placeholder="Password" name="pswd" type="password" #pswd="ngModel"
-                         [(ngModel)]="currentUser.password" required minlength="6">
-                </mat-form-field>
-                <div *ngIf="pswd.errors && (pswd.dirty || pswd.touched)" class="alert alert-danger">
-                  <small>Please enter valid password.</small>
-                </div>
-              </div>
-            </mat-card-content>
-            <mat-card-actions>
-              <div class="col-sm-12">
-                <button class="col-sm-12" type="submit" mat-raised-button color="primary" [disabled]="!f.form.valid">
-                  Login
-                </button>
-              </div>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-      </div>
-    </form>
+  <div class="col-12 col-lg-5 p-5 flex-column align-content-center">
+    @if (needsToRegister()) {
+      <app-sign-up [needsToRegister]="needsToRegister"></app-sign-up>
+    } @else {
+      <ng-container *ngIf="loginForm">
+        <form [formGroup]="loginForm">
+          <h3 class="display-5 mb-5">Login</h3>
+          <div class="col-12 mb-3">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput name="email" type="text" formControlName="email" />
+              <mat-icon matPrefix>mail</mat-icon>
+              <mat-error *ngIf="loginForm.get('email')?.hasError('required')"> Please enter valid email. </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 mb-3">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Password</mat-label>
+              <input matInput name="password" type="password" formControlName="password" />
+              <mat-icon matPrefix>lock</mat-icon>
+              <mat-error *ngIf="loginForm.get('password')?.errors"> Please enter valid password. </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12">
+            <button
+              class="col-12 p-4 mb-2"
+              mat-stroked-button
+              color="primary"
+              [disabled]="loginForm.invalid"
+              (click)="login()">
+              @if (isLoading) {
+                <mat-spinner diameter="20"></mat-spinner>
+              } @else {
+                Login
+              }
+            </button>
+            <p class="fs-6 text-center">
+              New to expense tracker? <button mat-button (click)="toggle()">Register here</button>
+            </p>
+          </div>
+        </form>
+      </ng-container>
+    }
   </div>
 </div>

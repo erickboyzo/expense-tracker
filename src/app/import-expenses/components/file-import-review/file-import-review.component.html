@@ -1,0 +1,23 @@
+<mat-tab-group>
+  <!-- Expenses Tab -->
+  <mat-tab label="Expenses">
+    <app-import-review-table
+      *ngIf="debitExpenses().length"
+      [expenses]="debitExpenses"
+      (expensesChange)="updateReviewedExpensesToSave('debits', $event)"></app-import-review-table>
+  </mat-tab>
+
+  <!-- Credits Tab -->
+  <mat-tab label="Credits">
+    @if (creditExpenses().length) {
+      <app-import-review-table
+        *ngIf="creditExpenses().length"
+        [expenses]="creditExpenses"
+        (expensesChange)="updateReviewedExpensesToSave('credits', $event)"></app-import-review-table>
+    } @else {
+      <div class="mt-3 no-data-container">
+        <h4 class="text-center mt-5">No credits to display.</h4>
+      </div>
+    }
+  </mat-tab>
+</mat-tab-group>

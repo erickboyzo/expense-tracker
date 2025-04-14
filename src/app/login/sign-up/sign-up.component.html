@@ -1,0 +1,100 @@
+<div class="container-fluid">
+  <form #registerForm="ngForm" novalidate (ngSubmit)="checkForm(registerForm.valid)">
+    <div class="row">
+      <h3 class="display-5 mb-5">Register</h3>
+      <div class="col-12 mb-3">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>First Name</mat-label>
+          <input
+            matInput
+            placeholder="First Name"
+            type="text"
+            name="fName"
+            #fName="ngModel"
+            [(ngModel)]="currentUser.firstName"
+            required
+            minlength="2" />
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-error *ngIf="fName.errors && (fName.dirty || fName.touched)">
+            First Name is required (minimum 2 characters).
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12 mb-3">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <input
+            matInput
+            placeholder="Last Name"
+            name="lName"
+            #lName="ngModel"
+            type="text"
+            [(ngModel)]="currentUser.lastName"
+            required
+            minlength="1" />
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-error *ngIf="lName.errors && (lName.dirty || lName.touched)">
+            Last Name is required (minimum 1 characters).
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12 mb-3">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            placeholder="Email"
+            type="email"
+            name="formEmail"
+            #formEmail="ngModel"
+            [(ngModel)]="currentUser.email"
+            [email]="true"
+            required />
+          <mat-icon matPrefix>mail</mat-icon>
+          <mat-error *ngIf="formEmail.errors && (formEmail.dirty || formEmail.touched)">
+            Valid email is required.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12 mb-3">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            placeholder="Password"
+            type="password"
+            name="pswd"
+            #pswd="ngModel"
+            [(ngModel)]="currentUser.password"
+            required
+            minlength="6" />
+          <mat-icon matPrefix>lock</mat-icon>
+          <mat-error *ngIf="pswd.errors && (pswd.dirty || pswd.touched)">
+            Password length must be 6 characters.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12">
+        <button
+          class="full-width mb-2"
+          type="submit"
+          mat-stroked-button
+          color="primary"
+          [disabled]="!registerForm.form.valid || isLoading">
+          @if (isLoading) {
+            <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+            Register
+          }
+        </button>
+        <p class="fs-6 text-center">
+          Already registered? <button mat-button (click)="needsToRegister['set'](false)">Login here</button>
+        </p>
+      </div>
+    </div>
+  </form>
+</div>

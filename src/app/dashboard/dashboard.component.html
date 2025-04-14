@@ -1,0 +1,151 @@
+<div class="container-fluid" id="view-expense">
+  @let shouldShowDashboard = !isLoadingExpenses && expenseDataChart.length;
+
+  @if (shouldShowDashboard) {
+    <div class="row">
+      <div *ngFor="let item of metrics" class="col-lg-3 col-sm-12 mb-5">
+        <app-number-cards [data]="item"></app-number-cards>
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-5 col-lg-6 col-12">
+        <mat-card appearance="outlined" class="h-100">
+          <mat-card-header>
+            <mat-card-title>Category Summary</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-chart-summary [data]="expenseDataChart"></app-chart-summary>
+          </mat-card-content>
+          <mat-card-actions></mat-card-actions>
+        </mat-card>
+      </div>
+
+      <div class="mb-5 col-lg-6 col-12">
+        <mat-card appearance="outlined" class="h-100">
+          <mat-card-header>
+            <mat-card-title>Expense Source Summary</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-chart-summary [data]="expenseSourceData"></app-chart-summary>
+          </mat-card-content>
+          <mat-card-actions></mat-card-actions>
+        </mat-card>
+      </div>
+
+      <div class="mb-5 col-12">
+        <mat-card appearance="outlined" class="h-100">
+          <mat-card-header>
+            <mat-card-title>Monthly Amount Summary</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="full-width d-flex justify-content-end mt-3">
+              <mat-form-field appearance="outline">
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  [(ngModel)]="date"
+                  placeholder="MM/DD/YYYY"
+                  (click)="picker.open()" />
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker startView="month" #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <app-monthly-summary-chart
+              [data]="expenseDataTable"
+              [date]="date"
+              [categories]="categories"></app-monthly-summary-chart>
+          </mat-card-content>
+          <mat-card-actions></mat-card-actions>
+        </mat-card>
+      </div>
+
+      <div class="mb-5 col-12">
+        <mat-card appearance="outlined" class="h-100">
+          <mat-card-header>
+            <mat-card-title>Category Monthly Summary</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="d-flex flex-lg-row flex-column justify-content-end align-content-center">
+              <div class="me-3 mt-2 mb-2">
+                <mat-button-toggle-group
+                  [(ngModel)]="categoryMonthlyChartType"
+                  [hideSingleSelectionIndicator]="true"
+                  aria-label="Chart Type">
+                  <mat-button-toggle value="line">
+                    <mat-icon>show_chart</mat-icon>
+                    Line
+                  </mat-button-toggle>
+                  <mat-button-toggle value="column">
+                    <mat-icon>bar_chart</mat-icon>
+                    Column
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+
+              <mat-form-field appearance="outline" class="mt-2">
+                <input
+                  matInput
+                  [matDatepicker]="categoryPicker"
+                  [(ngModel)]="categoryDate"
+                  placeholder="MM/DD/YYYY"
+                  (click)="categoryPicker.open()" />
+                <mat-datepicker-toggle matIconSuffix [for]="categoryPicker"></mat-datepicker-toggle>
+                <mat-datepicker startView="month" #categoryPicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <app-category-summary-chart
+              [data]="expenseDataTable"
+              [date]="categoryDate"
+              [categories]="categories"
+              [chartType]="categoryMonthlyChartType"></app-category-summary-chart>
+          </mat-card-content>
+          <mat-card-actions></mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-12">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Detail summary</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="px-0">
+            <app-table-summary [data]="expenseDataTable"></app-table-summary>
+          </mat-card-content>
+          <mat-card-actions></mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+    <button mat-fab extended class="fab" routerLink="/new-expense">
+      <mat-icon prefix>post_add</mat-icon>
+      Add Expense
+    </button>
+  } @else {
+    <ng-container *ngTemplateOutlet="isLoadingExpenses ? loading : noData"></ng-container>
+    <ng-template #loading>
+      <app-card-spinner></app-card-spinner>
+    </ng-template>
+    <ng-template #noData>
+      <div class="d-flex flex-column justify-content-center no-data text-center">
+        <div class="col-12 justify-content-center">
+          <div class="icon justify-content-center mb-3">
+            <mat-icon class="icon-alert">assessment</mat-icon>
+          </div>
+          <div>
+            <h2 class="fw-lighter">No expense data {{ expenses().length ? 'for filtered time frame' : 'found' }}.</h2>
+            @if (expenses().length) {
+              <p>Update filters to view and interact with your dashboard.</p>
+            } @else {
+              <p>Enter expenses to view and interact with your dashboard.</p>
+            }
+          </div>
+        </div>
+      </div>
+      <button mat-fab extended class="fab" routerLink="/new-expense">
+        <mat-icon prefix>post_add</mat-icon>
+        Add Expense
+      </button>
+    </ng-template>
+  }
+</div>

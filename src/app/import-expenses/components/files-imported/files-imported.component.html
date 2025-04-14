@@ -1,0 +1,6 @@
+@for (file of files; track file.name; let index = $index, first = $first) {
+  <app-file-import-steps
+    [file]="file"
+    [firstFile]="first"
+    (fileRemoved)="files.splice(index, 1)"></app-file-import-steps>
+}

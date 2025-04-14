@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-12 mb-5">
+    <app-upload-file (filesUploaded)="files = $event"></app-upload-file>
+  </div>
+
+  <div class="col-12">
+    @if (files.length) {
+      <app-files-imported [files]="files"></app-files-imported>
+    } @else {
+      <div class="full-width mt-5 d-flex flex-column justify-content-center align-items-center p-3">
+        <div class="mb-4">
+          <mat-icon class="no-file">file_copy</mat-icon>
+        </div>
+        <div>
+          <h3>No Files Uploaded.</h3>
+        </div>
+      </div>
+    }
+  </div>
+</div>

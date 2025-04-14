@@ -1,0 +1,88 @@
+@if (user()) {
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      fixedInViewport
+      [attr.role]="isHandset() ? 'dialog' : 'navigation'"
+      [mode]="isHandset() ? 'over' : 'side'"
+      [opened]="!isHandset()">
+      <mat-toolbar class="sidenav-toolbar">{{ isHandset() ? 'Menu' : 'Expense Tracker' }}</mat-toolbar>
+      <div></div>
+      <mat-nav-list>
+        <a class="mb-1" mat-list-item routerLink="dashboard" routerLinkActive="active" (click)="menuClick(drawer)">
+          <div class="d-flex">
+            <mat-icon class="me-2">dashboard</mat-icon>
+            Dashboard
+          </div>
+        </a>
+        <a
+          class="full-width mb-1"
+          mat-list-item
+          routerLink="settings"
+          routerLinkActive="active"
+          (click)="menuClick(drawer)">
+          <div class="d-flex">
+            <mat-icon class="me-2">settings</mat-icon>
+            Settings
+          </div>
+        </a>
+
+        <mat-divider />
+        <a
+          class="full-width mt-1"
+          mat-list-item
+          routerLink="import-expenses"
+          routerLinkActive="import-expenses"
+          (click)="menuClick(drawer)">
+          <div class="d-flex">
+            <mat-icon class="me-2">upload_file</mat-icon>
+            Import Expenses
+          </div>
+        </a>
+      </mat-nav-list>
+
+      <div class="position-fixed bottom-0 ms-3 p-3">
+        <app-footer-links></app-footer-links>
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-toolbar class="d-flex flex-row app-toolbar">
+        @if (isHandset()) {
+          <button class="me-2" type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+          </button>
+          <h1 class="fw-light h2">Expense Tracker</h1>
+        }
+        <button class="ms-auto" mat-button [matMenuTriggerFor]="menu">
+          <mat-icon class="user-icon me-3">account_circle</mat-icon>
+          {{ userService.fullName() }}
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="openUserDetails()">
+            <mat-icon aria-label="view profile icon">manage_accounts</mat-icon>
+            View Profile
+          </button>
+          <button mat-menu-item (click)="logout()">
+            Log out
+            <mat-icon aria-label="logout icon">logout</mat-icon>
+          </button>
+        </mat-menu>
+      </mat-toolbar>
+      <div class="sidenav-scroll-wrapper">
+        <div class="sidenav-content">
+          <div class="container" [class.narrow-container]="fixedContainer">
+            <app-page-header></app-page-header>
+            <ng-container *ngTemplateOutlet="container"></ng-container>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+} @else {
+  <ng-container *ngTemplateOutlet="container"></ng-container>
+}
+
+<ng-template #container>
+  <ng-content></ng-content>
+</ng-template>

@@ -1,0 +1,20 @@
+:host ::ng-deep mat-icon {
+  transform: scale(2);
+}
+
+.data-value {
+  font-size: 40px;
+}
+
+.metric-summary {
+  display: flex;
+  flex-direction: column;
+
+  div > * {
+    margin-bottom: 20px;
+  }
+
+  .money-icon {
+    color: green;
+  }
+}

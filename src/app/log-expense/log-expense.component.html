@@ -1,0 +1,114 @@
+<div id="enter-expense">
+  <form #expenseForm="ngForm" novalidate (ngSubmit)="save(expenseForm.valid, expenseForm)">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Expense Details</mat-card-title>
+        <mat-card-subtitle class="fw-lighter my-2">Add required details to save expense</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="row">
+          <div class="col-12 mb-1">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Expense name</mat-label>
+              <input
+                matInput
+                name="name"
+                type="text"
+                [(ngModel)]="expenseObj.name"
+                #name="ngModel"
+                required
+                minlength="4" />
+              <mat-error *ngIf="name.errors && (name.dirty || name.touched)">
+                Name is required (minimum 4 characters).
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Amount</mat-label>
+              <input
+                matInput
+                type="number"
+                min="1"
+                name="amount"
+                [(ngModel)]="expenseObj.amount"
+                (blur)="formatAmount()"
+                #amount="ngModel"
+                required />
+              <mat-error *ngIf="amount.errors && (amount.dirty || amount.touched)">
+                Amount is required (positive amount, max 2 decimal places).
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <div>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Expense Date</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  [(ngModel)]="expenseObj.date"
+                  [max]="maxDate"
+                  name="date"
+                  #date="ngModel"
+                  (click)="picker.open()"
+                  (dateChange)="checkDate()"
+                  required />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error> Date is required.</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Expense Category</mat-label>
+              <mat-select [(ngModel)]="expenseObj.category" name="category" #category="ngModel" required>
+                <mat-option *ngFor="let category of categories" [value]="category">
+                  {{ category }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="category.errors && (category.dirty || category.touched)">
+                Category is required.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-lg-6">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Payment Source</mat-label>
+              <mat-select [(ngModel)]="expenseObj.type" name="payment" #payment="ngModel" required>
+                <mat-option *ngFor="let type of types" [value]="type">
+                  {{ type }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="payment.errors && (payment.dirty || payment.touched)"> Payment is required.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Comments</mat-label>
+              <textarea matInput [(ngModel)]="expenseObj.comments" name="comments"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="d-flex justify-content-end full-width">
+          <button class="me-2" type="button" mat-button (click)="clearForm(expenseForm)">Reset</button>
+          <button type="submit" mat-stroked-button color="primary" [disabled]="!expenseForm.form.valid">
+            <mat-icon>save</mat-icon>
+            Save
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

@@ -1,0 +1,35 @@
+<div class="settings-page-container">
+  <div class="row mb-4">
+    <div class="col-12">
+      <app-manage-options
+        title="Manage Categories"
+        subtitle="Add/Remove Categories"
+        label="Expense Categories"
+        placeHolder="Enter new category..."
+        [isLoadingData]="isLoadingUserInformation"
+        [isUpdatingData]="isUpdatingCategories"
+        [options]="categoriesSignal"
+        [originalOptions]="copyCategoriesSignal"
+        (saveOptionsEvent)="saveCategories()"></app-manage-options>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 page-bottom">
+      <app-manage-options
+        title="Manage Expense Source Types"
+        subtitle="Add/Remove Expense Source Types. Use source types to help differentiate between different expense sources."
+        label="Expense Source Types"
+        placeHolder="Enter new expense source type..."
+        [isLoadingData]="isLoadingUserInformation"
+        [isUpdatingData]="isUpdatingSourceTypes"
+        [options]="sourceTypeSignal"
+        [originalOptions]="sourceTypeSignalOriginal"
+        (saveOptionsEvent)="saveTypes()"></app-manage-options>
+    </div>
+  </div>
+  <button mat-fab extended class="fab" routerLink="/new-expense">
+    <mat-icon prefix>post_add</mat-icon>
+    Add Expense
+  </button>
+</div>

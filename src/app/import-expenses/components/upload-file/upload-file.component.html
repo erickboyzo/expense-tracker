@@ -1,0 +1,35 @@
+<div
+  class="upload-container rounded-1 p-5 d-flex flex-column text-center"
+  appDragAndDrop
+  (fileDropped)="onFileDropped($event)">
+  <input
+    hidden="true"
+    type="file"
+    #fileDropRef
+    id="fileDropRef"
+    multiple
+    accept=".csv"
+    (change)="fileBrowseHandler($event)" />
+
+  <div class="my-2 p-3">
+    <mat-icon>upload_file</mat-icon>
+  </div>
+  <div class="my-2">
+    @if (isHandset()) {
+      <h3>
+        Select files to upload. <br />
+        (.csv)
+      </h3>
+    } @else {
+      <h3>
+        Drag and Drop your files here. <br />
+        (.csv)
+      </h3>
+      <h3>or</h3>
+    }
+  </div>
+
+  <div class="col-12 d-flex justify-content-center">
+    <button class="col-lg-4 col-12 py-4" mat-stroked-button (click)="fileDropRef.click()">Upload File</button>
+  </div>
+</div>
