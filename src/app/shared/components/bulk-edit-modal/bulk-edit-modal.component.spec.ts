@@ -8,9 +8,8 @@ describe('BulkEditModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BulkEditModalComponent]
-    })
-    .compileComponents();
+      imports: [BulkEditModalComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(BulkEditModalComponent);
     component = fixture.componentInstance;

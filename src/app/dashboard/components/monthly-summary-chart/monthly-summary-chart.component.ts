@@ -179,7 +179,6 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
       });
     }
     if (this.chartOptions.series?.length) {
-      console.log(monthSummary);
       this.chartOptions.series[0] = {
         type: 'column',
         data: monthSummary,

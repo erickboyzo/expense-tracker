@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
 import { ManageExpenseComponent } from './manage-expense.component';
 
@@ -6,7 +6,7 @@ describe('ManageExpenseComponent', () => {
   let component: ManageExpenseComponent;
   let fixture: ComponentFixture<ManageExpenseComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ManageExpenseComponent],
     }).compileComponents();

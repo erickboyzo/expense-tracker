@@ -68,7 +68,6 @@ export class FileImportStepsComponent implements OnInit {
   });
   hasReviewedExpenses = computed(() => {
     const { debits, credits } = this.reviewedExpensesToSave();
-    console.log(debits, credits);
     return debits.length > 0 || credits.length > 0;
   });
   expensesImported = signal(false);
@@ -137,9 +136,8 @@ export class FileImportStepsComponent implements OnInit {
         }),
       )
       .subscribe({
-        next: (results) => {
+        next: () => {
           const summaryUpdates = [`Expenses imported: ${allExpenses.length}`];
-          console.log(results);
           this.expenseDataService.setFilesImported(filesImported);
 
           if (categories.length) {

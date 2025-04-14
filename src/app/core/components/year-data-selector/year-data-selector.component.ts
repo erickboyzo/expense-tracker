@@ -111,10 +111,6 @@ export class YearDataSelectorComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  click() {
-    console.log(this.range.value);
-  }
-
   toggleFilters() {
     this.showFilter.update((value) => !value);
   }

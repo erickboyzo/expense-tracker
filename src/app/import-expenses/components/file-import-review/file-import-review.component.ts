@@ -43,7 +43,6 @@ export class FileImportReviewComponent {
 
   updateReviewedExpensesToSave(source: 'debits' | 'credits', expenses: Expense[]): void {
     this.reviewedExpensesToSave.update((prev) => ({ ...prev, [source]: expenses }));
-    console.log(this.reviewedExpensesToSave());
   }
 
   private filterExpensesBySource(expenses: Expense[]) {

@@ -6,11 +6,11 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { DatabaseService } from '../../core/services/database.service';
-import { LoginService } from '../../core/services/login.service';
-import { Expense } from '../../shared/interfaces/expense-model';
-import { ExpenseDataService } from '../../shared/services/expense-data.service';
-import { BulkEditDialogData } from '../interfaces/bulk-edit-dialog-data';
+import { Expense } from '../../../core/interfaces/expense-model';
+import { DatabaseService } from '../../../core/services/database.service';
+import { ExpenseDataService } from '../../../core/services/expense-data.service';
+import { UserService } from '../../../core/services/user.service';
+import { BulkEditDialogData } from '../../../dashboard/interfaces/bulk-edit-dialog-data';
 
 @Component({
   selector: 'app-bulk-edit-modal',
@@ -38,7 +38,7 @@ export class BulkEditModalComponent implements OnInit {
 
   private expenseDataService = inject(ExpenseDataService);
   private databaseService = inject(DatabaseService);
-  private loginService = inject(LoginService);
+  private userService = inject(UserService);
   private expenseDataUpdate = effect(() => {
     this.categories = this.expenseDataService.categoriesSignal();
     this.paymentTypes = this.expenseDataService.expenseSourcesSignal();
@@ -73,33 +73,41 @@ export class BulkEditModalComponent implements OnInit {
   }
 
   bulkDelete() {
-    const userId = this.loginService.getUserId();
-    const updates: Record<string, null> = {};
-    this.data.expenses.forEach(({ id: expenseId }) => {
-      updates[`users/${userId}/expenses/${expenseId}`] = null;
-    });
-    this.databaseService
-      .batchUpdateExpenses(updates)
-      .then(() => this.dialogRef.close({ successful: this.data.expenses.length }))
-      .catch((error) => this.dialogRef.close({ error }));
+    if (this.data.previewOnly) {
+      this.dialogRef.close({ expenses: this.data.expenses });
+    } else {
+      const userId = this.userService.getUserId();
+      const updates: Record<string, null> = {};
+      this.data.expenses.forEach(({ id: expenseId }) => {
+        updates[`users/${userId}/expenses/${expenseId}`] = null;
+      });
+      this.databaseService
+        .batchUpdateExpenses(updates)
+        .then(() => this.dialogRef.close({ successful: this.data.expenses.length }))
+        .catch((error) => this.dialogRef.close({ error }));
+    }
   }
 
   bulkUpdate() {
-    const { type, category } = this.editForm.value;
-    const userId = this.loginService.getUserId();
-    const updates: Record<string, Expense> = {};
-    this.data.expenses.forEach((expense) => {
-      const { id, ...expenseObj } = expense;
-      if (type) {
-        expenseObj.type = type;
-      } else {
-        expenseObj.category = category;
-      }
-      updates[`users/${userId}/expenses/${id}`] = expenseObj;
-    });
-    this.databaseService
-      .batchUpdateExpenses(updates)
-      .then(() => this.dialogRef.close({ successful: this.data.expenses.length }))
-      .catch((error) => this.dialogRef.close({ error }));
+    if (this.data.previewOnly) {
+      this.dialogRef.close({ editForm: this.editForm.value });
+    } else {
+      const { type, category } = this.editForm.value;
+      const userId = this.userService.getUserId();
+      const updates: Record<string, Expense> = {};
+      this.data.expenses.forEach((expense) => {
+        const { id, ...expenseObj } = expense;
+        if (type) {
+          expenseObj.type = type;
+        } else {
+          expenseObj.category = category;
+        }
+        updates[`users/${userId}/expenses/${id}`] = expenseObj;
+      });
+      this.databaseService
+        .batchUpdateExpenses(updates)
+        .then(() => this.dialogRef.close({ successful: this.data.expenses.length }))
+        .catch((error) => this.dialogRef.close({ error }));
+    }
   }
 }

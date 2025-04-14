@@ -14,10 +14,6 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'expense-tracker' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-  });
-
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();

@@ -10,10 +10,10 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
+import { User } from '../../core/interfaces/user-model';
 import { AuthService } from '../../core/services/auth.service';
-import { LoginService } from '../../core/services/login.service';
+import { UserService } from '../../core/services/user.service';
 import { defaultExpenseCategories } from '../../shared/constants/expense-constants';
-import { User } from '../../shared/interfaces/user-model';
 
 @Component({
   selector: 'app-sign-up',
@@ -38,7 +38,7 @@ export class SignUpComponent {
     public snackBar: MatSnackBar,
     private router: Router,
     public db: AngularFireDatabase,
-    private loginService: LoginService,
+    private userService: UserService,
   ) {}
 
   checkForm(valid: boolean | null) {
@@ -54,8 +54,8 @@ export class SignUpComponent {
       .then((data) => {
         this.isLoading = false;
         if (data.user) {
-          this.loginService.setUser(data.user);
-          this.loginService.setUserId(data.user.uid);
+          this.userService.setUser(data.user);
+          this.userService.setUserId(data.user.uid);
           this.setUserInformation(data.user.uid);
           this.openSnackBarSuccess();
           this.onSuccessfulSignUp();

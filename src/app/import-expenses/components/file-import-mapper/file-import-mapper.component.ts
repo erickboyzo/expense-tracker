@@ -162,7 +162,6 @@ export class FileImportMapperComponent implements OnInit {
 
   private previewMappedData(): void {
     this.previewData.set(this.generateExpensesFromCSV());
-    console.log(this.previewData());
   }
 
   private generateExpenseFromCSV(csvRow: CsvRow, formMapping: FormMapping): Partial<Expense> | null {
@@ -204,7 +203,6 @@ export class FileImportMapperComponent implements OnInit {
         const processedAmount = this.processAmount(value, formMapping.handleNegativeAmounts);
         if (processedAmount === null) return;
         expense.amount = processedAmount;
-        console.log(processedAmount);
         break;
       }
       case 'category':
@@ -243,10 +241,8 @@ export class FileImportMapperComponent implements OnInit {
       case 'omit':
         return null;
       case 'credit':
-        console.log(amount);
         return isNegative ? -amount : amount;
       case 'debit':
-        console.log(amount);
         return isNegative ? Math.abs(amount) : -amount;
       default:
         return amount;

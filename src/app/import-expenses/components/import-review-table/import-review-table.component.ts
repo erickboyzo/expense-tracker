@@ -24,10 +24,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
-import { BulkEditDialogResult } from '../../../dashboard/interfaces/bulk-edit-dialog-data';
-import { ManageExpenseComponent } from '@shared/components/manage-expense/manage-expense.component';
-import { BulkEditModalComponent } from '@shared/components/bulk-edit-modal/bulk-edit-modal.component';
 import { Expense } from '@core/interfaces/expense-model';
+import { BulkEditModalComponent } from '@shared/components/bulk-edit-modal/bulk-edit-modal.component';
+import { ManageExpenseComponent } from '@shared/components/manage-expense/manage-expense.component';
+import { BulkEditDialogResult } from '../../../dashboard/interfaces/bulk-edit-dialog-data';
 
 @Component({
   selector: 'app-import-review-table',
@@ -180,11 +180,7 @@ export class ImportReviewTableComponent implements OnInit, AfterViewInit {
       } else if (editForm && editType !== 'delete') {
         this.expensesDataSource.data = this.expensesDataSource.data.map((expense) => {
           const expenseToUpdate = this.selection.selected.find((e) => e.id === expense.id);
-          const updatedExpense = expenseToUpdate ? { ...expenseToUpdate, ...editForm } : expense;
-          if (expenseToUpdate) {
-            console.log(updatedExpense);
-          }
-          return updatedExpense;
+          return expenseToUpdate ? { ...expenseToUpdate, ...editForm } : expense;
         });
         this.expensesChange.emit(this.expensesDataSource.data);
         this.snackBar.open('Expenses successfully updated.', 'Close', {

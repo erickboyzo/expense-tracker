@@ -1,6 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -12,10 +11,10 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbar } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
+import { AuthService } from '@core/services/auth.service';
+import { UserService } from '@core/services/user.service';
+import { ResponsiveService } from '@shared/services/responsive.service';
 import firebase from 'firebase/compat/app';
-import { map, Observable, shareReplay } from 'rxjs';
-import { AuthService } from '../core/services/auth.service';
-import { LoginService } from '../core/services/login.service';
 import { SignUpComponent } from './sign-up/sign-up.component';
 
 @Component({
@@ -36,7 +35,6 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     MatIcon,
     MatPrefix,
     SignUpComponent,
-    AsyncPipe,
     MatToolbar,
   ],
   animations: [
@@ -55,20 +53,13 @@ export class LoginComponent {
   });
   isLoading = false;
   needsToRegister: WritableSignal<boolean> = signal(false);
-  breakpointObserver = inject(BreakpointObserver);
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map((result) => result.matches),
-    shareReplay(),
-  );
+  breakpointObserver = inject(ResponsiveService);
+  isHandset = this.breakpointObserver.isHandset;
 
   private router: Router = inject(Router);
   private authService: AuthService = inject(AuthService);
   private snackBar: MatSnackBar = inject(MatSnackBar);
-  private loginService: LoginService = inject(LoginService);
-
-  signUp() {
-    this.router.navigate(['/signUp']).then();
-  }
+  private userService: UserService = inject(UserService);
 
   login() {
     if (this.loginForm.invalid) return;
@@ -77,23 +68,24 @@ export class LoginComponent {
     this.authService
       .logIn(email, password)
       .then((data) => {
-        this.loginService.setUser(data.user as firebase.User);
+        this.userService.setUser(data.user as firebase.User);
         this.stopLoading();
         this.snackBar.open('Login Successful!', '', { duration: 2000 });
-        this.onSuccessfulLogIn();
+        this.onSuccessfulLogin();
       })
       .catch((e) => {
         this.stopLoading();
-        console.log('Catches object set:' + e.message);
+        console.warn('Catches object set:' + e.message);
         this.snackBar.open(e.message, 'ok', { duration: 4000 });
       });
   }
+
   toggle() {
     this.needsToRegister.set(!this.needsToRegister());
     this.loginForm.reset();
   }
 
-  private onSuccessfulLogIn() {
+  private onSuccessfulLogin() {
     this.router.navigate(['/dashboard']).then();
   }
 

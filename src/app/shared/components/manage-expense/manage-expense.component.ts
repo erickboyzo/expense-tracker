@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe, NgIf } from '@angular/common';
-import { Component, effect, inject, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -10,10 +10,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatabaseService } from '../../core/services/database.service';
-import { LoginService } from '../../core/services/login.service';
-import { Expense } from '../../shared/interfaces/expense-model';
-import { ExpenseDataService } from '../../shared/services/expense-data.service';
+import { isEqual } from 'lodash';
+import { Expense } from '@core/interfaces/expense-model';
+import { DatabaseService } from '@core/services/database.service';
+import { ExpenseDataService } from '@core/services/expense-data.service';
+import { UserService } from '@core/services/user.service';
+import { ManageExpenseData } from '../../interfaces/manage-expense-data';
 
 @Component({
   selector: 'app-manage-expense',
@@ -31,6 +33,7 @@ import { ExpenseDataService } from '../../shared/services/expense-data.service';
     CommonModule,
   ],
   providers: [provideNativeDateAdapter()],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./manage-expense.component.scss'],
 })
 export class ManageExpenseComponent implements OnInit {
@@ -48,20 +51,33 @@ export class ManageExpenseComponent implements OnInit {
   });
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: Expense,
+    @Inject(MAT_DIALOG_DATA) public data: ManageExpenseData,
     private dialogRef: MatDialogRef<ManageExpenseComponent>,
     private database: DatabaseService,
-    private loginService: LoginService,
+    private userService: UserService,
     private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
-    this.expense = { ...this.data, ...{ date: new Date(this.data.date) } };
-    this.original = { ...this.data, ...{ date: new Date(this.data.date) } };
+    const { expense } = this.data;
+    this.expense = { ...expense, ...{ date: new Date(expense.date) } };
+    this.original = { ...expense, ...{ date: new Date(expense.date) } };
+    if (this.data.previewDataMode) {
+      this.update = true;
+      const { category, type } = expense;
+      const categoryIncluded = this.dataService.categoriesSignal().includes(category);
+      const typeIncluded = this.dataService.categoriesSignal().includes(category);
+      if (!categoryIncluded) {
+        this.categories.push(category);
+      }
+      if (!typeIncluded) {
+        this.types.push(type);
+      }
+    }
   }
 
   deleteExpense() {
-    const userId = this.loginService.getUserId();
+    const userId = this.userService.getUserId();
     this.database
       .deleteExpense(userId, this.expense.id as string)
       .then(() => this.successfulDelete())
@@ -82,7 +98,7 @@ export class ManageExpenseComponent implements OnInit {
   }
 
   pushUpdate() {
-    const userId = this.loginService.getUserId();
+    const userId = this.userService.getUserId();
     const key = this.expense.id;
     const expenseObj = { ...this.expense };
     delete expenseObj.id;
@@ -102,6 +118,11 @@ export class ManageExpenseComponent implements OnInit {
   }
 
   updateExpense(valid: boolean | null) {
+    const { previewDataMode } = this.data;
+    if (previewDataMode) {
+      this.dialogRef.close(this.expense);
+      return;
+    }
     if (valid) {
       this.pushUpdate();
     }
@@ -121,6 +142,6 @@ export class ManageExpenseComponent implements OnInit {
   }
 
   isExpenseUntouched(): boolean {
-    return JSON.stringify(this.expense) === JSON.stringify(this.original);
+    return isEqual(this.expense, this.original);
   }
 }

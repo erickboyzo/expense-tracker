@@ -32,7 +32,7 @@
           class="me-2 mb-2"
           mat-stroked-button
           [disabled]="!dateRangeEnabled"
-          (click)="picker.open(); click()"
+          (click)="picker.open()"
           (blur)="picker.close()">
           <mat-icon class="me-2">date_range</mat-icon>
           {{ range.value.start | date: 'MMM. d, y' }} - {{ range.value.end | date: 'MMM. d, y' }}
