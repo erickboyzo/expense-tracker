@@ -78,13 +78,12 @@ export class CategorySummaryChartComponent implements OnInit, OnChanges {
     },
     legend: {
       layout: 'horizontal',
-      align:  'center',
-      verticalAlign:  'bottom',
+      align: 'center',
+      verticalAlign: 'bottom',
       enabled: true,
       itemStyle: {
         fontSize: this.isHandset() ? '8px' : '12px',
       },
-
     },
     series: [
       {
@@ -141,11 +140,9 @@ export class CategorySummaryChartComponent implements OnInit, OnChanges {
       const dataObj = { name: category, data: categorySumByMonth };
       totals.push(dataObj);
     }
-      (this.chartOptions!.xAxis as AxisOptions)['categories'] = monthNames.map(
-        (m) => `${m} ${this.date.getFullYear()}`,
-      );
-      (this.chartOptions.chart ?? {})['type'] = this.chartType;
-      this.chartOptions.series = totals as SeriesOptionsType[];
+    (this.chartOptions!.xAxis as AxisOptions)['categories'] = monthNames.map((m) => `${m} ${this.date.getFullYear()}`);
+    (this.chartOptions.chart ?? {})['type'] = this.chartType;
+    this.chartOptions.series = totals as SeriesOptionsType[];
     this.updateFlag = true;
   }
 }

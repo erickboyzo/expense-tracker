@@ -3,17 +3,30 @@
     <mat-sidenav
       #drawer
       class="sidenav"
+      [class.icons-only]="isCompactMenuEnabled()"
       fixedInViewport
       [attr.role]="isHandset() ? 'dialog' : 'navigation'"
       [mode]="isHandset() ? 'over' : 'side'"
       [opened]="!isHandset()">
-      <mat-toolbar class="sidenav-toolbar">{{ isHandset() ? 'Menu' : 'Expense Tracker' }}</mat-toolbar>
+      <mat-toolbar class="sidenav-toolbar pe-1">
+        @if (!isCompactMenuEnabled()) {
+          {{ isHandset() ? 'Menu' : 'Expense Tracker' }}
+          <button mat-icon-button *ngIf="!isHandset()" (click)="toggleIconsOnly()">
+            <mat-icon class="ms-2">menu_open</mat-icon>
+          </button>
+        } @else {
+          <button mat-icon-button *ngIf="!isHandset()" (click)="toggleIconsOnly()">
+            <mat-icon>read_more</mat-icon>
+          </button>
+        }
+      </mat-toolbar>
+
       <div></div>
       <mat-nav-list>
         <a class="mb-1" mat-list-item routerLink="dashboard" routerLinkActive="active" (click)="menuClick(drawer)">
           <div class="d-flex">
             <mat-icon class="me-2">dashboard</mat-icon>
-            Dashboard
+            {{ !isCompactMenuEnabled() ? 'Dashboard' : '' }}
           </div>
         </a>
         <a
@@ -24,7 +37,7 @@
           (click)="menuClick(drawer)">
           <div class="d-flex">
             <mat-icon class="me-2">settings</mat-icon>
-            Settings
+            {{ !isCompactMenuEnabled() ? 'Settings' : '' }}
           </div>
         </a>
 
@@ -37,12 +50,12 @@
           (click)="menuClick(drawer)">
           <div class="d-flex">
             <mat-icon class="me-2">upload_file</mat-icon>
-            Import Expenses
+            {{ !isCompactMenuEnabled() ? ' Import Expenses' : '' }}
           </div>
         </a>
       </mat-nav-list>
 
-      <div class="position-fixed bottom-0 ms-3 p-3">
+      <div class="position-fixed icons-container bottom-0 ms-3 p-3">
         <app-footer-links></app-footer-links>
       </div>
     </mat-sidenav>
@@ -54,7 +67,7 @@
           </button>
           <h1 class="fw-light h2">Expense Tracker</h1>
         }
-        <button class="ms-auto" mat-button [matMenuTriggerFor]="menu">
+        <button class="ms-auto" mat-stroked-button [matMenuTriggerFor]="menu">
           <mat-icon class="user-icon me-3">account_circle</mat-icon>
           {{ userService.fullName() }}
         </button>
@@ -71,7 +84,7 @@
       </mat-toolbar>
       <div class="sidenav-scroll-wrapper">
         <div class="sidenav-content">
-          <div class="container" [class.narrow-container]="fixedContainer">
+          <div class="container-fluid" [class.narrow-container]="fixedContainer">
             <app-page-header></app-page-header>
             <ng-container *ngTemplateOutlet="container"></ng-container>
           </div>
