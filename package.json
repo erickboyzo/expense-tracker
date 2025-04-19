@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "format": "prettier --write \"src/**/*.{ts,html,scss,json,md}\""
+    "format": "prettier --write \"src/**/*.{ts,html,scss,json,md}\"",
+    "deploy": "ng build --prod && firebase deploy"
   },
   "private": true,
   "dependencies": {
