@@ -166,7 +166,11 @@ export class ImportReviewTableComponent implements OnInit, AfterViewInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe(({ editForm }: BulkEditDialogResult) => {
+    dialogRef.afterClosed().subscribe((result: BulkEditDialogResult) => {
+      if (!result) {
+        return;
+      }
+      const { editForm } = result;
       if (!editForm && editType === 'delete') {
         this.snackBar.open('Expenses successfully deleted.', 'Close', {
           duration: 3000,
