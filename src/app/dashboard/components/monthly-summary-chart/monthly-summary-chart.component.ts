@@ -80,12 +80,10 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
         },
       },
     },
-
     tooltip: {
       headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
       pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>${point.y:.2f}</b> <br/>',
     },
-
     series: [
       {
         type: 'column',
@@ -98,14 +96,6 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
           align: 'right',
         },
       },
-      series: [
-        {
-          name: 'Browsers',
-          colorByPoint: true,
-          type: 'column',
-          data: [],
-        },
-      ],
     },
   };
 
@@ -168,7 +158,7 @@ export class MonthlySummaryChartComponent implements OnInit, OnChanges {
       }
 
       monthSummary.push({
-        name: monthNames[month.getMonth()] + month.getFullYear(),
+        name: `${monthNames[month.getMonth()]} ${month.getFullYear()}`,
         y: parseFloat(parsedSum ?? ''),
         drilldown: monthNames[month.getMonth()],
       });

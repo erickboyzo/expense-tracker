@@ -46,5 +46,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
-  <button mat-button [disabled]="userNameForm.invalid" (click)="updateDetails()">Update</button>
+  <button mat-stroked-button [disabled]="userNameForm.invalid" (click)="updateDetails()">Update</button>
 </mat-dialog-actions>

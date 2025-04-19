@@ -1,5 +1,5 @@
-import { NgTemplateOutlet } from '@angular/common';
-import { Component, DestroyRef, effect, inject, OnInit, Type } from '@angular/core';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { Component, DestroyRef, effect, inject, OnInit, signal, Type } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,10 +10,11 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import firebase from 'firebase/compat/app';
-import { filter, switchMap } from 'rxjs';
+import { WindowService } from '@core/services/window.service';
 import { defaultExpenseCategories, defaultExpenseTypes } from '@shared/constants/expense-constants';
 import { ResponsiveService } from '@shared/services/responsive.service';
+import firebase from 'firebase/compat/app';
+import { filter, switchMap } from 'rxjs';
 import { UserDataRecord } from '../../interfaces/user-data-record';
 import { UserDetails } from '../../interfaces/user-details';
 import { AuthService } from '../../services/auth.service';
@@ -43,6 +44,7 @@ import { UserDetailsComponent } from '../user-details/user-details.component';
     MatMenuTrigger,
     MatMenuItem,
     FooterLinksComponent,
+    NgIf,
   ],
 })
 export class LayoutComponent implements OnInit {
@@ -54,6 +56,7 @@ export class LayoutComponent implements OnInit {
   breakpointObserver = inject(ResponsiveService);
   isHandset = this.breakpointObserver.isHandset;
   fixedContainer = false;
+  isCompactMenuEnabled = signal(false);
 
   private authService: AuthService = inject(AuthService);
   private databaseService: DatabaseService = inject(DatabaseService);
@@ -67,6 +70,19 @@ export class LayoutComponent implements OnInit {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private destroyRef: DestroyRef = inject(DestroyRef);
   private snackBar: MatSnackBar = inject(MatSnackBar);
+  private isFirstRun = true;
+  private readonly windowService = inject(WindowService);
+  private iconsOnlyEffect = effect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const isIconsOnly = this.isCompactMenuEnabled();
+    if (this.isFirstRun) {
+      this.isFirstRun = false;
+      return;
+    }
+    setTimeout(() => {
+      this.windowService.dispatchResizeEvent();
+    }, 100);
+  });
 
   ngOnInit(): void {
     this.router.events
@@ -85,6 +101,9 @@ export class LayoutComponent implements OnInit {
       this.userService.setUser(undefined);
       this.dataService.setExpensesData([]);
       this.dataService.setTimeFrameFilter(undefined);
+      this.dataService.setFilesImported([]);
+      this.dataService.setCategoriesSignal([...defaultExpenseCategories]);
+      this.dataService.setExpenseSourcesData([...defaultExpenseTypes]);
     });
   }
 
@@ -92,6 +111,10 @@ export class LayoutComponent implements OnInit {
     if (this.isHandset()) {
       drawer.toggle();
     }
+  }
+
+  toggleIconsOnly() {
+    this.isCompactMenuEnabled.set(!this.isCompactMenuEnabled());
   }
 
   openUserDetails() {
@@ -115,9 +138,11 @@ export class LayoutComponent implements OnInit {
         this.userService.setUserDetails({ firstName: data[userId]['firstName'], lastName: data[userId]['lastName'] });
         const categories = data[userId]['categories'] ?? {};
         const sourceTypes = data[userId]['types'] ?? {};
+        const importFiles = data[userId]['filesImported'] ?? {};
         const categoriesList = Object.keys(categories).map((key) => categories[key]);
         const sourceTypesList = Object.keys(sourceTypes).map((key) => sourceTypes[key]);
-        const filesImported = Object.keys(data[userId]['types'] ?? {}).map((key) => sourceTypes[key]);
+        const filesImported = Object.keys(data[userId]['filesImported'] ?? {}).map((key) => importFiles[key]);
+        console.log(filesImported);
         this.dataService.setCategoriesSignal(categoriesList.length ? categoriesList : [...defaultExpenseCategories]);
         this.dataService.setExpenseSourcesData(sourceTypesList.length ? sourceTypesList : [...defaultExpenseTypes]);
         this.dataService.setFilesImported(filesImported ?? []);

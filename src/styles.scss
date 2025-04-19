@@ -17,6 +17,7 @@ $angular-material-3-theme: mat.define-theme(
     color: (
       primary: my-theme.$primary-palette,
       tertiary: my-theme.$tertiary-palette,
+      theme-type: 'light',
     ),
     typography: (
       plain-family: Roboto,

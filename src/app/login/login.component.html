@@ -1,7 +1,4 @@
-<div id="login" class="row">
-  @if (isHandset()) {
-    <mat-toolbar></mat-toolbar>
-  }
+<div id="login" class="row gx-0">
   <div
     class="heading rounded-end-4 p-5 mb-2 mb-lg-0 col-12 col-lg-7 flex-column justify-content-center align-content-center">
     <h1 class="display-4 text-center mb-5">Expense Tracker</h1>
@@ -37,7 +34,7 @@
               <mat-label>Email</mat-label>
               <input matInput name="email" type="text" formControlName="email" />
               <mat-icon matPrefix>mail</mat-icon>
-              <mat-error *ngIf="loginForm.get('email')?.hasError('required')"> Please enter valid email. </mat-error>
+              <mat-error *ngIf="loginForm.get('email')?.hasError('required')"> Please enter valid email.</mat-error>
             </mat-form-field>
           </div>
           <div class="col-12 mb-3">
@@ -45,7 +42,7 @@
               <mat-label>Password</mat-label>
               <input matInput name="password" type="password" formControlName="password" />
               <mat-icon matPrefix>lock</mat-icon>
-              <mat-error *ngIf="loginForm.get('password')?.errors"> Please enter valid password. </mat-error>
+              <mat-error *ngIf="loginForm.get('password')?.errors"> Please enter valid password.</mat-error>
             </mat-form-field>
           </div>
           <div class="col-12">
@@ -62,7 +59,8 @@
               }
             </button>
             <p class="fs-6 text-center">
-              New to expense tracker? <button mat-button (click)="toggle()">Register here</button>
+              New to expense tracker?
+              <button mat-button (click)="toggle()">Register here</button>
             </p>
           </div>
         </form>

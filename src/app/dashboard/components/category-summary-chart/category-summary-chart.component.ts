@@ -77,9 +77,9 @@ export class CategorySummaryChartComponent implements OnInit, OnChanges {
       pointFormat: '{series.name}: ${point.y:.2f}<br/>Total: ${point.stackTotal:.2f}',
     },
     legend: {
-      layout: this.isHandset() ? 'horizontal' : 'vertical',
-      align: this.isHandset() ? 'center' : 'right',
-      verticalAlign: this.isHandset() ? 'bottom' : 'middle',
+      layout: 'horizontal',
+      align: 'center',
+      verticalAlign: 'bottom',
       enabled: true,
       itemStyle: {
         fontSize: this.isHandset() ? '8px' : '12px',
@@ -137,16 +137,12 @@ export class CategorySummaryChartComponent implements OnInit, OnChanges {
           categorySumByMonth[expenseDate.getMonth()] = categorySumByMonth[expenseDate.getMonth()] + +e.amount;
         }
       });
-      const dataObj = { name: category, data: categorySumByMonth, type: this.chartType };
+      const dataObj = { name: category, data: categorySumByMonth };
       totals.push(dataObj);
     }
-
-    if (this.chartOptions.series?.length) {
-      (this.chartOptions!.xAxis as AxisOptions)['categories'] = monthNames.map(
-        (m) => `${m} ${this.date.getFullYear()}`,
-      );
-      this.chartOptions.series = totals as SeriesOptionsType[];
-    }
+    (this.chartOptions!.xAxis as AxisOptions)['categories'] = monthNames.map((m) => `${m} ${this.date.getFullYear()}`);
+    (this.chartOptions.chart ?? {})['type'] = this.chartType;
+    this.chartOptions.series = totals as SeriesOptionsType[];
     this.updateFlag = true;
   }
 }

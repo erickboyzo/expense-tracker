@@ -150,6 +150,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.expenseDataChart = [];
       this.expenseSourceData = [];
       this.expenseDataTable = [];
+      this.categories = [];
       return;
     }
     const dates = expenses.map((e) => new Date(e.date));

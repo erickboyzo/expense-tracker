@@ -9,7 +9,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatToolbar } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
@@ -35,7 +34,6 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     MatIcon,
     MatPrefix,
     SignUpComponent,
-    MatToolbar,
   ],
   animations: [
     trigger('visibilityChanged', [
