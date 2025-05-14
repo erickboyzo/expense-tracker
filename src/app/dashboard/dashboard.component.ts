@@ -1,5 +1,5 @@
 import { CurrencyPipe, NgForOf, NgTemplateOutlet } from '@angular/common';
-import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { SnapshotAction } from '@angular/fire/compat/database';
 import { FormsModule } from '@angular/forms';
 import { MatFabButton } from '@angular/material/button';
@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   expenseDataChart: ChartData[] = [];
   expenseSourceData: ChartData[] = [];
-  expenseDataTable: Expense[] = [];
+  expenseDataTable: WritableSignal<Expense[]> = signal([]);
   metrics: ExpenseSummary[] = [];
   isLoadingExpenses = true;
   isDataReady = false;
@@ -149,7 +149,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.metrics = [];
       this.expenseDataChart = [];
       this.expenseSourceData = [];
-      this.expenseDataTable = [];
+      this.expenseDataTable.set([]);
       this.categories = [];
       return;
     }
@@ -184,7 +184,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.expenseDataChart = this.getSourceTotal(this.categories, expenses, 'category');
     this.expenseSourceData = this.getSourceTotal(expenseSources, expenses, 'type');
-    this.expenseDataTable = expenses;
+    this.expenseDataTable.set(expenses);
 
     this.isDataReady = true;
     this.isLoadingExpenses = false;

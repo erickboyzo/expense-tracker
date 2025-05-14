@@ -1,4 +1,5 @@
 import { computed, Injectable, signal, WritableSignal } from '@angular/core';
+import { EntryTypes } from '@core/enums/entry-types';
 import { endOfDay, isWithinInterval, startOfDay } from 'date-fns';
 import { TimeFrameFilter } from '../interfaces/time-frame-filter';
 import { Expense } from '../interfaces/expense-model';
@@ -13,10 +14,12 @@ export class ExpenseDataService {
   private readonly _categoriesSignal = signal<string[]>([]);
   private readonly _timeFrameFilter = signal<TimeFrameFilter | undefined>(undefined);
   private readonly _filesImported = signal<string[]>([]);
+  private readonly _expenseEntryTypeFilter = signal<string | undefined>(undefined);
 
   readonly filteredExpenses = computed(() => {
-    const expenses = this._expensesSignal();
     const timeFilter = this._timeFrameFilter();
+    const entryTypeFilter = this._expenseEntryTypeFilter();
+    const expenses = this.filterExpensesByEntryType(this._expensesSignal(), entryTypeFilter);
 
     if (!timeFilter || !expenses.length) {
       return expenses;
@@ -43,6 +46,18 @@ export class ExpenseDataService {
 
   private parseExpenseDate(expense: Expense): Date {
     return expense.date instanceof Date ? expense.date : new Date(expense.date);
+  }
+
+  private filterExpensesByEntryType(expenses: Expense[], entryTypeFilter: string | undefined): Expense[] {
+    if (!entryTypeFilter) {
+      return expenses;
+    }
+
+    if (entryTypeFilter === EntryTypes.MANUAL) {
+      return expenses.filter((expense) => !expense.importedOn);
+    }
+
+    return expenses.filter((expense) => expense?.importedOn);
   }
 
   private filterByCustomDateRange(expenses: Expense[], timeFilter: TimeFrameFilter): Expense[] {
@@ -86,6 +101,10 @@ export class ExpenseDataService {
     return this._filesImported;
   }
 
+  get expenseEntryTypeFilter(): WritableSignal<string | undefined> {
+    return this._expenseEntryTypeFilter;
+  }
+
   setExpensesData(expenses: Expense[]) {
     this._expensesSignal.set(expenses);
   }
@@ -104,5 +123,9 @@ export class ExpenseDataService {
 
   setFilesImported(files: string[]) {
     this._filesImported.set(files);
+  }
+
+  setExpenseEntryTypeFilter(type: string | undefined) {
+    this._expenseEntryTypeFilter.set(type);
   }
 }

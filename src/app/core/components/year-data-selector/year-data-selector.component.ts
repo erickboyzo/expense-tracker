@@ -8,9 +8,11 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
+import { DataExportComponent } from '@core/components/data-export/data-export.component';
+import { EntryTypes } from '@core/enums/entry-types';
 import { Subscription } from 'rxjs';
-import { ExpenseDataService } from '../../services/expense-data.service';
 import { TimeFrameFilter } from '../../interfaces/time-frame-filter';
+import { ExpenseDataService } from '../../services/expense-data.service';
 
 @Component({
   selector: 'app-year-data-selector',
@@ -27,6 +29,7 @@ import { TimeFrameFilter } from '../../interfaces/time-frame-filter';
     MatChipOption,
     NgForOf,
     MatLabel,
+    DataExportComponent,
   ],
   templateUrl: './year-data-selector.component.html',
   styleUrl: './year-data-selector.component.scss',
@@ -85,12 +88,25 @@ export class YearDataSelectorComponent implements OnInit, OnDestroy {
       },
     },
   ];
+  expenseEntryTypes = [
+    {
+      label: 'Manual Entry',
+      value: EntryTypes.MANUAL,
+    },
+    {
+      label: 'Imported',
+      value: EntryTypes.IMPORTED,
+    },
+  ];
 
   private dataService: ExpenseDataService = inject(ExpenseDataService);
   expenses = this.dataService.expensesSignal;
   showFilter = this.dataService.showFilter;
   filter = this.dataService.timeFrameFilterSignal;
+  filesImported = this.dataService.filesImportedSignal;
+  filteredExpenses = this.dataService.filteredExpenses;
   selectedTimeFrame: string | null = this.dataService.timeFrameFilterSignal()?.value ?? null;
+  expenseEntryType = new FormControl<string | undefined>(this.dataService.expenseEntryTypeFilter());
 
   private subscription = new Subscription();
 
@@ -104,6 +120,12 @@ export class YearDataSelectorComponent implements OnInit, OnDestroy {
         };
         this.dataService.setTimeFrameFilter(timeFrameFilter);
       }),
+    );
+
+    this.subscription.add(
+      this.expenseEntryType.valueChanges.subscribe((value) =>
+        this.dataService.setExpenseEntryTypeFilter(value as string | undefined),
+      ),
     );
   }
 
