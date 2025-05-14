@@ -77,7 +77,6 @@ body {
 }
 
 .mat-mdc-table {
-  // Basic striping
   .mat-mdc-row:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.025);
   }
@@ -92,23 +91,19 @@ body {
     padding: 8px !important;
   }
 
-  // Header styling
   .mat-mdc-header-row {
     background-color: var(--mat-sys-surface-container-high);
   }
 
-  // Optional: style for selected rows
   .mat-mdc-row.selected {
     background-color: rgba(0, 0, 0, 0.08);
   }
 }
 
-// Optional: Scrollable table container
 .table-container {
   max-height: 500px;
   overflow: auto;
 
-  // Custom scrollbar styling
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -128,9 +123,8 @@ body {
   }
 }
 
-// Optional: Responsive table container
 .responsive-table-container {
   width: 100%;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+  -webkit-overflow-scrolling: touch;
 }
