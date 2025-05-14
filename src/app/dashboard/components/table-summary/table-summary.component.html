@@ -13,12 +13,42 @@
       </mat-menu>
     </div>
     <div>
-      <button mat-button>
-        <mat-icon>filter_list</mat-icon>
-        Filters
-      </button>
+      @if (showFilters()) {
+        <button mat-button class="me-2" (click)="toggleFilters()">
+          <mat-icon>filter_list_off</mat-icon>
+          Hide Filters
+        </button>
+      } @else {
+        <button mat-button class="me-2" (click)="toggleFilters()">
+          <mat-icon>filter_list</mat-icon>
+          Filters
+        </button>
+      }
     </div>
   </div>
+  @if (showFilters()) {
+    <mat-divider class="mb-3"></mat-divider>
+    <div class="ms-3 mt-3 mb-3">
+      <mat-label class="mb-3">Category</mat-label>
+      <div class="d-flex flex-wrap mt-1 gap-2">
+        <mat-chip-listbox [multiple]="true" [formControl]="selectedFilters">
+          <mat-chip-option *ngFor="let category of filterCategories()" [value]="category">
+            {{ category }}
+          </mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+    </div>
+    <div class="ms-3 mb-3">
+      <mat-label class="mb-3">Source</mat-label>
+      <div class="d-flex flex-wrap mt-1 gap-2">
+        <mat-chip-listbox [multiple]="false" [formControl]="selectedSourceFilters">
+          <mat-chip-option *ngFor="let source of filterSources()" [value]="source">
+            {{ source }}
+          </mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+    </div>
+  }
   <div class="table-container">
     <table mat-table [dataSource]="expensesData" matSort #sorter="matSort">
       <ng-container matColumnDef="select">

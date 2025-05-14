@@ -51,7 +51,7 @@
               </mat-form-field>
             </div>
             <app-monthly-summary-chart
-              [data]="expenseDataTable"
+              [data]="expenseDataTable()"
               [date]="date"
               [categories]="categories"></app-monthly-summary-chart>
           </mat-card-content>
@@ -94,7 +94,7 @@
               </mat-form-field>
             </div>
             <app-category-summary-chart
-              [data]="expenseDataTable"
+              [data]="expenseDataTable()"
               [date]="categoryDate"
               [categories]="categories"
               [chartType]="categoryMonthlyChartType"></app-category-summary-chart>
