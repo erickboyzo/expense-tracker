@@ -142,7 +142,6 @@ export class LayoutComponent implements OnInit {
         const categoriesList = Object.keys(categories).map((key) => categories[key]);
         const sourceTypesList = Object.keys(sourceTypes).map((key) => sourceTypes[key]);
         const filesImported = Object.keys(data[userId]['filesImported'] ?? {}).map((key) => importFiles[key]);
-        console.log(filesImported);
         this.dataService.setCategoriesSignal(categoriesList.length ? categoriesList : [...defaultExpenseCategories]);
         this.dataService.setExpenseSourcesData(sourceTypesList.length ? sourceTypesList : [...defaultExpenseTypes]);
         this.dataService.setFilesImported(filesImported ?? []);
