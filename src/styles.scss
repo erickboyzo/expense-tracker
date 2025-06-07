@@ -34,7 +34,7 @@ $angular-material-3-theme: mat.define-theme(
 
 @mixin layout-theme($theme) {
   .sidenav-scroll-wrapper {
-    background-color: var(--mat-sys-surface-container);
+    background-color: var(--mat-sys-surface-dim);
   }
   .heading {
     background-color: rgba(mat.get-theme-color($theme, primary-container), 0.75);

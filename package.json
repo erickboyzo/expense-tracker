@@ -13,17 +13,17 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^19.2.7",
-    "@angular/cdk": "^19.2.10",
-    "@angular/common": "^19.2.7",
-    "@angular/compiler": "^19.2.7",
-    "@angular/core": "^19.2.7",
-    "@angular/fire": "^19.1.0",
-    "@angular/forms": "^19.2.7",
-    "@angular/material": "^19.2.10",
-    "@angular/platform-browser": "^19.2.7",
-    "@angular/platform-browser-dynamic": "^19.2.7",
-    "@angular/router": "^19.2.7",
+    "@angular/animations": "^20.0.1",
+    "@angular/cdk": "^20.0.2",
+    "@angular/common": "^20.0.1",
+    "@angular/compiler": "^20.0.1",
+    "@angular/core": "^20.0.1",
+    "@angular/fire": "^20.0.0",
+    "@angular/forms": "^20.0.1",
+    "@angular/material": "^20.0.2",
+    "@angular/platform-browser": "^20.0.1",
+    "@angular/platform-browser-dynamic": "^20.0.1",
+    "@angular/router": "^20.0.1",
     "angular-highcharts": "^17.0.1",
     "bootstrap": "^5.3.3",
     "date-fns": "^4.1.0",
@@ -37,9 +37,9 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^19.2.8",
-    "@angular/cli": "^19.2.8",
-    "@angular/compiler-cli": "^19.2.7",
+    "@angular/build": "^20.0.1",
+    "@angular/cli": "^20.0.1",
+    "@angular/compiler-cli": "^20.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/lodash": "^4.17.13",
     "@types/node": "^22.10.2",
@@ -55,7 +55,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "^3.4.2",
     "prettier-eslint": "^16.3.0",
-    "typescript": "~5.6.2",
-    "typescript-eslint": "8.18.0"
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.33.1"
   }
 }
