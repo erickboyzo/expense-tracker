@@ -1,8 +1,8 @@
 import { redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { AngularFireAuthGuard } from '@angular/fire/compat/auth-guard';
 import { Routes } from '@angular/router';
-import { CloseAndRedirectComponent } from './core/components/close-and-redirect/close-and-redirect.component';
-import { YearDataSelectorComponent } from './core/components/year-data-selector/year-data-selector.component';
+import { ExpenseFilterControlsComponent } from '@core/components/expense-filter-controls/expense-filter-controls.component';
+import { CloseAndRedirectComponent } from '@core/components/close-and-redirect/close-and-redirect.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToItems = () => redirectLoggedInTo(['dashboard']);
@@ -26,7 +26,11 @@ export const routes: Routes = [
     loadComponent: () => import('./dashboard/dashboard.component').then((m) => m.DashboardComponent),
     canActivate: [AngularFireAuthGuard],
     title: 'Dashboard',
-    data: { authGuardPipe: redirectUnauthorizedToLogin, title: 'Dashboard', pageActions: YearDataSelectorComponent },
+    data: {
+      authGuardPipe: redirectUnauthorizedToLogin,
+      title: 'Dashboard',
+      pageActions: ExpenseFilterControlsComponent,
+    },
   },
   {
     path: 'settings',

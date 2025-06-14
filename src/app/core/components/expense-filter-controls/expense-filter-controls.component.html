@@ -1,0 +1,60 @@
+@if (expenses().length) {
+  <div class="d-flex flex-row flex-wrap justify-content-end">
+    <app-data-export [data]="filteredExpenses()"></app-data-export>
+    <button class="me-2" mat-button (click)="toggleFilters()">
+      @if (filter()) {
+        <mat-icon>filter_alt</mat-icon>
+      } @else {
+        <mat-icon>filter_alt_off</mat-icon>
+      }
+      Filters {{ filter() ? 'On' : 'Off' }}
+    </button>
+  </div>
+
+  @if (showFilters()) {
+    <div class="mt-1">
+      <mat-card class="filter-card">
+        <mat-card-content>
+          <mat-label class="mb-3 font-weight-bold">Time Frame</mat-label>
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <mat-chip-listbox [multiple]="false" [(ngModel)]="selectedTimeFrame">
+              @for (filter of timeFrameFilters; track filter) {
+                <mat-chip-option [value]="filter.value" (selectionChange)="onTimeFrameChange($event, filter)">
+                  {{ filter.label }}
+                </mat-chip-option>
+              }
+            </mat-chip-listbox>
+          </div>
+
+          @if (dateRangeEnabled) {
+            <button
+              class="me-2 mb-2"
+              mat-stroked-button
+              [disabled]="!dateRangeEnabled"
+              (click)="picker.open()"
+              (blur)="picker.close()">
+              <mat-icon class="me-2">date_range</mat-icon>
+              {{ range.value.start | date: 'MMM. d, y' }} - {{ range.value.end | date: 'MMM. d, y' }}
+            </button>
+          }
+          <mat-date-range-input class="mb-2" [hidden]="true" [formGroup]="range" [rangePicker]="picker" [max]="today">
+            <input matStartDate formControlName="start" placeholder="Start date" />
+            <input matEndDate formControlName="end" placeholder="End date" />
+          </mat-date-range-input>
+          <mat-date-range-picker touchUi #picker></mat-date-range-picker>
+
+          @if (filesImported().length) {
+            <mat-label class="mb-3 font-weight-bold">Expense Entry Type</mat-label>
+            <mat-chip-listbox [multiple]="false" [formControl]="expenseEntryType">
+              @for (type of expenseEntryTypes; track type) {
+                <mat-chip-option [value]="type.value">
+                  {{ type.label }}
+                </mat-chip-option>
+              }
+            </mat-chip-listbox>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+}

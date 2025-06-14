@@ -8,7 +8,7 @@ import { Expense } from '../interfaces/expense-model';
   providedIn: 'root',
 })
 export class ExpenseDataService {
-  showFilter = signal(false);
+  private readonly _showFilters = signal(false);
   private readonly _expensesSignal = signal<Expense[]>([]);
   private readonly _sourceTypesSignal = signal<string[]>([]);
   private readonly _categoriesSignal = signal<string[]>([]);
@@ -103,6 +103,10 @@ export class ExpenseDataService {
 
   get expenseEntryTypeFilter(): WritableSignal<string | undefined> {
     return this._expenseEntryTypeFilter;
+  }
+
+  get showFilters(): WritableSignal<boolean> {
+    return this._showFilters;
   }
 
   setExpensesData(expenses: Expense[]) {
