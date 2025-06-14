@@ -1,4 +1,4 @@
-import { DatePipe, NgForOf, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -10,12 +10,12 @@ import { MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { DataExportComponent } from '@core/components/data-export/data-export.component';
 import { EntryTypes } from '@core/enums/entry-types';
+import { TimeFrameFilter } from '@core/interfaces/time-frame-filter';
+import { ExpenseDataService } from '@core/services/expense-data.service';
 import { Subscription } from 'rxjs';
-import { TimeFrameFilter } from '../../interfaces/time-frame-filter';
-import { ExpenseDataService } from '../../services/expense-data.service';
 
 @Component({
-  selector: 'app-year-data-selector',
+  selector: 'app-expense-filter-controls',
   imports: [
     MatDatepickerModule,
     ReactiveFormsModule,
@@ -23,20 +23,18 @@ import { ExpenseDataService } from '../../services/expense-data.service';
     MatButton,
     MatIcon,
     DatePipe,
-    NgIf,
     MatCardModule,
     MatChipListbox,
     MatChipOption,
-    NgForOf,
     MatLabel,
     DataExportComponent,
   ],
-  templateUrl: './year-data-selector.component.html',
-  styleUrl: './year-data-selector.component.scss',
+  templateUrl: './expense-filter-controls.component.html',
+  styleUrl: './expense-filter-controls.component.scss',
   providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class YearDataSelectorComponent implements OnInit, OnDestroy {
+export class ExpenseFilterControlsComponent implements OnDestroy, OnInit {
   today = new Date();
   dateRangeEnabled = false;
   range = new FormGroup({
@@ -101,7 +99,7 @@ export class YearDataSelectorComponent implements OnInit, OnDestroy {
 
   private dataService: ExpenseDataService = inject(ExpenseDataService);
   expenses = this.dataService.expensesSignal;
-  showFilter = this.dataService.showFilter;
+  showFilters = this.dataService.showFilters;
   filter = this.dataService.timeFrameFilterSignal;
   filesImported = this.dataService.filesImportedSignal;
   filteredExpenses = this.dataService.filteredExpenses;
@@ -134,7 +132,7 @@ export class YearDataSelectorComponent implements OnInit, OnDestroy {
   }
 
   toggleFilters() {
-    this.showFilter.update((value) => !value);
+    this.showFilters.update((value) => !value);
   }
 
   onTimeFrameChange(event: MatChipSelectionChange, filter: TimeFrameFilter) {
