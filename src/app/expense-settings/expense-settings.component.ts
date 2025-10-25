@@ -50,11 +50,7 @@ export class ExpenseSettingsComponent implements OnInit {
     private userService: UserService,
     private database: DatabaseService,
     private snackBar: MatSnackBar,
-  ) {
-    userService.userIdSetAnnounced$.subscribe(() => {
-      this.getAllUserDetails();
-    });
-  }
+  ) {}
 
   ngOnInit() {
     this.getAllUserDetails();
