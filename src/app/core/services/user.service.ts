@@ -1,5 +1,4 @@
 import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { Subject } from 'rxjs';
 
 import firebase from 'firebase/compat/app';
 import { UserDetails } from '../interfaces/user-details';
@@ -29,13 +28,7 @@ export class UserService {
     return email ?? '';
   });
 
-  private userIdSet = new Subject<string>();
-  userIdSetAnnounced$ = this.userIdSet.asObservable();
   private userId = '';
-
-  announceUserIdCreated(message: string) {
-    this.userIdSet.next(message);
-  }
 
   setUser(data: firebase.User | undefined) {
     this.currentUser.set(data);

@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -17,7 +17,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { Papa } from 'ngx-papaparse';
 import { Subscription } from 'rxjs';
-import { Expense } from '../../../core/interfaces/expense-model';
+import { Expense } from '@core/interfaces/expense-model';
 import { CsvRow, FormMapping } from '../../interfaces/import-interfaces';
 
 interface NegativeAmountOption {
@@ -42,7 +42,7 @@ interface NegativeAmountOption {
   templateUrl: './file-import-mapper.component.html',
   styleUrl: './file-import-mapper.component.scss',
 })
-export class FileImportMapperComponent implements OnInit {
+export class FileImportMapperComponent implements OnInit, OnDestroy {
   @Input() file!: File;
   @Input() csvData: CsvRow[] = [];
   @Input() csvHeaders: string[] = [];
@@ -72,6 +72,10 @@ export class FileImportMapperComponent implements OnInit {
 
   ngOnInit(): void {
     this.initMappingForm();
+  }
+
+  ngOnDestroy(): void {
+    this.$subscriptions.unsubscribe();
   }
 
   private initMappingForm(): void {
