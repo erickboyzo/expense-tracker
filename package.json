@@ -30,7 +30,7 @@
     "firebase": "^11.0.2",
     "highcharts": "^12.0.2",
     "highcharts-angular": "^4.0.1",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "ngx-papaparse": "^8.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
